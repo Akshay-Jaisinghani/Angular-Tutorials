@@ -1,0 +1,30 @@
+<div class="page-wrap" fxLayout="row" fxLayoutAlign="center center" fxLayout="column">
+    <mat-card class="login-container">
+        <h1 style="text-align:center">Acharya Academy Baramati</h1>
+        <form [formGroup]="loginForm">
+            <mat-form-field>
+                <input matInput placeholder="Email Address" data-cy="login-email" formControlName="email" type="email"
+                    required />
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="password" placeholder="Password" data-cy="login-password"
+                    formControlName="password" required />
+            </mat-form-field>
+            <div class="text-center" fxLayout="row" fxLayoutAlign="space-between center"
+                fxLayout="row-reverse" fxLayout.xs="column">
+                <button type="button" [disabled]="!loginForm.valid" mat-raised-button color="primary"
+                    data-cy="login-btn" class="login" (click)="login()">
+                    LOG IN
+                </button>
+                <mat-checkbox class="text-center" data-cy="login-remember-me" formControlName="remember">
+                    Remember Me</mat-checkbox>
+            </div>
+            <br />
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <a mat-button (click)="(signUp)" routerLink="/registration" color="primary" href="">Sign Up</a>
+                <a mat-button (click)="(password)" routerLink="/forgot" color="primary" href="">Forgot Password</a>
+            </div>
+        </form>
+        <br />
+    </mat-card>
+</div>

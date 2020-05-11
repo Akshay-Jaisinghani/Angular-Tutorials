@@ -1,0 +1,37 @@
+form {
+    max-width: 250px;
+    margin: auto;
+}
+mat-form-field {
+    display: block;
+}
+.page-wrap {
+    min-height: 100vh;
+    background: url("https://raw.githubusercontent.com/pxblue/login/angular/src/assets/background.png"), linear-gradient(135deg, #127cbf 0%, #094d9c 100%);
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 10px 0;
+
+    .login-container {
+        width: 100%;
+        max-width: 450px;
+        margin: auto;
+        background: #fff;
+        box-sizing: border-box;
+        border-radius: 5px;
+    }
+}
+
+
+@media (max-width: 599px) {
+    .login {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+}
+.links {
+    color: #4da3d4;
+}
+.links:visited {
+    color: #4da3d4;
+}

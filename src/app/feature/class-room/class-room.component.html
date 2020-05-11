@@ -1,0 +1,18 @@
+<p class="text-center text-header">YOUR CLASSROOMS</p>
+<div class="">
+    <button mat-raised-button color="primary" (click)="addClassRoom()">ADD CLASSROOM</button>
+</div>
+<ng-template #classRoomDialog>
+    <h2 matDialogTitle>Add Classroom</h2>
+    <mat-dialog-content>
+        <form [formGroup]="classroomForm">
+            <mat-form-field>
+                <input matInput placeholder="Classroom Name" formControlName="classroomName" type="text" required />
+            </mat-form-field>
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button matDialogClose="no">No</button>
+        <button mat-button matDialogClose="yes">Yes</button>
+    </mat-dialog-actions>
+</ng-template>

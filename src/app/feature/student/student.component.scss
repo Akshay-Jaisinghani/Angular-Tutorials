@@ -1,0 +1,43 @@
+.page-layout {
+  padding: 20px;
+}
+
+.text-header {
+  font-size: 18px;
+  margin: 20px 0;
+  color: #c1baba;
+}
+
+.student-card {
+  min-width: 300px;
+  max-width: 350px;
+  float: left;
+  margin-right: 15px;
+  margin-bottom: 15px;
+
+  mat-card-header {
+    border-bottom: 1px solid #ccc;
+    padding: 15px 15px 0;
+  }
+
+  mat-card-content {
+    padding: 8px 20px;
+    margin: 0 !important;
+    font-size: 12px;
+    border-bottom: 1px solid #ccc;
+  }
+
+  mat-card-actions {
+    margin-bottom: 0 !important;
+    padding: 8px 8px !important;
+    font-size: 14px;
+  }
+}
+
+::ng-deep .mat-card-header-text {
+  margin: 0 !important;
+}
+
+::ng-deep .mat-card {
+  padding: 0 !important;
+}
