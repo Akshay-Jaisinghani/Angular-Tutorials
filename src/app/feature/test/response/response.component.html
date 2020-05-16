@@ -1,0 +1,18 @@
+<div class="response-layout">
+    <div class="question-number-class">
+        <div class="response-details-class">
+            <p class="question-number-button">49</p><span>Not Visited</span>
+            <!-- <p class="trapezoid-class"></p><span class="show-number-on-border">1</span><span class="text-inside">Not Answered</span> -->
+            <!-- <p class="trapezoid-class"></p><span class="show-number-on-border">1</span><span class="text-inside">Answered</span>
+            <p class="trapezoid-class"></p><span class="show-number-on-border">1</span><span class="text-inside">Answered</span>
+            <p class="trapezoid-class"></p><span class="show-number-on-border">1</span><span class="text-inside">Answered</span> -->
+        </div>
+        <p *ngFor="let questionNumber of totalQuestions" class="question-number-button">{{questionNumber}}</p>
+    </div>
+    <div class="button-layout">
+        <button mat-button mat-raised-button fxFlex="12" class="save-and-next-button">SAVE & NEXT</button>
+        <button mat-button mat-raised-button fxFlex="14" class="save-and-mark-button">SAVE & MARK FOR REVIEW</button>
+        <button mat-button mat-raised-button fxFlex="10">CLEAR RESPONSE</button>
+        <button mat-button mat-raised-button color="primary" fxFlex="14">MARK FOR REVIEW & NEXT</button>
+    </div>
+</div>

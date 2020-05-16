@@ -1,0 +1,62 @@
+.response-layout {
+    .save-and-next-button {
+        background-color: #5eb456;
+        color: white;
+        font-size: 12px;
+    }
+
+    .save-and-mark-button {
+        background-color: #e29314;
+        color: white;
+        font-size: 12px;
+    }
+
+    .mat-button {
+        font-size: 12px;
+        margin-right: 7px;
+    }
+    .trapezoid-class {
+        border-left: 40px solid red;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        height: 20px;
+        width: 20px;
+        background: white;
+        float: left;
+        margin: 0;
+    }
+    .show-number-on-border {
+        position: relative;
+        top: 11px;
+        left: -52px;
+    }
+    .text-inside {
+        position: relative;
+        left: -30px;
+        top: 10px;
+    }
+    .response-details-class {
+        width: 225px;
+        height:100px;
+    }
+    .question-number-class {
+        height: 200px;
+        width: 225px;
+        float: right;
+        .question-number-button {
+            height: 25px;
+            width: 25px;
+            background-color: #ebf2e8;
+            border: 1px solid #b9bcb1;
+            border-radius: 4px;
+            text-align: center;
+            margin: 0 !important;
+            float: left;
+        }
+
+    }
+    .button-layout{
+        padding-top: 75px;
+        width: 100%;
+    }
+}

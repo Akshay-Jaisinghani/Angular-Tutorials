@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StudentModule } from './feature/student/student.module';
 import { MaterialModule } from './material.module';
 import { LogInModule } from './core/login/login.module';
+import { TestModule } from './feature/test/test.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { LogInModule } from './core/login/login.module';
 
     ClassRoomModule,
     StudentModule,
-    LogInModule
+    LogInModule,
+    TestModule
   ],
   providers: [],
   bootstrap: [AppComponent]

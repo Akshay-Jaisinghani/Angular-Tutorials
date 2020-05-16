@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
+html, body { height: 100vh; width:100vw; box-sizing: border-box; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
@@ -22,6 +22,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .text-center{
   text-align: center;
+}
+
+.page-layout {
+  box-sizing: border-box;
+  width: 100vw;
+  padding: 20px;
+  height: calc(100vh-64px);
+  height: -webkit-calc(100vh - 64px);
 }
 
 
