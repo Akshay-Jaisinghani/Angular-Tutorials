@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AppComponent } from './app.component';
 import { ClassRoomComponent } from './feature/class-room/class-room.component';
 import { StudentComponent } from './feature/student/student.component';
 import { LogInComponent } from './core/login/login.component';
@@ -10,15 +9,12 @@ import { TestQuestionsComponent } from './feature/test/test-questions/test-quest
 
 
 const routes: Routes = [
-  { path: '', component: LogInComponent},
+  // Redirect to login
+  { path: '**', redirectTo: "login" },
   { path: 'class-room', component: ClassRoomComponent },
   { path: 'student', component: StudentComponent },
-  // otherwise redirect to home
- // { path: '**', redirectTo: "login" },
   { path: 'login', component: LogInComponent },
-  { path: 'test', component: TestComponent },
-  { path: 'test/response', component: ResponseComponent },
-  { path: 'test/questions', component: TestQuestionsComponent },
+  { path: 'test', component: TestComponent }
 ];
 
 @NgModule({
