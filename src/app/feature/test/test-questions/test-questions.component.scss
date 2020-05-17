@@ -1,0 +1,22 @@
+.example-radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+  }
+  
+  .example-radio-button {
+    margin: 5px;
+  }
+
+  :host ::ng-deep .mat-radio-container{
+    height: 15px;
+    width: 15px;
+  }
+  :host ::ng-deep .mat-radio-outer-circle{
+    height: 15px;
+    width: 15px;
+  }
+  :host ::ng-deep .mat-radio-inner-circle{
+    height: 15px;
+    width: 15px;
+  }

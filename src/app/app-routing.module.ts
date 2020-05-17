@@ -6,6 +6,7 @@ import { StudentComponent } from './feature/student/student.component';
 import { LogInComponent } from './core/login/login.component';
 import { TestComponent } from './feature/test/test.component';
 import { ResponseComponent } from './feature/test/response/response.component';
+import { TestQuestionsComponent } from './feature/test/test-questions/test-questions.component';
 
 
 const routes: Routes = [
@@ -16,7 +17,8 @@ const routes: Routes = [
  // { path: '**', redirectTo: "login" },
   { path: 'login', component: LogInComponent },
   { path: 'test', component: TestComponent },
-  { path: 'test/response', component: ResponseComponent }
+  { path: 'test/response', component: ResponseComponent },
+  { path: 'test/questions', component: TestQuestionsComponent },
 ];
 
 @NgModule({

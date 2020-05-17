@@ -5,11 +5,12 @@ import { ResponseComponent } from './response/response.component';
 import { MaterialModule } from 'src/app/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TestQuestionsComponent } from './test-questions/test-questions.component';
 
 
 
 @NgModule({
-  declarations: [TestComponent, ResponseComponent],
+  declarations: [TestComponent, ResponseComponent, TestQuestionsComponent],
   imports: [
     CommonModule,
     MaterialModule,

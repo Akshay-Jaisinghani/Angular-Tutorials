@@ -11,6 +11,7 @@ import { StudentModule } from './feature/student/student.module';
 import { MaterialModule } from './material.module';
 import { LogInModule } from './core/login/login.module';
 import { TestModule } from './feature/test/test.module';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -23,11 +24,11 @@ import { TestModule } from './feature/test/test.module';
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-
     ClassRoomModule,
     StudentModule,
     LogInModule,
-    TestModule
+    TestModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
