@@ -10,7 +10,7 @@ import { TestQuestionsComponent } from './feature/test/test-questions/test-quest
 
 const routes: Routes = [
   // Redirect to login
-  { path: '**', redirectTo: "login" },
+ // { path: '**', redirectTo: "login" },
   { path: 'class-room', component: ClassRoomComponent },
   { path: 'student', component: StudentComponent },
   { path: 'login', component: LogInComponent },

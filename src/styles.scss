@@ -31,7 +31,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   height: calc(100vh-64px);
   height: -webkit-calc(100vh - 64px);
 }
-
+.float-left {
+  float: left !important;
+}
+.float-right {
+  float: right !important;
+}
 
 
 /*temporary*/

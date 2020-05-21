@@ -1,29 +1,18 @@
 .response-layout {
-    padding: 20px;
-    height: calc(100vh-64px);
-    height: -webkit-calc(100vh - 64px);
-
-    .save-and-next-button {
-        background-color: #5eb456;
-        color: white;
-        font-size: 12px;
-    }
-
-    .save-and-mark-button {
-        background-color: #e29314;
-        color: white;
-        font-size: 12px;
-    }
-
-    .mat-button {
-        font-size: 12px;
-        margin-right: 7px;
-    }
+    // padding: 20px;
+    // height: calc(100vh-64px);
+    // height: -webkit-calc(100vh - 64px);
+    // padding: 0 150px;
+    width: 30%;
+    padding-right: 150px;
+    float: left;
+    box-sizing: border-box;
 
     .response-section {
         float: right;
+        width: 100%;
         .response-details-class {
-            width: 225px;
+            width: 100%;
             height: 120px;
             font-size: 12px;
             div:last-child {
@@ -38,7 +27,7 @@
 
         .question-number-class {
             height: 200px;
-            width: 225px;
+            width: 100%;
         }
     }
 
@@ -133,10 +122,5 @@
     .span-text {
         position: relative;
         left: 5px;
-    }
-
-    .button-layout {
-        padding-top: 75px;
-        width: 100%;
     }
 }

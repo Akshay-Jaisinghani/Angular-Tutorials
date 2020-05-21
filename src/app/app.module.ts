@@ -12,10 +12,12 @@ import { MaterialModule } from './material.module';
 import { LogInModule } from './core/login/login.module';
 import { TestModule } from './feature/test/test.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { AboutComponent } from './pages/about/about.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
