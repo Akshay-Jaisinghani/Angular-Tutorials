@@ -14,9 +14,10 @@ export class TestQuestionsComponent implements OnInit {
   form: FormGroup;
 
   constructor(private studentTestService : StudentTestService, private formBuilder: FormBuilder) {
-    // this.form = this.formBuilder.group({
-    //   options: this.createOptions()
-    // });
+    this.form = this.formBuilder.group({
+      optionsArray: [''],
+      selectedOption:''
+    });
    }
 
   ngOnInit(): void {
@@ -29,7 +30,8 @@ export class TestQuestionsComponent implements OnInit {
               "3:Karnataka",
               "4:Maharashtra",
               "5:Rajasthan"
-          ]
+          ],
+          "questionType": 1
       },
       {
           "questionNo": 2,
@@ -38,7 +40,8 @@ export class TestQuestionsComponent implements OnInit {
               "6:Karnataka",
               "7:Maharashtra",
               "8:Rajasthan"
-          ]
+          ],
+          "questionType": 1
       },
       {
           "questionNo": 3,
@@ -46,7 +49,8 @@ export class TestQuestionsComponent implements OnInit {
           "optionvalue": [
               "1:Karnataka",
               "2:Maharashtra"
-          ]
+          ],
+          "questionType": 1
       },
       {
           "questionNo": 4,
@@ -55,7 +59,8 @@ export class TestQuestionsComponent implements OnInit {
               "9:Karnataka",
               "10:Maharashtra",
               "11:Rajasthan"
-          ]
+          ],
+          "questionType": 1
       },
       {
           "questionNo": 5,
@@ -64,11 +69,13 @@ export class TestQuestionsComponent implements OnInit {
               "12:Karnataka",
               "13:Maharashtra",
               "14:Rajasthan"
-          ]
+          ],
+          "questionType": 1
       }
   ]
 
     this.questionsArr.forEach(element => { 
+      let optionArr = [];
       element["optionvalue"].forEach(item => {
         var option =  item.split(":");
         var optionObj = {
@@ -76,9 +83,11 @@ export class TestQuestionsComponent implements OnInit {
           name: ''
         }
         optionObj['id'] = option[0];
-        optionObj['name'] = option[1];    
-        //element["optionObj"] = optionObj;    
+        optionObj['name'] = option[1];      
+        optionArr.push(optionObj);
+        element["optionArr"] = optionArr;
       });      
+
     });
   }
 
@@ -89,24 +98,26 @@ export class TestQuestionsComponent implements OnInit {
    
   }
 
-  // createOptions() {
-  //   const arr = this.questionsArr[0].optionvalue.map(option => {
-  //     return this.formBuilder.control(option.id);
-  //   });
-  //   return this.formBuilder.array(arr);
-  // }
+  onCheckboxChange(e) {
+    const optionsArray: FormArray = this.form.get('optionsArray') as FormArray;
+  
+    if (e.target.checked) {
+      optionsArray.push(new FormControl(e.target.value));
+    } else {
+      let i: number = 0;
+      optionsArray.controls.forEach((item: FormControl) => {
+        if (item.value == e.target.value) {
+          optionsArray.removeAt(i);
+          return;
+        }
+        i++;
+      });
+    }
+  }
 
-  // submit(value) {
-  //   const formValue = Object.assign({}, value, {
-  //     options: value.options.map((selected, i) => {
-  //       return {
-  //         id: this.questionsArr.options[i].id,
-  //      }
-  //     })
-  //   });
-  // }
   saveAndNext() {
     document.getElementsByClassName("question-number-class")[0].children[0].className = "answered-class";
+    console.log(this.form.controls)
   }
 
   saveAndMArkForReview() {
@@ -119,6 +130,10 @@ export class TestQuestionsComponent implements OnInit {
 
   clearResponse() {
     document.getElementsByClassName("question-number-class")[0].children[1].className = "question-number-button";
+  }
+
+  submitForm() {
+    console.log(this.form.value)
   }
 
 }

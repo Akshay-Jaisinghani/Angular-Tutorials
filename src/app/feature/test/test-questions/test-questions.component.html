@@ -4,15 +4,31 @@
             <p>({{questionsArr[0].questionNo}}) {{questionsArr[0].content}}?</p>
         </div>
 
-        <div>
-            <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
-                [(ngModel)]="selectedOption">
-                <mat-radio-button class="example-radio-button" *ngFor="let option of questionsArr[0].optionvalue"
-                    [value]="option">
-                    {{option}}
-                </mat-radio-button>
-            </mat-radio-group>
-        </div>
+        <form [formGroup]="form"  >
+            
+            <div *ngIf="questionsArr[0].questionType==1; else radioGroup">
+                <div *ngFor="let data of questionsArr[0].optionArr; let i=index">
+                    <label>
+                      <mat-checkbox type="checkbox" [value]="data.id">
+                      {{data.name}}
+                    </mat-checkbox>
+                    </label>
+                  </div>
+            </div>       
+    
+    
+            <ng-template #radioGroup>
+                 <mat-radio-group formControlName="optionsArray" aria-labelledby="example-radio-group-label" class="example-radio-group">
+                    <mat-radio-button class="example-radio-button" 
+                    *ngFor="let data of questionsArr[0].optionArr; let i=index" [value]="data.id">
+                        {{data.name}}
+                    </mat-radio-button>
+                </mat-radio-group>
+            </ng-template> 
+            <!-- <input type="submit" value="Submit"> -->
+          </form>
+    
+       
     </div>
     <div class="button-layout" fxLayout="row">
         <button mat-button mat-raised-button fxFlex="15" (click)="saveAndNext()" class="save-and-next-button">SAVE &
@@ -24,11 +40,3 @@
             REVIEW & NEXT</button>
     </div>
 </div>
-<!-- 
-<div>
-    <form [formGroup]="form" (ngSubmit)="submit(form.value)">
-        <div *ngFor="let option of options.controls; let i=index">
-            <input type="checkbox" [formControl]="option"/> {{questionsArr[i].optionvalue.name}}
-           </div>
-      </form>
-</div> -->
