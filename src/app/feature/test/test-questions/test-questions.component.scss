@@ -1,22 +1,57 @@
-.example-radio-group {
-    display: flex;
-    flex-direction: column;
-    margin: 10px 0;
-  }
-  
-  .example-radio-button {
-    margin: 5px;
+.test-question-page-layout {
+  width: 70%;
+  padding-top: 32px;
+  padding-left: 150px;
+  float: left;
+  box-sizing: border-box;
+
+  //padding: 0 0 0 150px;
+  .save-and-next-button {
+    background-color: #5eb456;
+    color: white;
+    font-size: 12px;
   }
 
-  :host ::ng-deep .mat-radio-container{
-    height: 15px;
-    width: 15px;
+  .save-and-mark-button {
+    background-color: #e29314;
+    color: white;
+    font-size: 12px;
   }
-  :host ::ng-deep .mat-radio-outer-circle{
-    height: 15px;
-    width: 15px;
+
+  .mat-button {
+    font-size: 12px;
+    margin-right: 7px;
   }
-  :host ::ng-deep .mat-radio-inner-circle{
-    height: 15px;
-    width: 15px;
+
+  .button-layout {
+      width: 100%;
+      float: left;
+      top: 220px;
+      position: relative;
   }
+}
+
+.example-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
+}
+
+.example-radio-button {
+  margin: 5px;
+}
+
+:host ::ng-deep .mat-radio-container {
+  height: 15px;
+  width: 15px;
+}
+
+:host ::ng-deep .mat-radio-outer-circle {
+  height: 15px;
+  width: 15px;
+}
+
+:host ::ng-deep .mat-radio-inner-circle {
+  height: 15px;
+  width: 15px;
+}

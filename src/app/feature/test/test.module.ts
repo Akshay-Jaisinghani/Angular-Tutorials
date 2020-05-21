@@ -6,11 +6,12 @@ import { MaterialModule } from 'src/app/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestQuestionsComponent } from './test-questions/test-questions.component';
+import { StudentDetailsComponent } from './student-details/student-details.component';
 
 
 
 @NgModule({
-  declarations: [TestComponent, ResponseComponent, TestQuestionsComponent],
+  declarations: [TestComponent, ResponseComponent, TestQuestionsComponent, StudentDetailsComponent],
   imports: [
     CommonModule,
     MaterialModule,

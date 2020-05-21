@@ -1,23 +1,44 @@
 <div class="response-layout">
-    <div class="response-details-class">
-        <div> <p class="question-number-button"><span>49</span></p><span>Not Visited</span></div>
-        <div><p class="trapezoid-class-red"></p><span class="show-number-on-border">1</span><span class="text-inside">Not Answered</span></div>
-        <div><p class="trapezoid-class-green"></p><span class="show-number-on-border">1</span><span class="text-inside">Not Answered</span></div>
-        <div> <p class="question-number-button marked-for-review-class"><span>0</span></p><span>Marked For Review</span></div>
-        <div> <p class="question-number-button marked-for-review-class"><span>0</span></p><span>Answered & Marked For Review (will be considered for evaluation)</span></div>
-        <!-- <p class="trapezoid-class"></p><span class="show-number-on-border">1</span><span class="text-inside">Answered</span>
-        <p class="trapezoid-class"></p><span class="show-number-on-border">1</span><span class="text-inside">Answered</span>
-        <p class="trapezoid-class"></p><span class="show-number-on-border">1</span><span class="text-inside">Answered</span> -->
-    </div>
+    <div class="response-section">
+        <div class="response-details-class">
+            <div class="width-50">
+                <p class="question-number-button">
+                    <span>49</span>
+                </p>
+                <span class="span-text">Not Visited</span>
+            </div>
+            <div class="width-50">
+                <p class="not-answered-class">
+                    <span>1</span>
+                </p>
+                <span class="span-text">Not Answered</span>
+            </div>
+            <div class="width-50">
+                <p class="answered-class">
+                    <span>1</span>
+                </p>
+                <span class="span-text">Answered</span>
+            </div>
+            <div class="width-50">
+                <p class="marked-for-review-class">
+                    <span>0</span>
+                </p>
+                <span class="span-text">Marked For Review</span>
+            </div>
+            <div>
+                <div class="answered-and-marked-for-review-class">
+                    <span>0</span>
+                    <p></p>
+                </div>
+                <span class="span-text">Answered & Marked For Review (will be considered for evaluation)</span>
+            </div>
+        </div>
 
-    <div class="question-number-class">
-       
-        <p *ngFor="let questionNumber of totalQuestions" class="question-number-button"><span>{{questionNumber}}</span></p>
-    </div>
-    <div class="button-layout">
-        <button mat-button mat-raised-button fxFlex="12" class="save-and-next-button">SAVE & NEXT</button>
-        <button mat-button mat-raised-button fxFlex="14" class="save-and-mark-button">SAVE & MARK FOR REVIEW</button>
-        <button mat-button mat-raised-button fxFlex="10">CLEAR RESPONSE</button>
-        <button mat-button mat-raised-button color="primary" fxFlex="14">MARK FOR REVIEW & NEXT</button>
+        <div class="question-number-class">
+            <div *ngFor="let questionNumber of totalQuestions" class="question-number-button">
+                <span>{{questionNumber}}</span>
+                <p></p>
+            </div>
+        </div>
     </div>
 </div>

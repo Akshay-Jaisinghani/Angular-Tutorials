@@ -1,15 +1,29 @@
-<div>
-    <p>({{questionsArr[0].questionNo}}) {{questionsArr[0].content}}?</p>
-</div>
+<div class="test-question-page-layout">
+    <div>
+        <div>
+            <p>({{questionsArr[0].questionNo}}) {{questionsArr[0].content}}?</p>
+        </div>
 
-<div>
-    <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
-        [(ngModel)]="selectedOption">
-        <mat-radio-button class="example-radio-button" *ngFor="let option of questionsArr[0].optionvalue" [value]="option">
-            {{option}}
-        </mat-radio-button>
-    </mat-radio-group>
-</div> 
+        <div>
+            <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+                [(ngModel)]="selectedOption">
+                <mat-radio-button class="example-radio-button" *ngFor="let option of questionsArr[0].optionvalue"
+                    [value]="option">
+                    {{option}}
+                </mat-radio-button>
+            </mat-radio-group>
+        </div>
+    </div>
+    <div class="button-layout" fxLayout="row">
+        <button mat-button mat-raised-button fxFlex="15" (click)="saveAndNext()" class="save-and-next-button">SAVE &
+            NEXT</button>
+        <button mat-button mat-raised-button fxFlex="25" (click)="saveAndMArkForReview()" class="save-and-mark-button"
+           >SAVE & MARK FOR REVIEW</button>
+        <button mat-button mat-raised-button fxFlex="20" (click)="clearResponse()">CLEAR RESPONSE</button>
+        <button mat-button mat-raised-button color="primary" fxFlex="25" (click)="markForReviewAndNext()">MARK FOR
+            REVIEW & NEXT</button>
+    </div>
+</div>
 <!-- 
 <div>
     <form [formGroup]="form" (ngSubmit)="submit(form.value)">
