@@ -39,6 +39,8 @@ export class TestQuestionsComponent implements OnInit {
     }, () => {
       this.studentTestService.currentQuestionObj = this.studentTestService.getQuestion(this.studentTestService.currentQuestionNumber);
       this.studentTestService.totalQuestionsCount = Array.from(new Array(this.studentTestService.allTestQuestions.length), (x, i) => i + 1);
+      this.studentTestService.notVisited = this.studentTestService.allTestQuestions.length - 1;
+      this.studentTestService.notAnswered = this.studentTestService.allTestQuestions.length;
       this.isLoading = false;
     });
   }
@@ -75,10 +77,12 @@ export class TestQuestionsComponent implements OnInit {
   markForReviewAndNext() {
     document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "marked-for-review-class";
     this.changeTestResponseClass();
+    this.studentTestService.markedForReview = this.studentTestService.markedForReview + 1;
   }
 
   clearResponse() {
     document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "question-number-button";
+      this.studentTestService.answered = this.studentTestService.answered - 1;   
   }
 
   submitForm() {
@@ -88,6 +92,15 @@ export class TestQuestionsComponent implements OnInit {
   changeTestResponseClass() {
     this.studentTestService.currentQuestionNumber = this.studentTestService.currentQuestionNumber + 1;
     this.studentTestService.currentQuestionObj = this.studentTestService.getQuestion(this.studentTestService.currentQuestionNumber);
+    if(this.studentTestService.notVisited > 0) {
+      this.studentTestService.notVisited = this.studentTestService.notVisited - 1;
+    }
+    if(this.studentTestService.notAnswered > 0) {
+      this.studentTestService.notAnswered = this.studentTestService.notAnswered - 1;
+    }
+    if(this.studentTestService.answered  <= this.studentTestService.allTestQuestions.length) {
+    this.studentTestService.answered = this.studentTestService.answered + 1;
+    }
   }
 
   back() {

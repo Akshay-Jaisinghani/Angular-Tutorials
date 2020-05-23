@@ -1,33 +1,33 @@
-<div class="response-layout" >
+<div class="response-layout">
     <div class="response-section">
         <div class="response-details-class">
             <div class="width-50">
                 <p class="question-number-button">
-                    <span>{{notVisited}}</span>
+                    <span>{{this.studentTestService.notVisited}}</span>
                 </p>
                 <span class="span-text">Not Visited</span>
             </div>
             <div class="width-50">
                 <p class="not-answered-class">
-                    <span>{{notAnswered}}</span>
+                    <span>{{this.studentTestService.notAnswered}}</span>
                 </p>
                 <span class="span-text">Not Answered</span>
             </div>
             <div class="width-50">
                 <p class="answered-class">
-                    <span>{{answered}}</span>
+                    <span>{{this.studentTestService.answered}}</span>
                 </p>
                 <span class="span-text">Answered</span>
             </div>
             <div class="width-50">
                 <p class="marked-for-review-class">
-                    <span>{{markedForReview}}</span>
+                    <span>{{this.studentTestService.markedForReview}}</span>
                 </p>
                 <span class="span-text">Marked For Review</span>
             </div>
             <div>
                 <div class="answered-and-marked-for-review-class">
-                    <span>{{answeredAndMarkedForReview}}</span>
+                    <span>{{this.studentTestService.answeredAndMarkedForReview}}</span>
                     <p></p>
                 </div>
                 <span class="span-text">Answered & Marked For Review (will be considered for evaluation)</span>
@@ -35,7 +35,8 @@
         </div>
 
         <div class="question-number-class">
-            <div *ngFor="let questionNumber of this.studentTestService.totalQuestionsCount" class="question-number-button" (click)= "goToQuestionNumber(questionNumber)">
+            <div *ngFor="let questionNumber of this.studentTestService.totalQuestionsCount"
+                class="question-number-button" (click)="goToQuestionNumber(questionNumber)">
                 <span>{{questionNumber}}</span>
                 <p></p>
             </div>
