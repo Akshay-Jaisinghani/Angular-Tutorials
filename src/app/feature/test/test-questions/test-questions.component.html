@@ -1,6 +1,6 @@
-<div class="test-question-page-layout">
+<div class="test-question-page-layout" fxLayout="column">
 
-    <div *ngIf="this.studentTestService.currentQuestionObj">
+    <div *ngIf="this.studentTestService.currentQuestionObj" fxFlex="100">
         <mat-card *ngIf="isLoading" style="display: flex;justify-content: center; align-items: center;">
             <mat-progress-spinner color="primary" mode="inderminate"></mat-progress-spinner>
         </mat-card>
@@ -37,19 +37,19 @@
 
 
     </div>
-    <div class="button-layout" fxLayout="row">
-        <button mat-button mat-raised-button fxFlex="15" (click)="saveAndNext()" class="save-and-next-button">SAVE &
+    <div class="button-layout" fxLayout="row" fxFlex="100" fxLayoutAlign=" center">
+        <button mat-button mat-raised-button fxFlex="20" (click)="saveAndNext()" class="save-and-next-button">SAVE &
             NEXT</button>
-        <button mat-button mat-raised-button fxFlex="25" (click)="saveAndMArkForReview()"
+        <button mat-button mat-raised-button fxFlex="30" (click)="saveAndMArkForReview()"
             class="save-and-mark-button">SAVE & MARK FOR REVIEW</button>
         <button mat-button mat-raised-button fxFlex="20" (click)="clearResponse()">CLEAR RESPONSE</button>
-        <button mat-button mat-raised-button color="primary" fxFlex="25" (click)="markForReviewAndNext()">MARK FOR
+        <button mat-button mat-raised-button color="primary" fxFlex="30" (click)="markForReviewAndNext()">MARK FOR
             REVIEW & NEXT</button>
     </div>
 
-    <div>
-        <button mat-button mat-raised-button fxFlex="15" (click)="back()" class="save-and-next-button">BACK</button>
-        <button mat-button mat-raised-button fxFlex="25" (click)="next()" class="save-and-mark-button">NEXT</button>
+    <div class="button-layout" fxLayout="row" fxFlex="100" fxLayoutAlign=" center">
+        <button mat-button mat-raised-button fxFlex="15" (click)="back()">BACK</button>
+        <button mat-button mat-raised-button fxFlex="25" (click)="next()">NEXT</button>
     </div>
 
 </div>

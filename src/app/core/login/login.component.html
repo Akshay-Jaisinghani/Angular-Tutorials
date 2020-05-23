@@ -3,7 +3,7 @@
         <h1 style="text-align:center">Acharya Academy Baramati</h1>
         <form [formGroup]="loginForm">
             <mat-form-field>
-                <input matInput placeholder="Email Address" data-cy="login-email" formControlName="email" type="email"
+                <input matInput placeholder="Contact Number" formControlName="contactNumber" type="text" data-cy="login-contactNumber"
                     required />
             </mat-form-field>
             <mat-form-field>
@@ -20,10 +20,10 @@
                     Remember Me</mat-checkbox>
             </div>
             <br />
-            <div fxLayout="row" fxLayoutAlign="center center">
+            <!-- <div fxLayout="row" fxLayoutAlign="center center">
                 <a mat-button (click)="(signUp)" routerLink="/registration" color="primary" href="">Sign Up</a>
                 <a mat-button (click)="(password)" routerLink="/forgot" color="primary" href="">Forgot Password</a>
-            </div>
+            </div> -->
         </form>
         <br />
     </mat-card>

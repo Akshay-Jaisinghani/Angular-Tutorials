@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppService } from 'src/app/service/app.service';
-
-const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+const phoneNumber = /^\d{10}$/;
 @Component({
   selector: 'app-login',
   templateUrl: './Login.component.html',
@@ -20,7 +19,7 @@ export class LogInComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      email: ['', Validators.compose([Validators.required, Validators.pattern(EMAIL_REGEX)])],
+      contactNumber: ['', Validators.compose([Validators.required, Validators.pattern(phoneNumber)])],
       password: ['', Validators.compose([Validators.required])],
       remember: [true],
     });
@@ -34,7 +33,7 @@ export class LogInComponent implements OnInit {
   }
 
   login(): void {
-    this.appService.login(this.loginForm.controls.email.value, this.loginForm.controls.password.value)
+    this.appService.login(this.loginForm.controls.contactNumber.value, this.loginForm.controls.password.value)
       .subscribe((matched) => {
         if (matched) {
           this.appService.isSignedIn = true;

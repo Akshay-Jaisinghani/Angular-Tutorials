@@ -1,2 +1,2 @@
-<mat-toolbar class="toolbar primary" *ngIf="this.appService.isSignedIn">ACHARYA ACADEMY BARAMATI</mat-toolbar>
+<mat-toolbar class="toolbar primary" *ngIf="this.appService.isSignedIn && router.url !== '/test'">ACHARYA ACADEMY BARAMATI</mat-toolbar>
 <router-outlet></router-outlet>

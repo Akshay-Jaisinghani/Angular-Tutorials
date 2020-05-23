@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from './service/app.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,7 @@ export class AppComponent implements OnInit {
   title = 'EddyTech';
   currentUser;
   constructor(
-    public readonly appService: AppService) {
+    public readonly appService: AppService, public router: Router) {
   }
 
   ngOnInit(): void {

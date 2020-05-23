@@ -38,6 +38,28 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   float: right !important;
 }
 
+::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0);
+    background-color: #F5F5F5;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar
+{
+    width: 5px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb
+{
+    background-color: #007bc1;
+    border-radius: 10px;
+    -webkit-border-radius: 5px;
+}
 
 /*temporary*/
 :host {

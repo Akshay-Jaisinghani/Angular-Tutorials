@@ -24,10 +24,13 @@
   }
 
   .button-layout {
-      width: 100%;
+  //    width: 100%;
       float: left;
-      top: 220px;
+      top: 150px;
       position: relative;
+  }
+  .button-layout:nth-child(2) {
+    margin-top:15px;
   }
 }
 
