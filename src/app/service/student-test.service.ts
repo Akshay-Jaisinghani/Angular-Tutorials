@@ -16,8 +16,8 @@ export class StudentTestService {
   allTestAnswers: [];
   currentQuestionObj;
 
-  notVisited = 0;
-  notAnswered = 0;
+  notVisited;
+  notAnswered;
   answered = 0;
   markedForReview = 0;;
   answeredAndMarkedForReview = 0;
