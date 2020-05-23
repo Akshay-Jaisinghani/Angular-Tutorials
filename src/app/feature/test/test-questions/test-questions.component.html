@@ -1,42 +1,55 @@
 <div class="test-question-page-layout">
-    <div>
+
+    <div *ngIf="this.studentTestService.currentQuestionObj">
+        <mat-card *ngIf="isLoading" style="display: flex;justify-content: center; align-items: center;">
+            <mat-progress-spinner color="primary" mode="inderminate"></mat-progress-spinner>
+        </mat-card>
         <div>
-            <p>({{questionsArr[0].questionNo}}) {{questionsArr[0].content}}?</p>
+            <p>({{this.studentTestService.currentQuestionNumber+1}})
+                {{this.studentTestService.currentQuestionObj.content}}?</p>
         </div>
 
-        <form [formGroup]="form"  >
-            
-            <div *ngIf="questionsArr[0].questionType==1; else radioGroup">
-                <div *ngFor="let data of questionsArr[0].optionArr; let i=index">
+        <form [formGroup]="form">
+
+            <div *ngIf="this.studentTestService.currentQuestionObj.questionType==1; else radioGroup">
+                <div *ngFor="let data of this.studentTestService.currentQuestionObj.optionvalue; let i=index">
                     <label>
-                      <mat-checkbox type="checkbox" [value]="data.id">
-                      {{data.name}}
-                    </mat-checkbox>
+                        <mat-checkbox type="checkbox" [value]="data.id">
+                            {{data.optionvalue}}
+                        </mat-checkbox>
                     </label>
-                  </div>
-            </div>       
-    
-    
+                </div>
+            </div>
+
+
             <ng-template #radioGroup>
-                 <mat-radio-group formControlName="optionsArray" aria-labelledby="example-radio-group-label" class="example-radio-group">
-                    <mat-radio-button class="example-radio-button" 
-                    *ngFor="let data of questionsArr[0].optionArr; let i=index" [value]="data.id">
-                        {{data.name}}
+                <mat-radio-group formControlName="selectedOption" aria-labelledby="example-radio-group-label"
+                    class="example-radio-group">
+                    <mat-radio-button class="example-radio-button"
+                        *ngFor="let data of this.studentTestService.currentQuestionObj.optionvalue; let i=index"
+                        [value]="data.id">
+                        {{data.optionvalue}}
                     </mat-radio-button>
                 </mat-radio-group>
-            </ng-template> 
+            </ng-template>
             <!-- <input type="submit" value="Submit"> -->
-          </form>
-    
-       
+        </form>
+
+
     </div>
     <div class="button-layout" fxLayout="row">
         <button mat-button mat-raised-button fxFlex="15" (click)="saveAndNext()" class="save-and-next-button">SAVE &
             NEXT</button>
-        <button mat-button mat-raised-button fxFlex="25" (click)="saveAndMArkForReview()" class="save-and-mark-button"
-           >SAVE & MARK FOR REVIEW</button>
+        <button mat-button mat-raised-button fxFlex="25" (click)="saveAndMArkForReview()"
+            class="save-and-mark-button">SAVE & MARK FOR REVIEW</button>
         <button mat-button mat-raised-button fxFlex="20" (click)="clearResponse()">CLEAR RESPONSE</button>
         <button mat-button mat-raised-button color="primary" fxFlex="25" (click)="markForReviewAndNext()">MARK FOR
             REVIEW & NEXT</button>
     </div>
+
+    <div>
+        <button mat-button mat-raised-button fxFlex="15" (click)="back()" class="save-and-next-button">BACK</button>
+        <button mat-button mat-raised-button fxFlex="25" (click)="next()" class="save-and-mark-button">NEXT</button>
+    </div>
+
 </div>

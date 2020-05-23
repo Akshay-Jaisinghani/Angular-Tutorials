@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { StudentTestService } from 'src/app/service/student-test.service';
 import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
+import { ResponseComponent } from '../response/response.component';
 
 @Component({
   selector: 'app-test-questions',
@@ -9,98 +10,43 @@ import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
 })
 export class TestQuestionsComponent implements OnInit {
 
-  questionsArr;
   selectedOption;
   form: FormGroup;
+  questionNo;
+  isLoading = true;
 
-  constructor(private studentTestService : StudentTestService, private formBuilder: FormBuilder) {
+  constructor(public studentTestService: StudentTestService, private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
       optionsArray: [''],
-      selectedOption:''
+      selectedOption: ''
     });
-   }
+  }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.isLoading = true;
     this.getTestQuestions();
-    this.questionsArr = [
-      {
-          "questionNo": 1,
-          "content": "Where is Pune",
-          "optionvalue": [
-              "3:Karnataka",
-              "4:Maharashtra",
-              "5:Rajasthan"
-          ],
-          "questionType": 1
-      },
-      {
-          "questionNo": 2,
-          "content": "Where is Mumbai",
-          "optionvalue": [
-              "6:Karnataka",
-              "7:Maharashtra",
-              "8:Rajasthan"
-          ],
-          "questionType": 1
-      },
-      {
-          "questionNo": 3,
-          "content": "What is Photosynthesis",
-          "optionvalue": [
-              "1:Karnataka",
-              "2:Maharashtra"
-          ],
-          "questionType": 1
-      },
-      {
-          "questionNo": 4,
-          "content": "Where is Ajmer",
-          "optionvalue": [
-              "9:Karnataka",
-              "10:Maharashtra",
-              "11:Rajasthan"
-          ],
-          "questionType": 1
-      },
-      {
-          "questionNo": 5,
-          "content": "Where is Bangalore",
-          "optionvalue": [
-              "12:Karnataka",
-              "13:Maharashtra",
-              "14:Rajasthan"
-          ],
-          "questionType": 1
-      }
-  ]
-
-    this.questionsArr.forEach(element => { 
-      let optionArr = [];
-      element["optionvalue"].forEach(item => {
-        var option =  item.split(":");
-        var optionObj = {
-          id: '',
-          name: ''
-        }
-        optionObj['id'] = option[0];
-        optionObj['name'] = option[1];      
-        optionArr.push(optionObj);
-        element["optionArr"] = optionArr;
-      });      
-
-    });
   }
 
   getTestQuestions() {
     this.studentTestService.getTestQuestions(1).subscribe((data) => {
-      console.log('questionsArray', data);
+      console.log(JSON.stringify(data));
+      this.studentTestService.allTestQuestions = data;
+
+
+    }, (error) => {
+      console.log("Error", error);
+      this.studentTestService.allTestQuestions = [{ "questionNo": 1, "content": "Where is Pune", "optionvalue": [{ "id": 3, "question": null, "optionvalue": "Karnataka", "weight": null }, { "id": 4, "question": null, "optionvalue": "Maharashtra", "weight": null }, { "id": 5, "question": null, "optionvalue": "Rajasthan", "weight": null }], "questionType": 1 }, { "questionNo": 2, "content": "Where is Mumbai", "optionvalue": [{ "id": 6, "question": null, "optionvalue": "Karnataka", "weight": null }, { "id": 7, "question": null, "optionvalue": "Maharashtra", "weight": null }, { "id": 8, "question": null, "optionvalue": "Rajasthan", "weight": null }], "questionType": 1 }, { "questionNo": 3, "content": "Where is Nagpur", "optionvalue": [{ "id": 1, "question": null, "optionvalue": "Karnataka", "weight": null }, { "id": 2, "question": null, "optionvalue": "Maharashtra", "weight": null }], "questionType": 1 }, { "questionNo": 4, "content": "Where is Ajmer", "optionvalue": [{ "id": 9, "question": null, "optionvalue": "Karnataka", "weight": null }, { "id": 10, "question": null, "optionvalue": "Maharashtra", "weight": null }, { "id": 11, "question": null, "optionvalue": "Rajasthan", "weight": null }], "questionType": 1 }, { "questionNo": 5, "content": "Where is Bangalore", "optionvalue": [{ "id": 12, "question": null, "optionvalue": "Karnataka", "weight": null }, { "id": 13, "question": null, "optionvalue": "Maharashtra", "weight": null }, { "id": 14, "question": null, "optionvalue": "Rajasthan", "weight": null }], "questionType": 1 }]
+    }, () => {
+      this.studentTestService.currentQuestionObj = this.studentTestService.getQuestion(this.studentTestService.currentQuestionNumber);
+      this.studentTestService.totalQuestionsCount = Array.from(new Array(this.studentTestService.allTestQuestions.length), (x, i) => i + 1);
+      this.isLoading = false;
     });
-   
   }
+
 
   onCheckboxChange(e) {
     const optionsArray: FormArray = this.form.get('optionsArray') as FormArray;
-  
+
     if (e.target.checked) {
       optionsArray.push(new FormControl(e.target.value));
     } else {
@@ -116,24 +62,40 @@ export class TestQuestionsComponent implements OnInit {
   }
 
   saveAndNext() {
-    document.getElementsByClassName("question-number-class")[0].children[0].className = "answered-class";
-    console.log(this.form.controls)
+    document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-class";
+    this.changeTestResponseClass();
   }
 
   saveAndMArkForReview() {
-    document.getElementsByClassName("question-number-class")[0].children[1].className = "answered-and-marked-for-review-class";
+    document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-and-marked-for-review-class";
+    this.changeTestResponseClass();
+
   }
 
   markForReviewAndNext() {
-    document.getElementsByClassName("question-number-class")[0].children[2].className = "marked-for-review-class";
+    document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "marked-for-review-class";
+    this.changeTestResponseClass();
   }
 
   clearResponse() {
-    document.getElementsByClassName("question-number-class")[0].children[1].className = "question-number-button";
+    document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "question-number-button";
   }
 
   submitForm() {
     console.log(this.form.value)
+  }
+
+  changeTestResponseClass() {
+    this.studentTestService.currentQuestionNumber = this.studentTestService.currentQuestionNumber + 1;
+    this.studentTestService.currentQuestionObj = this.studentTestService.getQuestion(this.studentTestService.currentQuestionNumber);
+  }
+
+  back() {
+
+  }
+
+  next() {
+
   }
 
 }

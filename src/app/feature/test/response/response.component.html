@@ -1,33 +1,33 @@
-<div class="response-layout">
+<div class="response-layout" >
     <div class="response-section">
         <div class="response-details-class">
             <div class="width-50">
                 <p class="question-number-button">
-                    <span>49</span>
+                    <span>{{notVisited}}</span>
                 </p>
                 <span class="span-text">Not Visited</span>
             </div>
             <div class="width-50">
                 <p class="not-answered-class">
-                    <span>1</span>
+                    <span>{{notAnswered}}</span>
                 </p>
                 <span class="span-text">Not Answered</span>
             </div>
             <div class="width-50">
                 <p class="answered-class">
-                    <span>1</span>
+                    <span>{{answered}}</span>
                 </p>
                 <span class="span-text">Answered</span>
             </div>
             <div class="width-50">
                 <p class="marked-for-review-class">
-                    <span>0</span>
+                    <span>{{markedForReview}}</span>
                 </p>
                 <span class="span-text">Marked For Review</span>
             </div>
             <div>
                 <div class="answered-and-marked-for-review-class">
-                    <span>0</span>
+                    <span>{{answeredAndMarkedForReview}}</span>
                     <p></p>
                 </div>
                 <span class="span-text">Answered & Marked For Review (will be considered for evaluation)</span>
@@ -35,7 +35,7 @@
         </div>
 
         <div class="question-number-class">
-            <div *ngFor="let questionNumber of totalQuestions" class="question-number-button">
+            <div *ngFor="let questionNumber of this.studentTestService.totalQuestionsCount" class="question-number-button" (click)= "goToQuestionNumber(questionNumber)">
                 <span>{{questionNumber}}</span>
                 <p></p>
             </div>
