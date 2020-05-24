@@ -1,6 +1,6 @@
-<div class="test-question-page-layout" fxLayout="column">
+<div class="test-question-page-layout" fxLayout="column" fxFlex="100">
 
-    <div *ngIf="this.studentTestService.currentQuestionObj" fxFlex="100">
+    <div *ngIf="this.studentTestService.currentQuestionObj" class="question-section">
         <mat-card *ngIf="isLoading" style="display: flex;justify-content: center; align-items: center;">
             <mat-progress-spinner color="primary" mode="inderminate"></mat-progress-spinner>
         </mat-card>
@@ -37,7 +37,7 @@
 
 
     </div>
-    <div class="button-layout" fxLayout="row" fxFlex="100" fxLayoutAlign=" center">
+    <div class="button-layout" fxLayout="row" fxLayoutAlign="center">
         <button mat-button mat-raised-button fxFlex="20" (click)="saveAndNext()" class="save-and-next-button">SAVE &
             NEXT</button>
         <button mat-button mat-raised-button fxFlex="30" (click)="saveAndMArkForReview()"
@@ -47,9 +47,9 @@
             REVIEW & NEXT</button>
     </div>
 
-    <div class="button-layout" fxLayout="row" fxFlex="100" fxLayoutAlign=" center">
+    <div class="button-layout" fxLayout="row" fxLayoutAlign="center">
         <button mat-button mat-raised-button fxFlex="15" (click)="back()">BACK</button>
-        <button mat-button mat-raised-button fxFlex="25" (click)="next()">NEXT</button>
+        <button mat-button mat-raised-button fxFlex="20" (click)="next()">NEXT</button>
     </div>
 
 </div>

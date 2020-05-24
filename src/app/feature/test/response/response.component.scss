@@ -3,7 +3,7 @@
     // height: calc(100vh-64px);
     // height: -webkit-calc(100vh - 64px);
     // padding: 0 150px;
-    width: 30%;
+    // width: 30%;
     padding-right: 150px;
     float: left;
     box-sizing: border-box;
@@ -13,7 +13,7 @@
         width: 100%;
         .response-details-class {
             width: 100%;
-            height: 120px;
+          //  height: 120px;
             font-size: 12px;
             div:last-child {
                 float: left;
@@ -26,7 +26,7 @@
         }
 
         .question-number-class {
-            height: 200px;
+         //   height: 200px;
             width: 100%;
         }
     }
@@ -37,9 +37,8 @@
         background-color: #ebf2e8;
         border: 1px solid #b9bcb1;
         border-radius: 4px;
-        margin: 0 !important;
+        margin: 0 3px 0 0 !important;
         float: left;
-
         span {
             position: relative;
             top: 6px;
@@ -53,7 +52,7 @@
         background-color: #4d1799;
         border-radius: 30px;
         color: white;
-        margin: 0 !important;
+        margin: 0 3px 0 0 !important;
         float: left;
         span {
             top: 5px;
@@ -67,7 +66,7 @@
         background-color: #4d1799;
         border-radius: 30px;
         color: white;
-        margin: 0 !important;
+        margin: 0 3px 0 0 !important;
         float: left;
         span {
             top: 5px;
@@ -95,7 +94,7 @@
         background: white;
         width: 0px;
         float: left;
-        margin: 0;
+        margin: 0 3px 0 0;
         & > span {
             position: relative;
             top: -2px;
@@ -110,7 +109,7 @@
         height: 12px;
         background: white;
         float: left;
-        margin: 0;
+        margin: 0 3px 0 0;
         width: 0px;
         & > span {
             position: relative;
@@ -122,5 +121,14 @@
     .span-text {
         position: relative;
         left: 5px;
+    }
+}
+@media screen and (max-width: 1024px) {
+    .response-layout {
+        padding-right: 0 !important;
+        margin-left: 0.5em;
+        .response-details-class {
+            margin-top: 2em;
+        }
     }
 }

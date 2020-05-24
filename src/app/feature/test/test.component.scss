@@ -3,8 +3,29 @@
     width: 100vw;
     box-sizing: border-box;
 
-   // app-test-questions,
-   // app-response {
-       // padding: 0 150px;
-   // }
+    app-test-questions {
+        width: 70%;
+        float: left;
+    }
+    app-response {
+        width: 30%;
+        float: right;
+   }
+}
+@media screen and (max-width: 1024px) {
+    app-test-questions {
+        width: 100% !important;
+     //   float: left;
+    }
+    app-response {
+        width: 100% !important;
+        margin-top: 5em;
+       // float: right;
+   }
+}
+@media screen and (max-width: 1024px) {
+    app-response {
+        margin-top: 1em;
+       // float: right;
+   }
 }

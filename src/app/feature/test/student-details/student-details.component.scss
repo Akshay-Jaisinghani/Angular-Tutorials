@@ -1,16 +1,11 @@
 .student-details-layout {
-    height: 30vh;
+ //   height: 30vh;
     .student-wrapper {
         padding: 0 150px;
         box-sizing: border-box;
     }
     .student-details-class {
         float: right;
-        // width: 30%;
-
-    //     div {
-    //    //     width: 100%;
-    //     }
     }
 
     .section-class {
@@ -18,5 +13,11 @@
         float: left;
         height: 70px;
         background-color: orange;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .student-wrapper {
+        padding: 0.5em !important;
     }
 }
