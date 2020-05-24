@@ -9,7 +9,8 @@ export class StudentTestService {
 
   serviceURL = {
     testQuestions: '/getQuestionsForTest/',
-    currentQuestionAnswer: '/savetestResultAnswer'
+    currentQuestionAnswer: '/savetestResultAnswer',
+    submitTest: '/saveStudentTestResult'
   }
 
   currentQuestionNumber = 0;
@@ -17,16 +18,25 @@ export class StudentTestService {
   allTestAnswers: [];
   currentQuestionObj;
   currentAnswerObj = {
-    test : {
-      id : 0
-    },
-    student : {
+    test: {
       id: 0
     },
-    question : {
+    student: {
       id: 0
     },
-    responseOptionsList : []
+    question: {
+      id: 0
+    },
+    responseOptionsList: []
+  }
+
+  submitTestObj = {
+    test: {
+      id: 0
+    },
+    student: {
+      id: 0
+    }
   }
 
   notVisited;
@@ -59,16 +69,27 @@ export class StudentTestService {
   }
 
   saveResponse(currentAnswerObj, response) {
-     this.currentAnswerObj.test.id = 1;
-     this.currentAnswerObj.student.id = 1;
-     this.currentAnswerObj.question.id = currentAnswerObj.questionId;
-     if(currentAnswerObj.questionType == 1) {
+    this.currentAnswerObj.test.id = 1;
+    this.currentAnswerObj.student.id = 1;
+    this.currentAnswerObj.question.id = currentAnswerObj.questionId;
+    if (currentAnswerObj.questionType == 1) {
       this.currentAnswerObj.responseOptionsList = response.optionsArray;
     } else {
       this.currentAnswerObj.responseOptionsList.push(currentAnswerObj.responseOptionsList);
     }
-    this.http.post(this.apiUrl + this.serviceURL.currentQuestionAnswer, this.currentAnswerObj , this.httpOptions);
-}
+    let url = this.apiUrl + this.serviceURL.currentQuestionAnswer;
+    this.http.post<any>(url, this.currentAnswerObj, this.httpOptions).subscribe((res) => {
+      console.log(res);
+    })
+  }
+
+  submitTest(studentId, testId) {
+    this.submitTestObj.student.id = studentId;
+    this.submitTestObj.test.id = testId;
+    this.http.post<any>(this.apiUrl + this.serviceURL.submitTest, this.submitTestObj, this.httpOptions).subscribe((res) => {
+      console.log(res);
+    })
+  }
 
 }
 

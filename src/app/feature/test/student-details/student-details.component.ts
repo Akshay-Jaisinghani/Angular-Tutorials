@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { StudentTestService } from 'src/app/service/student-test.service';
 
 @Component({
   selector: 'app-student-details',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StudentDetailsComponent implements OnInit {
 
-  constructor() { }
+  constructor(public studentTestService: StudentTestService) { }
 
   ngOnInit(): void {
+  }
+
+  submit() {
+    let studentId = 1;
+    let testId = 1;
+    this.studentTestService.submitTest(studentId, testId);
   }
 
 }
