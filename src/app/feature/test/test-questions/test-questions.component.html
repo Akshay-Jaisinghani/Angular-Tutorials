@@ -9,14 +9,16 @@
                 {{this.studentTestService.currentQuestionObj.content}}?</p>
         </div>
 
-        <form [formGroup]="form">
-
+        <form [formGroup]="form" (ngSubmit)="submitForm()">
             <div *ngIf="this.studentTestService.currentQuestionObj.questionType==1; else radioGroup">
                 <div *ngFor="let data of this.studentTestService.currentQuestionObj.optionvalue; let i=index">
                     <label>
-                        <mat-checkbox type="checkbox" [value]="data.id">
+                        <!-- <mat-checkbox type="checkbox" [value]="data.id">
                             {{data.optionvalue}}
-                        </mat-checkbox>
+                        </mat-checkbox> -->
+
+                        <input type="checkbox" [value]="data.id" (change)="onCheckboxChange($event)" />
+                        {{data.optionvalue}}
                     </label>
                 </div>
             </div>
@@ -32,13 +34,13 @@
                     </mat-radio-button>
                 </mat-radio-group>
             </ng-template>
-            <!-- <input type="submit" value="Submit"> -->
+            <!-- <input type="submit" value="Submit">  -->
         </form>
-
-
     </div>
-    <div class="button-layout" fxLayout="row" fxLayoutAlign="center">
-        <button mat-button mat-raised-button fxFlex="20" (click)="saveAndNext()" class="save-and-next-button">SAVE &
+
+    <div class="button-layout" fxLayout="row" fxFlex="100" fxLayoutAlign=" center">
+        <button mat-button mat-raised-button fxFlex="20" type="submit" (click)="saveAndNext()"
+            class="save-and-next-button">SAVE &
             NEXT</button>
         <button mat-button mat-raised-button fxFlex="30" (click)="saveAndMArkForReview()"
             class="save-and-mark-button">SAVE & MARK FOR REVIEW</button>

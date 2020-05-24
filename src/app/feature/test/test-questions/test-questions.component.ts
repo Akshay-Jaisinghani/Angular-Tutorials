@@ -17,7 +17,7 @@ export class TestQuestionsComponent implements OnInit {
 
   constructor(public studentTestService: StudentTestService, private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
-      optionsArray: [''],
+      optionsArray: this.formBuilder.array([]),
       selectedOption: ''
     });
   }
@@ -29,7 +29,7 @@ export class TestQuestionsComponent implements OnInit {
 
   getTestQuestions() {
     this.studentTestService.getTestQuestions(1).subscribe((data) => {
-      console.log(JSON.stringify(data));
+      //console.log(JSON.stringify(data));
       this.studentTestService.allTestQuestions = data;
 
 
@@ -65,13 +65,17 @@ export class TestQuestionsComponent implements OnInit {
 
   saveAndNext() {
     document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-class";
+    this.studentTestService.saveResponse(this.studentTestService.currentQuestionObj, this.form.value); 
     this.changeTestResponseClass();
+    this.clearFormArray();
+    
   }
 
   saveAndMArkForReview() {
     document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-and-marked-for-review-class";
+    this.studentTestService.saveResponse(this.studentTestService.currentQuestionObj, this.form.value); 
     this.changeTestResponseClass();
-
+    this.clearFormArray();
   }
 
   markForReviewAndNext() {
@@ -83,6 +87,7 @@ export class TestQuestionsComponent implements OnInit {
   clearResponse() {
     document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "question-number-button";
       this.studentTestService.answered = this.studentTestService.answered - 1;   
+      this.clearFormArray();
   }
 
   submitForm() {
@@ -111,4 +116,8 @@ export class TestQuestionsComponent implements OnInit {
 
   }
 
+  clearFormArray(){
+    let formArray = this.form.get('optionsArray') as FormArray;
+    formArray.clear();
+  }
 }
