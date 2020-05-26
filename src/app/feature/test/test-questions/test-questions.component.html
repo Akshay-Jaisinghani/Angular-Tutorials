@@ -9,15 +9,11 @@
                 {{this.studentTestService.currentQuestionObj.content}}?</p>
         </div>
 
-        <form [formGroup]="form" (ngSubmit)="submitForm()">
+        <form [formGroup]="form" >
             <div *ngIf="this.studentTestService.currentQuestionObj.questionType==1; else radioGroup">
                 <div *ngFor="let data of this.studentTestService.currentQuestionObj.optionvalue; let i=index">
                     <label>
-                        <!-- <mat-checkbox type="checkbox" [value]="data.id">
-                            {{data.optionvalue}}
-                        </mat-checkbox> -->
-
-                        <input type="checkbox" [value]="data.id" (change)="onCheckboxChange($event)" />
+                        <input type="checkbox"  [value]="data.id" (change)="onCheckboxChange($event)" />
                         {{data.optionvalue}}
                     </label>
                 </div>
@@ -34,11 +30,10 @@
                     </mat-radio-button>
                 </mat-radio-group>
             </ng-template>
-            <!-- <input type="submit" value="Submit">  -->
         </form>
     </div>
 
-    <div class="button-layout" fxLayout="row" fxFlex="100" fxLayoutAlign=" center">
+    <div class="button-layout" fxLayout="row" fxLayoutAlign=" center">
         <button mat-button mat-raised-button fxFlex="20" type="submit" (click)="saveAndNext()"
             class="save-and-next-button">SAVE &
             NEXT</button>
