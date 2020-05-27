@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { StudentTestService } from 'src/app/service/student-test.service';
 
 @Component({
@@ -8,6 +8,8 @@ import { StudentTestService } from 'src/app/service/student-test.service';
 })
 export class ResponseComponent implements OnInit {
   constructor(public studentTestService: StudentTestService) { }
+  @Output() questionClicked = new EventEmitter<any>();
+  formState;
 
   ngOnInit(): void {
   }
@@ -18,6 +20,8 @@ export class ResponseComponent implements OnInit {
     if (this.studentTestService.notVisited > 0) {
       this.studentTestService.notVisited = this.studentTestService.notVisited - 1;
     }
-
+    this.questionClicked.emit();
   }
+
+
 }

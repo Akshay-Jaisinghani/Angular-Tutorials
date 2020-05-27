@@ -8,25 +8,24 @@ import { environment } from 'src/environments/environment';
 export class StudentTestService {
 
   serviceURL = {
-    testQuestions: '/getQuestionsForTest/',
-    currentQuestionAnswer: '/savetestResultAnswer'
+    testQuestions: '/v1/question/test/', // /v1/question/test/{testId} ///getQuestionsForTest/
+    currentQuestionAnswer: '/v1/testResultAnswer/save ', // /v1/testResultAnswer/save  ///savetestResultAnswer
+    submitTest: '/v1/testResult/save' // /v1/testResult/save ///saveStudentTestResult
   }
 
   currentQuestionNumber = 0;
   allTestQuestions;
-  allTestAnswers: [];
+  allTestAnswers = [];
   currentQuestionObj;
-  currentAnswerObj = {
-    test : {
-      id : 0
-    },
-    student : {
+  
+
+  submitTestObj = {
+    test: {
       id: 0
     },
-    question : {
+    student: {
       id: 0
-    },
-    responseOptionsList : []
+    }
   }
 
   notVisited;
@@ -35,6 +34,7 @@ export class StudentTestService {
   markedForReview = 0;;
   answeredAndMarkedForReview = 0;
   totalQuestionsCount;
+  serviceform;
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -58,17 +58,62 @@ export class StudentTestService {
     return this.currentQuestionObj;
   }
 
-  saveResponse(currentAnswerObj, response) {
-     this.currentAnswerObj.test.id = 1;
-     this.currentAnswerObj.student.id = 1;
-     this.currentAnswerObj.question.id = currentAnswerObj.questionId;
-     if(currentAnswerObj.questionType == 1) {
-      this.currentAnswerObj.responseOptionsList = response.optionsArray;
-    } else {
-      this.currentAnswerObj.responseOptionsList.push(currentAnswerObj.responseOptionsList);
+  saveResponse(response) {
+   let currentAnswerObj = {
+      test: {
+        id: 0
+      },
+      student: {
+        id: 0
+      },
+      question: {
+        id: 0
+      },
+      responseOptionsList: []
     }
-    this.http.post(this.apiUrl + this.serviceURL.currentQuestionAnswer, this.currentAnswerObj , this.httpOptions);
-}
+    currentAnswerObj.test.id = 1;
+    currentAnswerObj.student.id = 1;
+    currentAnswerObj.question.id = this.currentQuestionObj.questionId;
+    if (this.currentQuestionObj.questionType == 1) {
+      currentAnswerObj.responseOptionsList = response.optionsArray;
+    } else {
+      currentAnswerObj.responseOptionsList.push(response.selectedOption);
+    }
+    let url = this.apiUrl + this.serviceURL.currentQuestionAnswer;
+    this.http.post<any>(url, currentAnswerObj, this.httpOptions).subscribe((res) => {
+      console.log(res);
+    })
+
+    var duplicateAnswers = this.allTestAnswers.filter((answer) => answer.question.id === currentAnswerObj.question.id);
+    if (duplicateAnswers.length>0){
+      duplicateAnswers.forEach(item => {
+        let index = this.allTestAnswers.findIndex(x => x.question.id === currentAnswerObj.question.id);
+        this.allTestAnswers.splice(index,1);
+      })     
+    }
+    this.allTestAnswers.push(currentAnswerObj);
+  }
+  
+
+  submitTest(studentId, testId) {
+    this.submitTestObj.student.id = studentId;
+    this.submitTestObj.test.id = testId;
+    this.http.post<any>(this.apiUrl + this.serviceURL.submitTest, this.submitTestObj, this.httpOptions).subscribe((res) => {
+      console.log(res);
+    })
+  }
+
+  getAnswer() {
+    let questionObj = this.getQuestion(this.currentQuestionNumber);
+    let questionId = questionObj['questionId'];
+    let answerArr;
+    this.allTestAnswers.forEach((answer) => {
+      if(answer.question.id == questionId) {
+        answerArr = answer.responseOptionsList;
+      }
+    })
+    return answerArr;
+  }
 
 }
 

@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { StudentTestService } from 'src/app/service/student-test.service';
 import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
-import { ResponseComponent } from '../response/response.component';
 
 @Component({
   selector: 'app-test-questions',
@@ -14,6 +13,7 @@ export class TestQuestionsComponent implements OnInit {
   form: FormGroup;
   questionNo;
   isLoading = true;
+
 
   constructor(public studentTestService: StudentTestService, private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
@@ -65,33 +65,31 @@ export class TestQuestionsComponent implements OnInit {
 
   saveAndNext() {
     document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-class";
-    this.studentTestService.saveResponse(this.studentTestService.currentQuestionObj, this.form.value); 
+    this.studentTestService.saveResponse(this.form.value); 
     this.changeTestResponseClass();
-    this.clearFormArray();
-    
+    this.clearFormArray();  
+    this.isAnswerSet();  
   }
 
   saveAndMArkForReview() {
     document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-and-marked-for-review-class";
-    this.studentTestService.saveResponse(this.studentTestService.currentQuestionObj, this.form.value); 
+    this.studentTestService.saveResponse(this.form.value); 
     this.changeTestResponseClass();
     this.clearFormArray();
+    this.isAnswerSet();
   }
 
   markForReviewAndNext() {
     document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "marked-for-review-class";
     this.changeTestResponseClass();
     this.studentTestService.markedForReview = this.studentTestService.markedForReview + 1;
+    this.isAnswerSet();
   }
 
   clearResponse() {
     document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "question-number-button";
       this.studentTestService.answered = this.studentTestService.answered - 1;   
       this.clearFormArray();
-  }
-
-  submitForm() {
-    console.log(this.form.value)
   }
 
   changeTestResponseClass() {
@@ -108,16 +106,48 @@ export class TestQuestionsComponent implements OnInit {
     }
   }
 
-  back() {
-
+  back() { 
+    this.studentTestService.currentQuestionNumber = this.studentTestService.currentQuestionNumber - 1;
+    let answerArr = this.studentTestService.getAnswer();
+    this.patchValue(answerArr);
   }
 
   next() {
-
+    this.studentTestService.currentQuestionNumber = this.studentTestService.currentQuestionNumber + 1;
+    this.studentTestService.currentQuestionObj = this.studentTestService.getQuestion(this.studentTestService.currentQuestionNumber);
+    this.isAnswerSet();
   }
 
   clearFormArray(){
     let formArray = this.form.get('optionsArray') as FormArray;
     formArray.clear();
+    let formControl = this.form.get('selectedOption') as FormControl;
+    formControl.setValue('');
+  }
+
+  patchValue(answerArr) {
+    if (this.studentTestService.currentQuestionObj['questionType']==1) {
+      this.form.controls['optionsArray'].patchValue(answerArr);
+    }
+    else {
+      let answer = answerArr[0];
+      this.form.controls['selectedOption'].patchValue(answer);
+    }
+  }
+
+  isAnswerSet() {
+    if(this.studentTestService.getAnswer()!= undefined){
+      this.setValue(this.studentTestService.getAnswer())
+    }
+  }
+
+  setValue(answerArr) {
+    if (this.studentTestService.currentQuestionObj['questionType']==1) {
+      this.form.controls['optionsArray'].setValue(answerArr);
+    }
+    else {
+      let answer = answerArr[0];
+      this.form.controls['selectedOption'].setValue(answer);
+    }
   }
 }
