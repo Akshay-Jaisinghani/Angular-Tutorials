@@ -10,16 +10,19 @@ export class TestComponent implements OnInit {
 
   @ViewChild(TestQuestionsComponent)
   private testQuestion: TestQuestionsComponent;
-
+  hasInstructionsRead = false;
   constructor() { }
 
   ngOnInit(): void {
+
+  }
+  startTest() {
+    this.hasInstructionsRead =true;
   }
 
   questionClicked() {
   console.log(this.testQuestion.form.value);
-  this.testQuestion.isAnswerSet();
-  
+//  this.testQuestion.isAnswerSet();
   }
 
  

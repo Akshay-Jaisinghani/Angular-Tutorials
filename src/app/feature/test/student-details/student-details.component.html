@@ -3,13 +3,14 @@
     <div class="student-wrapper">
         <div class="student-details-class" fxLayout="column" fxFlex="30" fxFlex.sm="100" fxFlex.xs="100" fxFlex.md="100" fxLayoutAlign="end none" fxFlexOffset="70" fxFlexOffset.sm="0" fxFlexOffset.md="0" fxFlexOffset.xs="0">
             <div fxFlex="100">
-                <p fxFlex="40">Candidate Name</p>:<p fxFlex="60"> Avul Pakir Jainulabdeen Abdul Kalam</p>
+                <p fxFlex="40">Candidate Name</p>: <p fxFlex="60"> Avul Pakir Jainulabdeen Abdul Kalam</p>
             </div>
             <div fxFlex="100">
-                <p fxFlex="40">Batch Name</p>:<p fxFlex="60"> Bank PO</p>
+                <p fxFlex="40">Batch Name</p>: <p fxFlex="60"> Bank PO</p>
             </div>
             <div fxFlex="100">
-                <p fxFlex="40">Remaining Time</p>:<p fxFlex="30"> 10.50</p>
+                <p fxFlex="40">Remaining Time</p>:
+                 <countdown fxFlex="30" [config]="{leftTime: 10800}"></countdown>
                 <button mat-button color="primary" fxFlex="30" class="float-right"(click)="submit()" mat-raised-button>Submit</button>
             </div>
         </div>

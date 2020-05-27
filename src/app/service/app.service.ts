@@ -1,21 +1,40 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, BehaviorSubject } from 'rxjs';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { PlatformService } from './platform.service';
+
+export interface User {
+  contactNumber: number,
+  roleNumber: number,
+  password: string,
+  remember: boolean
+}
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class AppService {
+  public currentUserSubject: BehaviorSubject<User>
   isSignedIn = this.getIsSignedIn();
-  constructor() { }
-  login(email: string, password: string): Observable<boolean> {
-    // if email is valid (matches regex) and password length > 0
-    const user = {
-      email: email,
-      password: password,
-    };
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    return of(true);
+
+  constructor(private http: HttpClient, private platformService: PlatformService) {
+    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+    //   this.currentUser = this.currentUserSubject.asObservable();
   }
+
+  public get currentUserValue(): User {
+    return this.currentUserSubject.value;
+  }
+
+  login(contactNumber: string, password: string) {
+    let body = {
+      "userName": contactNumber,
+      "password": password
+    }
+    return this.platformService.httpPost(this.platformService.getLoginUrl(), body, this.platformService.getHttpOptionsForLoginLogout());
+  }
+
   getIsSignedIn() {
     let currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (currentUser && currentUser.token !== '') {
@@ -25,10 +44,12 @@ export class AppService {
     }
   }
   // removes the current user from local storage when user logout
-  logout(): void {
-    /*
-      HERE YOU NEED TO MAKE A CALL TO YOUR API TO INVALIDATE THE USER'S AUTHENTICATION TOKEN.
-    */
-    localStorage.removeItem('currentUser');
+  logout() {
+    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    let body = {
+      "userName": currentUser.contactNumber,
+      "password": currentUser.password
+    }
+    return this.platformService.httpPost(this.platformService.getLogoutUrl(),body, this.platformService.getHttpOptionsForLoginLogout());
   }
 }

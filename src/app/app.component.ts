@@ -17,5 +17,38 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = localStorage.getItem('currentUser');
   }
-
+  logout() {
+    this.appService.logout().subscribe(
+      data => {
+        console.log(data);
+      },
+      error => {
+        console.log(error);
+        if (error.text = "User Logged Out Successfully") {
+          this.appService.isSignedIn = false;
+          let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+          if (currentUser && currentUser.remember === true) {
+            currentUser.token = '';
+            this.appService.currentUserSubject.next(currentUser);
+          } else {
+            localStorage.removeItem('currentUser');
+            this.appService.currentUserSubject.next(null);
+          }
+          this.router.navigateByUrl('login');
+        }
+      },
+      () => {
+        this.appService.isSignedIn = false;
+        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (currentUser && currentUser.remember === true) {
+          currentUser.token = '';
+          this.appService.currentUserSubject.next(currentUser);
+        } else {
+          localStorage.removeItem('currentUser');
+          this.appService.currentUserSubject.next(null);
+        }
+        this.router.navigateByUrl('login');
+      }
+    )
+  }
 }

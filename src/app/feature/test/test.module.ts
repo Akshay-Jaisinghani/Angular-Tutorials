@@ -7,6 +7,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TestQuestionsComponent } from './test-questions/test-questions.component';
 import { StudentDetailsComponent } from './student-details/student-details.component';
+import { CountdownModule } from 'ngx-countdown';
 
 
 
@@ -17,7 +18,8 @@ import { StudentDetailsComponent } from './student-details/student-details.compo
     MaterialModule,
     FlexLayoutModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CountdownModule
   ]
 })
 export class TestModule { }
