@@ -28,9 +28,12 @@ export class PlatformService {
     })
   };
   private apiBaseUrl = environment.apiBaseUrl; // ("http://95.216.174.93:8089/eddytech/user/");
-  private loginUrl = environment.apiBaseUrl + "login";
-  private logoutUrl = environment.apiBaseUrl + "logout";
+  private loginUrl = environment.apiBaseUrl + "user/login";
+  private logoutUrl = environment.apiBaseUrl + "user/logout";
 
+  getApiBaseUrl() {
+    return environment.apiBaseUrl;
+  }
   getLoginUrl() {
     return this.loginUrl;
   }

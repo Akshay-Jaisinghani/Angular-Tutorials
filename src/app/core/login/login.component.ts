@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppService } from 'src/app/service/app.service';
+import * as CryptoJS from 'crypto-js';
+
 const phoneNumber = /^\d{10}$/;
 @Component({
   selector: 'app-login',
@@ -30,7 +32,7 @@ export class LogInComponent implements OnInit {
         * @param key: encryption key
       */
       //decrypt password saved in local storage and then set value of password form field
-      this.loginForm.controls.password.setValue(CryptoJS.AES.decrypt(this.appService.currentUserValue.password.trim(), btoa(this.appService.currentUserValue.email).trim()).toString(CryptoJS.enc.Utf8));
+      this.loginForm.controls.password.setValue(CryptoJS.AES.decrypt(this.appService.currentUserValue.password.trim(),this.appService.currentUserValue.contactNumber));
       this.loginForm.controls.remember.setValue(this.appService.currentUserValue.remember);
     }
   }
@@ -57,7 +59,7 @@ export class LogInComponent implements OnInit {
              * @param key: encryption key
             */
             //store encrypted password in local storage
-         //   user.password = CryptoJS.AES.encrypt(password.trim(), btoa(user.email).trim()).toString();
+            user.password = CryptoJS.AES.encrypt(this.loginForm.controls.password.value.trim(),this.loginForm.controls.contactNumber.value).toString();
             localStorage.setItem('currentUser', JSON.stringify(user));
           }
         },

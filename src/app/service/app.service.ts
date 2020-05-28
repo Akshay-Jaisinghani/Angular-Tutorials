@@ -7,7 +7,8 @@ export interface User {
   contactNumber: number,
   roleNumber: number,
   password: string,
-  remember: boolean
+  remember: boolean,
+  token: string
 }
 
 @Injectable({
