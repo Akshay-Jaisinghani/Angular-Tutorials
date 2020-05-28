@@ -7,12 +7,21 @@
         <div>
             <p>({{this.studentTestService.currentQuestionNumber+1}})
                 {{this.studentTestService.currentQuestionObj.content}}?</p>
+                <div *ngIf="this.studentTestService.currentQuestionObj.questionImg!=null">
+                    <img [src] = this.studentTestService.currentQuestionObj.questionImg> 
+                </div>
         </div>
 
         <form [formGroup]="form" >
             <div *ngIf="this.studentTestService.currentQuestionObj.questionType==1; else radioGroup">
                 <div *ngFor="let data of this.studentTestService.currentQuestionObj.optionvalue; let i=index">
                     <label>
+                        <!-- <div *ngIf=(data.optionImg!=== "" )>
+                        <img [src] = data.optionImg>
+                        </div> -->
+                        <div *ngIf="data.optionImg!=' '">
+                            <img [src] = data.optionImg> 
+                        </div>
                         <input type="checkbox"  [value]="data.id" (change)="onCheckboxChange($event)" />
                         {{data.optionvalue}}
                     </label>
@@ -26,6 +35,9 @@
                     <mat-radio-button class="example-radio-button"
                         *ngFor="let data of this.studentTestService.currentQuestionObj.optionvalue; let i=index"
                         [value]="data.id">
+                        <div *ngIf="data.optionImg!=' '">
+                            <img [src] = data.optionImg> 
+                        </div>
                         {{data.optionvalue}}
                     </mat-radio-button>
                 </mat-radio-group>
@@ -35,7 +47,7 @@
 
     <div class="button-layout" fxLayoutAlign="stretch">
         <button mat-button mat-raised-button fxFlex="20" type="submit" (click)="saveAndNext()"
-            class="save-and-next-button">SAVE &
+            class="save-and-next-button" >SAVE &
             NEXT</button>
         <button mat-button mat-raised-button fxFlex="30" (click)="saveAndMArkForReview()"
             class="save-and-mark-button">SAVE & MARK FOR REVIEW</button>
@@ -45,8 +57,8 @@
     </div>
 
     <div class="button-layout" fxLayout="row" fxLayoutAlign="stretch">
-        <button mat-button mat-raised-button fxFlex="15" (click)="back()">BACK</button>
-        <button mat-button mat-raised-button fxFlex="20" (click)="next()">NEXT</button>
+        <button mat-button mat-raised-button fxFlex="15" (click)="back()" [disabled]="this.studentTestService.currentQuestionNumber<=0">BACK</button>
+        <button mat-button mat-raised-button fxFlex="20" (click)="next()" [disabled]="this.studentTestService.currentQuestionNumber==this.studentTestService.allTestQuestions.length-1">NEXT</button>
     </div>
 
 </div>

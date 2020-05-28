@@ -22,7 +22,7 @@ export class TestComponent implements OnInit {
 
   questionClicked() {
   console.log(this.testQuestion.form.value);
-//  this.testQuestion.isAnswerSet();
+   this.testQuestion.isAnswerSet();
   }
 
  
