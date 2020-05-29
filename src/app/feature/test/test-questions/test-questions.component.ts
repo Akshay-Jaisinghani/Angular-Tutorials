@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { StudentTestService } from 'src/app/service/student-test.service';
 import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-test-questions',
@@ -28,14 +29,11 @@ export class TestQuestionsComponent implements OnInit {
   }
 
   getTestQuestions() {
-    this.studentTestService.getTestQuestions(1).subscribe((data) => {
+    this.studentTestService.getTestQuestions(this.studentTestService.currentTestId).subscribe((data) => {
       //console.log(JSON.stringify(data));
       this.studentTestService.allTestQuestions = data;
-
-
     }, (error) => {
       console.log("Error", error);
-      this.studentTestService.allTestQuestions = [{ "questionNo": 1, "content": "Where is Pune", "optionvalue": [{ "id": 3, "question": null, "optionvalue": "Karnataka", "weight": null }, { "id": 4, "question": null, "optionvalue": "Maharashtra", "weight": null }, { "id": 5, "question": null, "optionvalue": "Rajasthan", "weight": null }], "questionType": 1 }, { "questionNo": 2, "content": "Where is Mumbai", "optionvalue": [{ "id": 6, "question": null, "optionvalue": "Karnataka", "weight": null }, { "id": 7, "question": null, "optionvalue": "Maharashtra", "weight": null }, { "id": 8, "question": null, "optionvalue": "Rajasthan", "weight": null }], "questionType": 1 }, { "questionNo": 3, "content": "Where is Nagpur", "optionvalue": [{ "id": 1, "question": null, "optionvalue": "Karnataka", "weight": null }, { "id": 2, "question": null, "optionvalue": "Maharashtra", "weight": null }], "questionType": 1 }, { "questionNo": 4, "content": "Where is Ajmer", "optionvalue": [{ "id": 9, "question": null, "optionvalue": "Karnataka", "weight": null }, { "id": 10, "question": null, "optionvalue": "Maharashtra", "weight": null }, { "id": 11, "question": null, "optionvalue": "Rajasthan", "weight": null }], "questionType": 1 }, { "questionNo": 5, "content": "Where is Bangalore", "optionvalue": [{ "id": 12, "question": null, "optionvalue": "Karnataka", "weight": null }, { "id": 13, "question": null, "optionvalue": "Maharashtra", "weight": null }, { "id": 14, "question": null, "optionvalue": "Rajasthan", "weight": null }], "questionType": 1 }]
     }, () => {
       this.studentTestService.currentQuestionObj = this.studentTestService.getQuestion(this.studentTestService.currentQuestionNumber);
       this.studentTestService.totalQuestionsCount = Array.from(new Array(this.studentTestService.allTestQuestions.length), (x, i) => i + 1);
@@ -45,10 +43,8 @@ export class TestQuestionsComponent implements OnInit {
     });
   }
 
-
   onCheckboxChange(e) {
     const optionsArray: FormArray = this.form.get('optionsArray') as FormArray;
-
     if (e.target.checked) {
       optionsArray.push(new FormControl(e.target.value));
     } else {
@@ -65,15 +61,15 @@ export class TestQuestionsComponent implements OnInit {
 
   saveAndNext() {
     document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-class";
-    this.studentTestService.saveResponse(this.form.value); 
+    this.studentTestService.saveResponse(this.form.value);
     this.changeTestResponseClass();
-    this.clearFormArray();  
-    this.isAnswerSet();  
+    this.clearFormArray();
+    this.isAnswerSet();
   }
 
   saveAndMArkForReview() {
     document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-and-marked-for-review-class";
-    this.studentTestService.saveResponse(this.form.value); 
+    this.studentTestService.saveResponse(this.form.value);
     this.changeTestResponseClass();
     this.clearFormArray();
     this.isAnswerSet();
@@ -88,25 +84,25 @@ export class TestQuestionsComponent implements OnInit {
 
   clearResponse() {
     document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "question-number-button";
-      this.studentTestService.answered = this.studentTestService.answered - 1;   
-      this.clearFormArray();
+    this.studentTestService.answered = this.studentTestService.answered - 1;
+    this.clearFormArray();
   }
 
   changeTestResponseClass() {
     this.studentTestService.currentQuestionNumber = this.studentTestService.currentQuestionNumber + 1;
     this.studentTestService.currentQuestionObj = this.studentTestService.getQuestion(this.studentTestService.currentQuestionNumber);
-    if(this.studentTestService.notVisited > 0) {
+    if (this.studentTestService.notVisited > 0) {
       this.studentTestService.notVisited = this.studentTestService.notVisited - 1;
     }
-    if(this.studentTestService.notAnswered > 0) {
+    if (this.studentTestService.notAnswered > 0) {
       this.studentTestService.notAnswered = this.studentTestService.notAnswered - 1;
     }
-    if(this.studentTestService.answered  <= this.studentTestService.allTestQuestions.length) {
-    this.studentTestService.answered = this.studentTestService.answered + 1;
+    if (this.studentTestService.answered <= this.studentTestService.allTestQuestions.length) {
+      this.studentTestService.answered = this.studentTestService.answered + 1;
     }
   }
 
-  back() { 
+  back() {
     this.studentTestService.currentQuestionNumber = this.studentTestService.currentQuestionNumber - 1;
     let answerArr = this.studentTestService.getAnswer();
     this.patchValue(answerArr);
@@ -118,7 +114,7 @@ export class TestQuestionsComponent implements OnInit {
     this.isAnswerSet();
   }
 
-  clearFormArray(){
+  clearFormArray() {
     let formArray = this.form.get('optionsArray') as FormArray;
     formArray.clear();
     let formControl = this.form.get('selectedOption') as FormControl;
@@ -126,7 +122,7 @@ export class TestQuestionsComponent implements OnInit {
   }
 
   patchValue(answerArr) {
-    if (this.studentTestService.currentQuestionObj['questionType']==1) {
+    if (this.studentTestService.currentQuestionObj['questionType'] == 1) {
       this.form.controls['optionsArray'].patchValue(answerArr);
     }
     else {
@@ -136,13 +132,13 @@ export class TestQuestionsComponent implements OnInit {
   }
 
   isAnswerSet() {
-    if(this.studentTestService.getAnswer()!= undefined){
+    if (this.studentTestService.getAnswer() != undefined) {
       this.setValue(this.studentTestService.getAnswer())
     }
   }
 
   setValue(answerArr) {
-    if (this.studentTestService.currentQuestionObj['questionType']==1) {
+    if (this.studentTestService.currentQuestionObj['questionType'] == 1) {
       this.form.controls['optionsArray'].setValue(answerArr);
     }
     else {

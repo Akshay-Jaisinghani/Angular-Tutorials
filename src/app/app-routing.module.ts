@@ -10,7 +10,7 @@ import { AuthGuard } from './core/auth.guard';
 const routes: Routes = [
   { path: 'class-room', component: ClassRoomComponent, canActivate: [AuthGuard] },
   { path: 'student', component: StudentComponent, canActivate: [AuthGuard] },
-  { path: 'test', component: TestComponent, canActivate: [AuthGuard] },
+  { path: 'test/:id', component: TestComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LogInComponent },
   { path: '', pathMatch: "full", redirectTo: "/login" }
 ];

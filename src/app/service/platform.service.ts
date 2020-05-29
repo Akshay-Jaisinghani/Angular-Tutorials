@@ -27,12 +27,17 @@ export class PlatformService {
       'cache-control': 'no-cache'
     })
   };
-  private apiBaseUrl = environment.apiBaseUrl; // ("http://95.216.174.93:8089/eddytech/user/");
-  private loginUrl = environment.apiBaseUrl + "user/login";
-  private logoutUrl = environment.apiBaseUrl + "user/logout";
+  private apiBaseUrl = environment.apiUrl; // ("http://95.216.174.93:8089/eddytech/");
+  private loginUrl = environment.apiUrl + "user/login";
+  private logoutUrl = environment.apiUrl + "user/logout";
+  private testQuestions = environment.apiUrl + 'v1/question/test/'; // /v1/question/test/{testId} ///getQuestionsForTest/
+  private currentQuestionAnswer = environment.apiUrl + 'v1/testResultAnswer/save '; // /v1/testResultAnswer/save  ///savetestResultAnswer
+  private submitTest = environment.apiUrl + 'v1/testResult/save'; // /v1/testResult/save ///saveStudentTestResult
+  private getTestForStudent = environment.apiUrl + 'v1/test/student/';
+  private getStudentDetails = environment.apiUrl + 'v1/student/find';
 
   getApiBaseUrl() {
-    return environment.apiBaseUrl;
+    return this.apiBaseUrl;
   }
   getLoginUrl() {
     return this.loginUrl;
@@ -42,6 +47,21 @@ export class PlatformService {
   }
   getHttpOptionsForLoginLogout() {
     return this.httpOptionsForLoginLogout;
+  }
+  getTestQuestionsUrl() {
+    return this.testQuestions;
+  }
+  getCurrentQuestionAnswerUrl() {
+    return this.currentQuestionAnswer;
+  }
+  getSubmitTestUrl() {
+    return this.submitTest;
+  }
+  getTestForStudentUrl() {
+    return this.getTestForStudent;
+  }
+  getStudentDetailsUrl() {
+    return this.getStudentDetails;
   }
 
   // Methods

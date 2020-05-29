@@ -1,27 +1,36 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { tokenName } from '@angular/compiler';
+import { AppService } from './app.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentTestService {
-
   serviceURL = {
-    testQuestions: '/v1/question/test/', // /v1/question/test/{testId} ///getQuestionsForTest/
-    currentQuestionAnswer: '/v1/testResultAnswer/save ', // /v1/testResultAnswer/save  ///savetestResultAnswer
-    submitTest: '/v1/testResult/save', // /v1/testResult/save ///saveStudentTestResult
-    getTestForStudent: '/v1/test/student/',
-    getStudentDetails:'/v1/student/find'
+    testQuestions: 'v1/question/test/', // /v1/question/test/{testId} ///getQuestionsForTest/
+    currentQuestionAnswer: 'v1/testResultAnswer/save ', // /v1/testResultAnswer/save  ///savetestResultAnswer
+    submitTest: 'v1/testResult/save', // /v1/testResult/save ///saveStudentTestResult
+    getTestForStudent: 'v1/test/student/',
+    getStudentDetails: 'v1/student/find'
   }
+  token;
+  httpOptions;
+  apiUrl: String;
 
   currentQuestionNumber = 0;
   allTestQuestions;
   allTestAnswers = [];
   currentQuestionObj;
-  
-
+  notVisited;
+  notAnswered;
+  answered = 0;
+  markedForReview = 0;;
+  answeredAndMarkedForReview = 0;
+  totalQuestionsCount;
+  serviceform;
+  currentTestDuration;
+  currentTestId;
   submitTestObj = {
     test: {
       id: 0
@@ -31,24 +40,7 @@ export class StudentTestService {
     }
   }
 
-  notVisited;
-  notAnswered;
-  answered = 0;
-  markedForReview = 0;;
-  answeredAndMarkedForReview = 0;
-  totalQuestionsCount;
-  serviceform;
-  token;
-  // httpOptions = {
-  //   headers: new HttpHeaders({
-  //     'Content-Type': 'application/json',
-  //     'Access-Control-Allow-Origin': '*'
-  //   })
-  // };
-  httpOptions;
-  apiUrl: String;
-
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private appService: AppService) {
     this.apiUrl = environment.apiUrl;
     this.token = JSON.parse(localStorage.getItem('currentUser')).token;
     console.log(this.token);
@@ -56,7 +48,7 @@ export class StudentTestService {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
-        'Authorization': 'Bearer '+ this.token
+        'Authorization': 'Bearer ' + this.token
       })
     };
   }
@@ -71,7 +63,7 @@ export class StudentTestService {
   }
 
   saveResponse(response) {
-   let currentAnswerObj = {
+    let currentAnswerObj = {
       test: {
         id: 0
       },
@@ -97,19 +89,19 @@ export class StudentTestService {
     })
 
     var duplicateAnswers = this.allTestAnswers.filter((answer) => answer.question.id === currentAnswerObj.question.id);
-    if (duplicateAnswers.length>0){
+    if (duplicateAnswers.length > 0) {
       duplicateAnswers.forEach(item => {
         let index = this.allTestAnswers.findIndex(x => x.question.id === currentAnswerObj.question.id);
-        this.allTestAnswers.splice(index,1);
-      })     
+        this.allTestAnswers.splice(index, 1);
+      })
     }
     this.allTestAnswers.push(currentAnswerObj);
   }
-  
+
 
   submitTest(studentId, testId) {
-    this.submitTestObj.student.id = studentId;
-    this.submitTestObj.test.id = testId;
+    this.submitTestObj.student.id = this.appService.currentUserValue.id;
+    this.submitTestObj.test.id = this.currentTestId;
     this.http.post<any>(this.apiUrl + this.serviceURL.submitTest, this.submitTestObj, this.httpOptions).subscribe((res) => {
       console.log(res);
     })
@@ -120,7 +112,7 @@ export class StudentTestService {
     let questionId = questionObj['questionId'];
     let answerArr;
     this.allTestAnswers.forEach((answer) => {
-      if(answer.question.id == questionId) {
+      if (answer.question.id == questionId) {
         answerArr = answer.responseOptionsList;
       }
     })
@@ -133,8 +125,6 @@ export class StudentTestService {
 
   getStudentDetails() {
     return this.http.get<any>(this.apiUrl + this.serviceURL.getStudentDetails, this.httpOptions);
-  
   }
 
 }
-

@@ -2,6 +2,7 @@
     <mat-card class="login-container">
         <h1 style="text-align:center">Acharya Academy Baramati</h1>
         <form [formGroup]="loginForm">
+            <p *ngIf="errorMessage" style="color:red;">{{errorMessage}}</p>
             <mat-form-field>
                 <input matInput placeholder="Contact Number" formControlName="contactNumber" type="text" data-cy="login-contactNumber"
                     required />

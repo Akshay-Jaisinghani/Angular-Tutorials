@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, BehaviorSubject } from 'rxjs';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { PlatformService } from './platform.service';
 
 export interface User {
@@ -8,7 +8,14 @@ export interface User {
   roleNumber: number,
   password: string,
   remember: boolean,
-  token: string
+  token: string,
+  gender: string,
+  id: number,
+  joinDate: string,
+  name: string,
+  parentsContact: string,
+  rollNumber: string,
+  whatsAppContact: string
 }
 
 @Injectable({
@@ -51,6 +58,6 @@ export class AppService {
       "userName": currentUser.contactNumber,
       "password": currentUser.password
     }
-    return this.platformService.httpPost(this.platformService.getLogoutUrl(),body, this.platformService.getHttpOptionsForLoginLogout());
+    return this.platformService.httpPost(this.platformService.getLogoutUrl(), body, this.platformService.getHttpOptionsForLoginLogout());
   }
 }

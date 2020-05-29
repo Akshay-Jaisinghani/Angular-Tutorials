@@ -11,12 +11,13 @@ export class AppComponent implements OnInit {
   title = 'EddyTech';
   currentUser;
   constructor(
-    public readonly appService: AppService, public router: Router) {
+    public appService: AppService, public router: Router) {
+    this.currentUser = this.appService.currentUserValue;
   }
 
   ngOnInit(): void {
-    this.currentUser = localStorage.getItem('currentUser');
   }
+
   logout() {
     this.appService.logout().subscribe(
       data => {

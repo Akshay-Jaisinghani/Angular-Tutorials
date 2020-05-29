@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StudentTestService } from 'src/app/service/student-test.service';
+import { AppService } from 'src/app/service/app.service';
 
 @Component({
   selector: 'app-student-details',
@@ -7,16 +8,17 @@ import { StudentTestService } from 'src/app/service/student-test.service';
   styleUrls: ['./student-details.component.scss']
 })
 export class StudentDetailsComponent implements OnInit {
-
-  constructor(public studentTestService: StudentTestService) { }
-
+  currentUser;
+  constructor(public studentTestService: StudentTestService, private appService:AppService) {
+    this.testDuration = this.studentTestService.currentTestDuration * 60 * 60;
+    this.currentUser = this.appService.currentUserValue;
+  }
+  testDuration;
   ngOnInit(): void {
   }
 
   submit() {
-    let studentId = 1;
-    let testId = 1;
-    this.studentTestService.submitTest(studentId, testId);
+    this.studentTestService.submitTest(this.appService.currentUserValue.id, this.studentTestService.currentTestId);
   }
 
 }

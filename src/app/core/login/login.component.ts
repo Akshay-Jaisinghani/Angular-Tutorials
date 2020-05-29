@@ -12,6 +12,7 @@ const phoneNumber = /^\d{10}$/;
 })
 export class LogInComponent implements OnInit {
   loginForm: FormGroup;
+  errorMessage: string;
 
   constructor(
     private readonly fb: FormBuilder,
@@ -53,6 +54,7 @@ export class LogInComponent implements OnInit {
               token: data.token,
               contactNumber: this.loginForm.controls.contactNumber.value,
               password: this.loginForm.controls.password.value,
+              remember: false
             };
             /** encrypt password using AES encryption - "Advanced Encryption Standard"
              * @param password: password to encrypt
@@ -65,6 +67,20 @@ export class LogInComponent implements OnInit {
         },
         error => {
           console.log(error)
+          // this.errorMessage = "Error in login. Please try again";
+          // this.appService.logout().subscribe(
+          //   data => {
+          //     console.log(data);
+          //   },
+          //   error => {
+          //     console.log(error);
+          //     if (error.text = "User Logged Out Successfully") {
+          //       this.appService.isSignedIn = false;
+          //       let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+          //       currentUser.token = '';
+          //       this.errorMessage = "";
+          //     }
+          //   })
         },
         () => {
           this.appService.isSignedIn = true;

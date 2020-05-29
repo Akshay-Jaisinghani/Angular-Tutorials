@@ -1,5 +1,5 @@
 <mat-toolbar class="toolbar primary" *ngIf="this.appService.isSignedIn && router.url !== '/test'">
-    <p>ACHARYA ACADEMY BARAMATI</p>
+    <div fxFlex="80">ACHARYA ACADEMY BARAMATI</div>
     <button fxFlex="10" fxFlexOffset="60" mat-button [matMenuTriggerFor]="afterMenu"><span class="material-icons">
             expand_more
         </span></button>
@@ -7,8 +7,7 @@
             menu
             </span> -->
     <mat-menu #afterMenu="matMenu" xPosition="after">
-        <p mat-menu-item>Student Name</p>
-        <p mat-menu-item>Classroom</p>
+        <p mat-menu-item>student name</p>
         <button mat-menu-item (click)="logout()"> Logout</button>
     </mat-menu>
 </mat-toolbar>
