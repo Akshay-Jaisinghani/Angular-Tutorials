@@ -62,10 +62,19 @@ export class StudentComponent implements OnInit {
   //   }
   // ]
 
+  studentId;
+  studentDetails;
+
   constructor(private router: Router, private studentTestService: StudentTestService) { }
 
   ngOnInit(): void {
     //Date.parse('01/01/2011 10:20:45') > Date.parse('01/01/2011 5:10:10')
+    this.studentTestService.getStudentDetails().subscribe((data) => {
+      this.studentDetails =  data;
+      this.studentId = this.studentDetails.id;
+    })
+
+
     this.studentTestService.getStudentTest(1).subscribe((data) => {
       this.studentTestObj =  data;
     }, (error) => {

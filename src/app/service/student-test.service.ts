@@ -12,7 +12,8 @@ export class StudentTestService {
     testQuestions: '/v1/question/test/', // /v1/question/test/{testId} ///getQuestionsForTest/
     currentQuestionAnswer: '/v1/testResultAnswer/save ', // /v1/testResultAnswer/save  ///savetestResultAnswer
     submitTest: '/v1/testResult/save', // /v1/testResult/save ///saveStudentTestResult
-    getTestForStudent: '/v1/test/student/'
+    getTestForStudent: '/v1/test/student/',
+    getStudentDetails:'/v1/student/find'
   }
 
   currentQuestionNumber = 0;
@@ -128,6 +129,11 @@ export class StudentTestService {
 
   getStudentTest(studId) {
     return this.http.get<any>(this.apiUrl + this.serviceURL.getTestForStudent + studId, this.httpOptions);
+  }
+
+  getStudentDetails() {
+    return this.http.get<any>(this.apiUrl + this.serviceURL.getStudentDetails, this.httpOptions);
+  
   }
 
 }
