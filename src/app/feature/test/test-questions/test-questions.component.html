@@ -56,7 +56,7 @@
             REVIEW & NEXT</button>
     </div>
 
-    <div class="button-layout" fxLayout="row" fxLayoutAlign="stretch">
+    <div class="button-layout"  *ngIf="this.studentTestService.currentQuestionObj" fxLayout="row" fxLayoutAlign="stretch">
         <button mat-button mat-raised-button fxFlex="15" (click)="back()" [disabled]="this.studentTestService.currentQuestionNumber<=0">BACK</button>
         <button mat-button mat-raised-button fxFlex="20" (click)="next()" [disabled]="this.studentTestService.currentQuestionNumber==this.studentTestService.allTestQuestions.length-1">NEXT</button>
     </div>
