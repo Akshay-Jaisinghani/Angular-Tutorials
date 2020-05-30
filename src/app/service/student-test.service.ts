@@ -11,14 +11,9 @@ export class StudentTestService {
     testQuestions: 'v1/question/test/', // /v1/question/test/{testId} ///getQuestionsForTest/
     currentQuestionAnswer: 'v1/testResultAnswer/save ', // /v1/testResultAnswer/save  ///savetestResultAnswer
     submitTest: 'v1/testResult/save', // /v1/testResult/save ///saveStudentTestResult
-<<<<<<< HEAD
-    getTestForStudent: 'v1/test/student/',
+    getTestForStudent: 'v1/test/status/',
     getStudentDetails: 'v1/student/find',
     getTestResultAnswerResponse:'/v1/testResultAnswer/response/testId/'
-=======
-    getTestForStudent: 'v1/test/status/',
-    getStudentDetails: 'v1/student/find'
->>>>>>> 1076949dd6a6697a2f97b6eee4a74a204e7223d5
   }
   token;
   httpOptions;
