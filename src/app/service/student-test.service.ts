@@ -13,7 +13,7 @@ export class StudentTestService {
     submitTest: 'v1/testResult/save', // /v1/testResult/save ///saveStudentTestResult
     getTestForStudent: 'v1/test/status/',
     getStudentDetails: 'v1/student/find',
-    getTestResultAnswerResponse:'/v1/testResultAnswer/response/testId/'
+    getTestResultAnswerResponse:'v1/testResultAnswer/response/testId/'
   }
   token;
   httpOptions;

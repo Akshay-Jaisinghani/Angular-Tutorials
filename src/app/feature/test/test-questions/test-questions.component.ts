@@ -14,7 +14,7 @@ export class TestQuestionsComponent implements OnInit {
   form: FormGroup;
   questionNo;
   isLoading = true;
-  status = "Pending";
+  status = "IN PROGRESS";
 
 
   constructor(public studentTestService: StudentTestService, private formBuilder: FormBuilder) {
@@ -26,8 +26,7 @@ export class TestQuestionsComponent implements OnInit {
 
   ngOnInit() {
     this.isLoading = true;
-    this.getTestQuestions();
-    this.getTestResultAnswerResponse();
+    this.getTestQuestions();  
   }
 
   getTestQuestions() {
@@ -40,9 +39,8 @@ export class TestQuestionsComponent implements OnInit {
       this.studentTestService.totalQuestionsCount = Array.from(new Array(this.studentTestService.allTestQuestions.length), (x, i) => i + 1);
       this.studentTestService.notVisited = this.studentTestService.allTestQuestions.length - 1;
       this.studentTestService.notAnswered = this.studentTestService.allTestQuestions.length;
-      if (this.status == "Pending") {
-        this.setDBAnswer();
-      }
+      this.getTestResultAnswerResponse();
+     
       this.isLoading = false;
     });
   }
@@ -64,7 +62,7 @@ export class TestQuestionsComponent implements OnInit {
   }
 
   saveAndNext() {
-    if(this.form.value==''){
+    if(this.form.value.selectedOption==''){
       document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "not-answered-class";
     } else {
       document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-class";
@@ -112,8 +110,10 @@ export class TestQuestionsComponent implements OnInit {
 
   back() {
     this.studentTestService.currentQuestionNumber = this.studentTestService.currentQuestionNumber - 1;
-    let answerArr = this.studentTestService.getAnswer();
-    this.patchValue(answerArr);
+    //let answerArr = this.studentTestService.getAnswer();
+    //this.patchValue(answerArr);
+    this.studentTestService.currentQuestionObj = this.studentTestService.getQuestion(this.studentTestService.currentQuestionNumber);
+    this.isAnswerSet();
   }
 
   next() {
@@ -142,7 +142,7 @@ export class TestQuestionsComponent implements OnInit {
   isAnswerSet() {
     if (this.studentTestService.getAnswer() != undefined) {
       this.setValue(this.studentTestService.getAnswer())
-    } else if (this.status == "Pending"){
+    } else if (this.status == "IN PROGRESS"){
       this.setDBAnswer();
     }
   }
@@ -160,18 +160,26 @@ export class TestQuestionsComponent implements OnInit {
   setDBAnswer() {
     {
       let responseArr = this.getDbAnswer();
-      this.setValue(responseArr);
+      if(responseArr[0]!=null) {
+        this.setValue(responseArr);
+      }
     }
   }
 
   getTestResultAnswerResponse() {
    this.studentTestService.getTestResultAnswerResponse().subscribe((data => {
      this.studentTestService.testResultAnswerResponseArr = data;
-   }));
+   }),(error) => {
+
+   }, ()=> {
+    if (this.status == "IN PROGRESS") {
+      this.setDBAnswer();
+    }
+   });
   }
 
   getDbAnswer() {
-   return this.studentTestService.getCurrentTestResponse();
+   return this.studentTestService.getCurrentTestResponse().responseList;
   }
 
 }
