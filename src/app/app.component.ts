@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from './service/app.service';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -11,15 +12,23 @@ export class AppComponent implements OnInit {
   title = 'EddyTech';
   currentUser;
   constructor(
-    public appService: AppService, public router: Router) {
+    public appService: AppService, public router: Router,private location:Location) {
     this.currentUser = this.appService.currentUserValue;
   }
 
   ngOnInit(): void {
   }
 
+  checkRouterUrl() {
+    return this.location.path().startsWith("/test");
+  }
   logout() {
-    this.appService.logout().subscribe(
+    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    let body = {
+      "userName": currentUser.contactNumber,
+      "password": currentUser.password
+    }
+    this.appService.logout(body).subscribe(
       data => {
         console.log(data);
       },

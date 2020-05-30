@@ -17,7 +17,7 @@
                 <mat-card-actions>
                     <button mat-button color="primary" fxFlex="50" *ngIf="!testObj.showRandomQuestions" (click)="redirectToTest(testObj.id,testObj.duration)">START TEST</button>
                     <button mat-button color="primary" fxFlex="50"*ngIf="testObj.showRandomQuestions" [disabled]="!testObj.showResultAfterTest">SEE RESULT</button>
-                    <button mat-button color="primary" fxFlex="50" *ngIf="!testObj.showRandomQuestions">SEE PAPER</button>
+                    <button mat-button color="primary" fxFlex="50" *ngIf="testObj.showRandomQuestions">SEE PAPER</button>
                 </mat-card-actions>
             </mat-card>
         </div>
