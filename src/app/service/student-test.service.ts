@@ -11,7 +11,7 @@ export class StudentTestService {
     testQuestions: 'v1/question/test/', // /v1/question/test/{testId} ///getQuestionsForTest/
     currentQuestionAnswer: 'v1/testResultAnswer/save ', // /v1/testResultAnswer/save  ///savetestResultAnswer
     submitTest: 'v1/testResult/save', // /v1/testResult/save ///saveStudentTestResult
-    getTestForStudent: 'v1/test/student/',
+    getTestForStudent: 'v1/test/status/',
     getStudentDetails: 'v1/student/find'
   }
   token;
@@ -119,8 +119,8 @@ export class StudentTestService {
     return answerArr;
   }
 
-  getStudentTest(studId) {
-    return this.http.get<any>(this.apiUrl + this.serviceURL.getTestForStudent + studId, this.httpOptions);
+  getStudentTest(testStatus) {
+    return this.http.get<any>(this.apiUrl + this.serviceURL.getTestForStudent + testStatus, this.httpOptions);
   }
 
   getStudentDetails() {
