@@ -1,23 +1,76 @@
-<div class="page-layout">
+<div class="page-layout" fxLayout="column">
     <p class="text-center text-header">Your Tests</p>
-    <div class="flex-wrap" fxLayout="row">
-        <div *ngFor="let testObj of studentTestObj"fxFlex="25" fxFlex.md="60" fxFlex.sm="100" fxFlex.xs="100">
+    <div class="flex-wrap" fxLayout="row" *ngIf="notStartedTests">
+        Not started Tests -
+        <div *ngFor="let testObj of notStartedTests"fxFlex="25" fxFlex.md="60" fxFlex.sm="100" fxFlex.xs="100">
             <mat-card class="student-card" fxFlex="100">
                 <mat-card-header>
-                    <mat-card-title>{{testObj.name}}</mat-card-title>
+                    <mat-card-title>{{testObj.testName}}</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
                     <p><span fxFlex="40">Test Starts At:</span><span fxFlex="5"></span><span
-                            fxFlex="55">{{testObj.startDateTime}}</span></p>
+                            fxFlex="55">{{testObj.testStartTime}}</span></p>
                     <p><span fxFlex="40">Test Ends At:</span><span fxFlex="5"></span><span
-                            fxFlex="55">{{testObj.endDateTime}}</span></p>
+                            fxFlex="55">{{testObj.testEndTime}}</span></p>
                     <p><span fxFlex="40">Classroom:</span><span fxFlex="5"></span><span
+                            fxFlex="55">{{testObj.classroomName }}</span></p>
+                    <p><span fxFlex="40">Duration:</span><span fxFlex="5"></span><span
                             fxFlex="55">{{testObj.duration }}</span></p>
                 </mat-card-content>
                 <mat-card-actions>
                     <button mat-button color="primary" fxFlex="50" *ngIf="!testObj.showRandomQuestions" (click)="redirectToTest(testObj.id,testObj.duration)">START TEST</button>
                     <button mat-button color="primary" fxFlex="50"*ngIf="testObj.showRandomQuestions" [disabled]="!testObj.showResultAfterTest">SEE RESULT</button>
-                    <button mat-button color="primary" fxFlex="50" *ngIf="!testObj.showRandomQuestions">SEE PAPER</button>
+                    <button mat-button color="primary" fxFlex="50" *ngIf="testObj.showRandomQuestions">SEE PAPER</button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+    <div class="flex-wrap" fxLayout="row" *ngIf="inProgressTests.length > 0">
+        In progress Tests -
+        <div *ngFor="let testObj of inProgressTests"fxFlex="25" fxFlex.md="60" fxFlex.sm="100" fxFlex.xs="100">
+            <mat-card class="student-card" fxFlex="100">
+                <mat-card-header>
+                    <mat-card-title>{{testObj.testName}}</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p><span fxFlex="40">Test Starts At:</span><span fxFlex="5"></span><span
+                            fxFlex="55">{{testObj.testStartTime}}</span></p>
+                    <p><span fxFlex="40">Test Ends At:</span><span fxFlex="5"></span><span
+                            fxFlex="55">{{testObj.testEndTime}}</span></p>
+                    <p><span fxFlex="40">Classroom:</span><span fxFlex="5"></span><span
+                            fxFlex="55">{{testObj.classroomName }}</span></p>
+                    <p><span fxFlex="40">Duration:</span><span fxFlex="5"></span><span
+                            fxFlex="55">{{testObj.duration }}</span></p>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-button color="primary" fxFlex="50" *ngIf="!testObj.showRandomQuestions" (click)="redirectToTest(testObj.id,testObj.duration)">START TEST</button>
+                    <button mat-button color="primary" fxFlex="50"*ngIf="testObj.showRandomQuestions" [disabled]="!testObj.showResultAfterTest">SEE RESULT</button>
+                    <button mat-button color="primary" fxFlex="50" *ngIf="testObj.showRandomQuestions">SEE PAPER</button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+    <div class="flex-wrap" fxLayout="row" *ngIf="completedTest.length > 0">
+        Completed Tests
+        <div *ngFor="let testObj of completedTest"fxFlex="25" fxFlex.md="60" fxFlex.sm="100" fxFlex.xs="100">
+            <mat-card class="student-card" fxFlex="100">
+                <mat-card-header>
+                    <mat-card-title>{{testObj.testName}}</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p><span fxFlex="40">Test Starts At:</span><span fxFlex="5"></span><span
+                            fxFlex="55">{{testObj.testStartTime}}</span></p>
+                    <p><span fxFlex="40">Test Ends At:</span><span fxFlex="5"></span><span
+                            fxFlex="55">{{testObj.testEndTime}}</span></p>
+                    <p><span fxFlex="40">Classroom:</span><span fxFlex="5"></span><span
+                            fxFlex="55">{{testObj.classroomName }}</span></p>
+                    <p><span fxFlex="40">Duration:</span><span fxFlex="5"></span><span
+                            fxFlex="55">{{testObj.duration }}</span></p>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-button color="primary" fxFlex="50" *ngIf="!testObj.showRandomQuestions" (click)="redirectToTest(testObj.id,testObj.duration)">START TEST</button>
+                    <button mat-button color="primary" fxFlex="50"*ngIf="testObj.showRandomQuestions" [disabled]="!testObj.showResultAfterTest">SEE RESULT</button>
+                    <button mat-button color="primary" fxFlex="50" *ngIf="testObj.showRandomQuestions">SEE PAPER</button>
                 </mat-card-actions>
             </mat-card>
         </div>

@@ -67,20 +67,23 @@ export class LogInComponent implements OnInit {
         },
         error => {
           console.log(error)
-          // this.errorMessage = "Error in login. Please try again";
-          // this.appService.logout().subscribe(
-          //   data => {
-          //     console.log(data);
-          //   },
-          //   error => {
-          //     console.log(error);
-          //     if (error.text = "User Logged Out Successfully") {
-          //       this.appService.isSignedIn = false;
-          //       let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-          //       currentUser.token = '';
-          //       this.errorMessage = "";
-          //     }
-          //   })
+          this.errorMessage = "You are logged in to another device or another window. To login here, please try again";
+          let body = {
+            "userName": this.loginForm.controls.contactNumber.value,
+            "password": this.loginForm.controls.password.value
+          }
+          this.appService.logout(body).subscribe(
+             data => {
+               console.log(data);
+             },
+           error => {
+             console.log(error);
+               if (error.text = "User Logged Out Successfully") {
+                 this.appService.isSignedIn = false;
+                 let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                 currentUser.token = '';
+               }
+            })
         },
         () => {
           this.appService.isSignedIn = true;

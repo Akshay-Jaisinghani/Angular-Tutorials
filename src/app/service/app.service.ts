@@ -52,12 +52,7 @@ export class AppService {
     }
   }
   // removes the current user from local storage when user logout
-  logout() {
-    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    let body = {
-      "userName": currentUser.contactNumber,
-      "password": currentUser.password
-    }
+  logout(body) {
     return this.platformService.httpPost(this.platformService.getLogoutUrl(), body, this.platformService.getHttpOptionsForLoginLogout());
   }
 }

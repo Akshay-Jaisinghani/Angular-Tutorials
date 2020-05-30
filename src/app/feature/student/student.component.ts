@@ -10,7 +10,9 @@ import { AppService } from 'src/app/service/app.service';
 })
 export class StudentComponent implements OnInit {
 
-  studentTestObj;
+  notStartedTests;
+  inProgressTests;
+  completedTest;
   currentStudentDetails;
 
   constructor(private router: Router, private studentTestService: StudentTestService, private appService: AppService) { }
@@ -27,11 +29,24 @@ export class StudentComponent implements OnInit {
         console.log(error);
       },
       () => {
-        this.studentTestService.getStudentTest(this.currentStudentDetails.id).subscribe((data) => {
-          this.studentTestObj = data;
+        this.studentTestService.getStudentTest("NOT STARTED").subscribe((data) => {
+          this.notStartedTests = data;
         }, (error) => {
           console.log("Error", error);
         }, () => {
+          this.studentTestService.getStudentTest("IN PROGRESS").subscribe((data) => {
+            this.inProgressTests = data;
+            console.log(new Date(this.inProgressTests[0].testStartTime * 1000));
+          }, (error) => {
+            console.log("Error", error);
+          }, () => {
+            this.studentTestService.getStudentTest("COMPLETED").subscribe((data) => {
+              this.completedTest = data;
+            }, (error) => {
+              console.log("Error", error);
+            }, () => {
+            });
+          });
         });
       })
   }

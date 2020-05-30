@@ -1,7 +1,8 @@
-<mat-toolbar class="toolbar primary" *ngIf="this.appService.isSignedIn && router.url !== '/test'">
-    <div fxFlex="80">ACHARYA ACADEMY BARAMATI</div>
-    <button fxFlex="10" fxFlexOffset="60" mat-button [matMenuTriggerFor]="afterMenu"><span class="material-icons">
-            expand_more
+<mat-toolbar class="toolbar primary" *ngIf="this.appService.isSignedIn && !checkRouterUrl()" fxLayout="row">
+    <div>ACHARYA ACADEMY BARAMATI</div>
+    <span class="example-spacer"></span>
+    <button mat-button [matMenuTriggerFor]="afterMenu"><span class="material-icons">
+        account_circle
         </span></button>
     <!-- <span class="material-icons">
             menu
