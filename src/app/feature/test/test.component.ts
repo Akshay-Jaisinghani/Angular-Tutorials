@@ -23,6 +23,7 @@ export class TestComponent implements OnInit {
   
   startTest() {
     this.hasInstructionsRead = true;
+    this.studentTestService.setTestStatus(this.studentTestService.currentTestResultId);
   }
 
   questionClicked() {

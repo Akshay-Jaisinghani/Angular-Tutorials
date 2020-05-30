@@ -39,6 +39,7 @@
         border-radius: 4px;
         margin: 0 3px 0 0 !important;
         float: left;
+        cursor:pointer;
         span {
             position: relative;
             top: 6px;
@@ -54,6 +55,7 @@
         color: white;
         margin: 0 3px 0 0 !important;
         float: left;
+        cursor:pointer;
         span {
             top: 5px;
             left: 10px;
@@ -68,6 +70,7 @@
         color: white;
         margin: 0 3px 0 0 !important;
         float: left;
+        cursor:pointer;
         span {
             top: 5px;
             left: 0px;
@@ -95,6 +98,7 @@
         width: 0px;
         float: left;
         margin: 0 3px 0 0;
+        cursor:pointer;
         & > span {
             position: relative;
             top: -2px;
@@ -111,6 +115,7 @@
         float: left;
         margin: 0 3px 0 0;
         width: 0px;
+        cursor:pointer;
         & > span {
             position: relative;
             top: -2px;
