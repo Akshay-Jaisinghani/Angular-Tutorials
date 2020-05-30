@@ -14,6 +14,7 @@ export class TestQuestionsComponent implements OnInit {
   form: FormGroup;
   questionNo;
   isLoading = true;
+  status = "Pending";
 
 
   constructor(public studentTestService: StudentTestService, private formBuilder: FormBuilder) {
@@ -26,11 +27,11 @@ export class TestQuestionsComponent implements OnInit {
   ngOnInit() {
     this.isLoading = true;
     this.getTestQuestions();
+    this.getTestResultAnswerResponse();
   }
 
   getTestQuestions() {
     this.studentTestService.getTestQuestions(this.studentTestService.currentTestId).subscribe((data) => {
-      //console.log(JSON.stringify(data));
       this.studentTestService.allTestQuestions = data;
     }, (error) => {
       console.log("Error", error);
@@ -39,6 +40,9 @@ export class TestQuestionsComponent implements OnInit {
       this.studentTestService.totalQuestionsCount = Array.from(new Array(this.studentTestService.allTestQuestions.length), (x, i) => i + 1);
       this.studentTestService.notVisited = this.studentTestService.allTestQuestions.length - 1;
       this.studentTestService.notAnswered = this.studentTestService.allTestQuestions.length;
+      if (this.status == "Pending") {
+        this.setDBAnswer();
+      }
       this.isLoading = false;
     });
   }
@@ -60,11 +64,15 @@ export class TestQuestionsComponent implements OnInit {
   }
 
   saveAndNext() {
-    document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-class";
+    if(this.form.value==''){
+      document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "not-answered-class";
+    } else {
+      document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-class";
+    }
     this.studentTestService.saveResponse(this.form.value);
     this.changeTestResponseClass();
     this.clearFormArray();
-    this.isAnswerSet();
+    this.isAnswerSet();  
   }
 
   saveAndMArkForReview() {
@@ -134,6 +142,8 @@ export class TestQuestionsComponent implements OnInit {
   isAnswerSet() {
     if (this.studentTestService.getAnswer() != undefined) {
       this.setValue(this.studentTestService.getAnswer())
+    } else if (this.status == "Pending"){
+      this.setDBAnswer();
     }
   }
 
@@ -146,4 +156,22 @@ export class TestQuestionsComponent implements OnInit {
       this.form.controls['selectedOption'].setValue(answer);
     }
   }
+
+  setDBAnswer() {
+    {
+      let responseArr = this.getDbAnswer();
+      this.setValue(responseArr);
+    }
+  }
+
+  getTestResultAnswerResponse() {
+   this.studentTestService.getTestResultAnswerResponse().subscribe((data => {
+     this.studentTestService.testResultAnswerResponseArr = data;
+   }));
+  }
+
+  getDbAnswer() {
+   return this.studentTestService.getCurrentTestResponse();
+  }
+
 }

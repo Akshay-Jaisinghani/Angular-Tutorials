@@ -12,7 +12,8 @@ export class StudentTestService {
     currentQuestionAnswer: 'v1/testResultAnswer/save ', // /v1/testResultAnswer/save  ///savetestResultAnswer
     submitTest: 'v1/testResult/save', // /v1/testResult/save ///saveStudentTestResult
     getTestForStudent: 'v1/test/student/',
-    getStudentDetails: 'v1/student/find'
+    getStudentDetails: 'v1/student/find',
+    getTestResultAnswerResponse:'/v1/testResultAnswer/response/testId/'
   }
   token;
   httpOptions;
@@ -39,6 +40,7 @@ export class StudentTestService {
       id: 0
     }
   }
+  testResultAnswerResponseArr;
 
   constructor(private http: HttpClient, private appService: AppService) {
     this.apiUrl = environment.apiUrl;
@@ -81,7 +83,9 @@ export class StudentTestService {
     if (this.currentQuestionObj.questionType == 1) {
       currentAnswerObj.responseOptionsList = response.optionsArray;
     } else {
-      currentAnswerObj.responseOptionsList.push(response.selectedOption);
+      if(response.selectedOption != ''){
+        currentAnswerObj.responseOptionsList.push(response.selectedOption);
+      }
     }
     let url = this.apiUrl + this.serviceURL.currentQuestionAnswer;
     this.http.post<any>(url, currentAnswerObj, this.httpOptions).subscribe((res) => {
@@ -119,12 +123,21 @@ export class StudentTestService {
     return answerArr;
   }
 
+  
   getStudentTest(studId) {
     return this.http.get<any>(this.apiUrl + this.serviceURL.getTestForStudent + studId, this.httpOptions);
   }
 
   getStudentDetails() {
     return this.http.get<any>(this.apiUrl + this.serviceURL.getStudentDetails, this.httpOptions);
+  }
+
+  getTestResultAnswerResponse() {
+    return this.http.get<any>(this.apiUrl + this.serviceURL.getTestResultAnswerResponse + this.currentTestId, this.httpOptions);
+  }
+
+  getCurrentTestResponse() {
+    return this.testResultAnswerResponseArr.find(item => {return item.questionId==this.currentQuestionObj.questionId})
   }
 
 }
