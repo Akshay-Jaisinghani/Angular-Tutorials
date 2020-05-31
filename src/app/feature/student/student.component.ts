@@ -47,7 +47,6 @@ export class StudentComponent implements OnInit {
               this.inProgressTests[i].testStartTime = (new Date(this.inProgressTests[i].testStartTime)).toUTCString();
               this.inProgressTests[i].testEndTime = (new Date(this.inProgressTests[i].testEndTime)).toUTCString();
             }
-            console.log(new Date(this.inProgressTests[0].testStartTime * 1000));
           }, (error) => {
             console.log("Error", error);
           }, () => {
