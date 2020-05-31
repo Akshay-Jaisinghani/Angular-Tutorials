@@ -1,11 +1,15 @@
 .student-details-layout {
  //   height: 30vh;
     .student-wrapper {
-        padding: 0 150px;
+        padding: 0 130px;
         box-sizing: border-box;
     }
     .student-details-class {
         float: right;
+        button {
+            margin-left: 2em;
+            margin-bottom: 0.5em;
+        }
     }
 
     .section-class {

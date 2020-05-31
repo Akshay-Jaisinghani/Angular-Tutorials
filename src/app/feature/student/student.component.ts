@@ -10,16 +10,15 @@ import { AppService } from 'src/app/service/app.service';
 })
 export class StudentComponent implements OnInit {
 
-  notStartedTests;
-  inProgressTests;
-  completedTest;
+  notStartedTests = [];
+  inProgressTests = [];
+  completedTest = [];
   currentStudentDetails;
 
   constructor(private router: Router, private studentTestService: StudentTestService, private appService: AppService) { }
 
   ngOnInit(): void {
     let currentdateTime = Math.round(Date.now() / 1000);
-    //Date.parse('01/01/2011 10:20:45') > Date.parse('01/01/2011 5:10:10')
     this.studentTestService.getStudentDetails().subscribe((data) => {
       this.currentStudentDetails = data;    
       let user = this.appService.currentUserValue; 

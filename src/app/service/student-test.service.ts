@@ -101,9 +101,7 @@ export class StudentTestService {
   submitTest(studentId, testId) {
     this.submitTestObj.student.id = this.appService.currentUserValue.id;
     this.submitTestObj.test.id = this.currentTestId;
-    this.http.post<any>(this.apiUrl + this.serviceURL.submitTest, this.submitTestObj, this.httpOptions).subscribe((res) => {
-      console.log(res);
-    })
+    return this.platformService.httpPost(this.apiUrl + this.serviceURL.submitTest, this.submitTestObj, this.httpOptions);
   }
 
   getAnswer() {

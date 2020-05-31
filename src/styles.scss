@@ -31,6 +31,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   height: calc(100vh-64px);
   height: -webkit-calc(100vh - 64px);
   overflow-x: auto;
+  background-color: whitesmoke;
 }
 .float-left {
   float: left !important;

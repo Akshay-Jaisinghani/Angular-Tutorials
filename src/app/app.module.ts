@@ -14,6 +14,7 @@ import { LogInModule } from './core/login/login.module';
 import { TestModule } from './feature/test/test.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthGuard } from './core/auth.guard';
+import { ResultModule } from './feature/result/result.module';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { AuthGuard } from './core/auth.guard';
     LogInModule,
     TestModule,
     HttpClientModule,
-    CountdownModule
+    CountdownModule,
+    ResultModule
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]

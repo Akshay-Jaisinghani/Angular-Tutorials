@@ -40,3 +40,14 @@
 ::ng-deep .mat-card {
   padding: 0 !important;
 }
+::ng-deep .mat-tab-body-content {
+  padding: 1em;
+}
+::ng-deep .mat-tab-body {
+  overflow: hidden !important;
+}
+@media screen and (max-width: 1024px) {
+  .page-layout {
+    padding:0;
+  }
+}
