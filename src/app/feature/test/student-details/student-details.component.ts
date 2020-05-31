@@ -27,7 +27,7 @@ export class StudentDetailsComponent implements OnInit {
         console.log(error);
       },
       () => {
-        this.router.navigateByUrl("result");
+        this.router.navigateByUrl("result/" + this.studentTestService.currentTestResultId);
       })
   }
 

@@ -10,7 +10,7 @@ import { ResultComponent } from './feature/result/result.component';
 
 const routes: Routes = [
   { path: 'class-room', component: ClassRoomComponent, canActivate: [AuthGuard] },
-  { path: 'result', component: ResultComponent, canActivate: [AuthGuard] },
+  { path: 'result/:testResultId', component: ResultComponent, canActivate: [AuthGuard] },
   { path: 'student', component: StudentComponent, canActivate: [AuthGuard] },
   { path: 'test/:id', component: TestComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LogInComponent },

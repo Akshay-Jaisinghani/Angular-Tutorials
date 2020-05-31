@@ -36,6 +36,7 @@ export class PlatformService {
   private getTestForStudent = environment.apiUrl + 'v1/test/status/';
   private getStudentDetails = environment.apiUrl + 'v1/student/find';
   private setTestStatus = environment.apiUrl + 'v1/testResult/status';
+  private getTestResult = environment.apiUrl + 'v1/testResult/testResultId/';
 
   getApiBaseUrl() {
     return this.apiBaseUrl;
@@ -67,7 +68,9 @@ export class PlatformService {
   getSetTestStatusUrl() {
     return this.setTestStatus;
   }
-
+  getTestResultUrl() {
+    return this.getTestResult;
+  }
   // Methods
   httpGet(url, params?): Observable<any> {
     return this.httpClient.get(url, params);

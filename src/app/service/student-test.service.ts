@@ -133,4 +133,8 @@ export class StudentTestService {
     })
   }
 
+  getTestResult(testResultId) {
+    return this.platformService.httpGet(this.platformService.getTestResultUrl() + testResultId, this.httpOptions);
+  }
+
 }
