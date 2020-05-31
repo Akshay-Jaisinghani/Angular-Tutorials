@@ -33,8 +33,10 @@ export class PlatformService {
   private testQuestions = environment.apiUrl + 'v1/question/test/'; // /v1/question/test/{testId} ///getQuestionsForTest/
   private currentQuestionAnswer = environment.apiUrl + 'v1/testResultAnswer/save '; // /v1/testResultAnswer/save  ///savetestResultAnswer
   private submitTest = environment.apiUrl + 'v1/testResult/save'; // /v1/testResult/save ///saveStudentTestResult
-  private getTestForStudent = environment.apiUrl + 'v1/test/student/';
+  private getTestForStudent = environment.apiUrl + 'v1/test/status/';
   private getStudentDetails = environment.apiUrl + 'v1/student/find';
+  private setTestStatus = environment.apiUrl + 'v1/testResult/status';
+  private getTestResult = environment.apiUrl + 'v1/testResult/testResultId/';
 
   getApiBaseUrl() {
     return this.apiBaseUrl;
@@ -63,7 +65,12 @@ export class PlatformService {
   getStudentDetailsUrl() {
     return this.getStudentDetails;
   }
-
+  getSetTestStatusUrl() {
+    return this.setTestStatus;
+  }
+  getTestResultUrl() {
+    return this.getTestResult;
+  }
   // Methods
   httpGet(url, params?): Observable<any> {
     return this.httpClient.get(url, params);

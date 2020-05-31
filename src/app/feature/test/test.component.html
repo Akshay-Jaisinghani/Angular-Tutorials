@@ -3,8 +3,8 @@
     <app-test-questions></app-test-questions>
     <app-response (questionClicked)="questionClicked()"></app-response>
 </div>
-<div *ngIf="!hasInstructionsRead" fxLayout="column">
-        <p>
+<div *ngIf="!hasInstructionsRead" fxLayout="column" class="instruction-class">
+        <!-- <p>
         Do's
         GENERAL GUIDELINES
         Make sure you are signed in with your Email/ Phone Number and Password and you have downloaded the test.
@@ -27,7 +27,9 @@
         Don’t attempt questions you don’t know or understand how to solve. 
         The test has negative marking.Also, don’t waste time on questions you know you can’t solve. 
         This will greatly reduce time wastage in your attempt.
-    </p>
-    <button mat-button color="primary" fxFlex="50" (click)="startTest()">START TEST</button>
-    
+    </p> -->
+    <div>
+        <p>All The Best!!</p>
+        <button mat-button mat-raised-button color="primary" (click)="startTest()">START TEST</button>
+    </div>    
 </div>

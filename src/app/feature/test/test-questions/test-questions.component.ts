@@ -14,7 +14,7 @@ export class TestQuestionsComponent implements OnInit {
   form: FormGroup;
   questionNo;
   isLoading = true;
-  status = "IN PROGRESS";
+  
 
 
   constructor(public studentTestService: StudentTestService, private formBuilder: FormBuilder) {
@@ -89,9 +89,16 @@ export class TestQuestionsComponent implements OnInit {
   }
 
   clearResponse() {
-    document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "question-number-button";
-    this.studentTestService.answered = this.studentTestService.answered - 1;
-    this.clearFormArray();
+    if(this.form.value.selectedOption!=''){
+      document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "question-number-button";
+      if(this.studentTestService.answered>0){
+        this.studentTestService.answered = this.studentTestService.answered - 1;
+      }    
+      if (this.studentTestService.notAnswered > 0) {
+        this.studentTestService.notAnswered = this.studentTestService.notAnswered - 1;
+      }
+      this.clearFormArray();
+    }   
   }
 
   changeTestResponseClass() {
@@ -100,11 +107,17 @@ export class TestQuestionsComponent implements OnInit {
     if (this.studentTestService.notVisited > 0) {
       this.studentTestService.notVisited = this.studentTestService.notVisited - 1;
     }
+    // if (this.studentTestService.notAnswered > 0) {
+    //   this.studentTestService.notAnswered = this.studentTestService.notAnswered - 1;
+    // }
+    // if (this.studentTestService.answered <= this.studentTestService.allTestQuestions.length) {
+    //   this.studentTestService.answered = this.studentTestService.answered + 1;
+    // }
     if (this.studentTestService.notAnswered > 0) {
-      this.studentTestService.notAnswered = this.studentTestService.notAnswered - 1;
+      this.studentTestService.notAnswered = this.studentTestService.allTestQuestions.length - this.studentTestService.allTestAnswers.length;
     }
     if (this.studentTestService.answered <= this.studentTestService.allTestQuestions.length) {
-      this.studentTestService.answered = this.studentTestService.answered + 1;
+      this.studentTestService.answered = this.studentTestService.allTestAnswers.length;
     }
   }
 
@@ -142,7 +155,7 @@ export class TestQuestionsComponent implements OnInit {
   isAnswerSet() {
     if (this.studentTestService.getAnswer() != undefined) {
       this.setValue(this.studentTestService.getAnswer())
-    } else if (this.status == "IN PROGRESS"){
+    } else if (this.studentTestService.currentTestStatus == "IN PROGRESS"){
       this.setDBAnswer();
     }
   }
@@ -172,7 +185,7 @@ export class TestQuestionsComponent implements OnInit {
    }),(error) => {
 
    }, ()=> {
-    if (this.status == "IN PROGRESS") {
+    if (this.studentTestService.currentTestStatus == "IN PROGRESS") {
       this.setDBAnswer();
     }
    });

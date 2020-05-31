@@ -2,17 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { AppService } from './app.service';
+import { PlatformService } from './platform.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentTestService {
   serviceURL = {
-    testQuestions: 'v1/question/test/', // /v1/question/test/{testId} ///getQuestionsForTest/
     currentQuestionAnswer: 'v1/testResultAnswer/save ', // /v1/testResultAnswer/save  ///savetestResultAnswer
     submitTest: 'v1/testResult/save', // /v1/testResult/save ///saveStudentTestResult
-    getTestForStudent: 'v1/test/status/',
-    getStudentDetails: 'v1/student/find',
     getTestResultAnswerResponse:'v1/testResultAnswer/response/testId/'
   }
   token;
@@ -32,17 +30,23 @@ export class StudentTestService {
   serviceform;
   currentTestDuration;
   currentTestId;
+  currentTestResultId;
   submitTestObj = {
     test: {
       id: 0
     },
     student: {
       id: 0
-    }
+    },
+    id:0
   }
   testResultAnswerResponseArr;
+  totalMarksForTest;
+  currentTestStatus;
 
-  constructor(private http: HttpClient, private appService: AppService) {
+
+
+  constructor(private http: HttpClient, private appService: AppService,private platformService: PlatformService){
     this.apiUrl = environment.apiUrl;
     this.token = JSON.parse(localStorage.getItem('currentUser')).token;
     console.log(this.token);
@@ -56,7 +60,7 @@ export class StudentTestService {
   }
 
   getTestQuestions(testId: Number) {
-    return this.http.get<any>(this.apiUrl + this.serviceURL.testQuestions + testId, this.httpOptions);
+    return this.platformService.httpGet(this.platformService.getTestQuestionsUrl() + testId, this.httpOptions);
   }
 
   getQuestion(currentQuestionNumber) {
@@ -77,14 +81,15 @@ export class StudentTestService {
       },
       responseOptionsList: []
     }
-    currentAnswerObj.test.id = 1;
-    currentAnswerObj.student.id = 1;
+    currentAnswerObj.test.id = this.currentTestId;
+    currentAnswerObj.student.id = this.appService.currentUserValue.id;
     currentAnswerObj.question.id = this.currentQuestionObj.questionId;
     if (this.currentQuestionObj.questionType == 1) {
       currentAnswerObj.responseOptionsList = response.optionsArray;
     } else {
       if(response.selectedOption != ''){
         currentAnswerObj.responseOptionsList.push(response.selectedOption);
+
       }
     }
     let url = this.apiUrl + this.serviceURL.currentQuestionAnswer;
@@ -99,16 +104,17 @@ export class StudentTestService {
         this.allTestAnswers.splice(index, 1);
       })
     }
+    if(response.selectedOption != ''){
     this.allTestAnswers.push(currentAnswerObj);
+    }
   }
 
 
   submitTest(studentId, testId) {
     this.submitTestObj.student.id = this.appService.currentUserValue.id;
     this.submitTestObj.test.id = this.currentTestId;
-    this.http.post<any>(this.apiUrl + this.serviceURL.submitTest, this.submitTestObj, this.httpOptions).subscribe((res) => {
-      console.log(res);
-    })
+    this.submitTestObj.id = this.currentTestResultId;
+    return this.platformService.httpPost(this.apiUrl + this.serviceURL.submitTest, this.submitTestObj, this.httpOptions);
   }
 
   getAnswer() {
@@ -124,11 +130,24 @@ export class StudentTestService {
   }
 
   getStudentTest(testStatus) {
-    return this.http.get<any>(this.apiUrl + this.serviceURL.getTestForStudent + testStatus, this.httpOptions);
+    return this.platformService.httpGet(this.platformService.getTestForStudentUrl() + testStatus, this.httpOptions);
   }
 
   getStudentDetails() {
-    return this.http.get<any>(this.apiUrl + this.serviceURL.getStudentDetails, this.httpOptions);
+    return this.platformService.httpGet(this.platformService.getStudentDetailsUrl(), this.httpOptions);
+  }
+
+  setTestStatus(testResultId) {
+    let obj = {
+      testResultId: testResultId
+    }
+    this.platformService.httpPost(this.platformService.getSetTestStatusUrl(), obj, this.httpOptions).subscribe((res) => {
+      console.log(res);
+    })
+  }
+
+  getTestResult(testResultId) {
+    return this.platformService.httpGet(this.platformService.getTestResultUrl() + testResultId, this.httpOptions);
   }
 
   getTestResultAnswerResponse() {

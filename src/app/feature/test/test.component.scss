@@ -13,6 +13,14 @@
         float: right;
    }
 }
+.instruction-class{
+    div{
+        margin: 8em auto;
+        p {
+            font-size: 20px;
+        }
+    }
+}
 @media screen and (max-width: 1024px) {
     app-test-questions {
         width: 100% !important;
