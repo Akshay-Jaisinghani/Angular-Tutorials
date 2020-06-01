@@ -28,6 +28,7 @@ export class TestComponent implements OnInit {
 
   questionClicked() {
     console.log(this.testQuestion.form.value);
+    this.studentTestService.saveResponse(this.testQuestion.form.value, 1);
     this.testQuestion.isAnswerSet();
   }
 }

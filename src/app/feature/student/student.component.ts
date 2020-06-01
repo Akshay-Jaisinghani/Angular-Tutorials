@@ -33,7 +33,7 @@ export class StudentComponent implements OnInit {
         this.studentTestService.getStudentTest("NOT STARTED").subscribe((data) => {
           this.notStartedTests = data;
           for (var i = 0; i < this.notStartedTests.length; i++) {
-            this.notStartedTests[i].startTest = currentdateTime < this.notStartedTests[i].testStartTime && currentdateTime < this.notStartedTests[i].testEndTime;
+            this.notStartedTests[i].startTest = currentdateTime == this.notStartedTests[i].testStartTime && currentdateTime < this.notStartedTests[i].testEndTime;
             this.notStartedTests[i].testStartTime = (new Date(this.notStartedTests[i].testStartTime)).toUTCString();
             this.notStartedTests[i].testEndTime = (new Date(this.notStartedTests[i].testEndTime)).toUTCString();
           }
@@ -43,7 +43,7 @@ export class StudentComponent implements OnInit {
           this.studentTestService.getStudentTest("IN PROGRESS").subscribe((data) => {
             this.inProgressTests = data;
             for (var i = 0; i < this.inProgressTests.length; i++) {
-              this.inProgressTests[i].startTest = currentdateTime < this.inProgressTests[i].testStartTime && currentdateTime < this.inProgressTests[i].testEndTime;
+              this.inProgressTests[i].startTest = currentdateTime == this.inProgressTests[i].testStartTime && currentdateTime < this.inProgressTests[i].testEndTime;
               this.inProgressTests[i].testStartTime = (new Date(this.inProgressTests[i].testStartTime)).toUTCString();
               this.inProgressTests[i].testEndTime = (new Date(this.inProgressTests[i].testEndTime)).toUTCString();
             }
@@ -53,7 +53,7 @@ export class StudentComponent implements OnInit {
             this.studentTestService.getStudentTest("COMPLETED").subscribe((data) => {
               this.completedTest = data;
               for (var i = 0; i < this.completedTest.length; i++) {
-                this.completedTest[i].startTest = currentdateTime < this.completedTest[i].testStartTime && currentdateTime < this.completedTest[i].testEndTime;
+                this.completedTest[i].startTest = currentdateTime == this.completedTest[i].testStartTime && currentdateTime < this.completedTest[i].testEndTime;
                 this.completedTest[i].testStartTime = (new Date(this.completedTest[i].testStartTime)).toUTCString();
                 this.completedTest[i].testEndTime = (new Date(this.completedTest[i].testEndTime)).toUTCString();
               }

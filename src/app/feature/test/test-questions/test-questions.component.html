@@ -31,7 +31,7 @@
 
             <ng-template #radioGroup>
                 <mat-radio-group formControlName="selectedOption" aria-labelledby="example-radio-group-label"
-                    class="example-radio-group">
+                    class="example-radio-group" required>
                     <mat-radio-button class="example-radio-button"
                         *ngFor="let data of this.studentTestService.currentQuestionObj.optionvalue; let i=index"
                         [value]="data.id">
@@ -47,10 +47,10 @@
 
     <div class="button-layout" fxLayoutAlign="stretch">
         <button mat-button mat-raised-button fxFlex="20" type="submit" (click)="saveAndNext()"
-            class="save-and-next-button" >SAVE &
+            class="save-and-next-button" [disabled]="!form.valid" [ngClass]="{'disabledClass' : !form.valid}">SAVE &
             NEXT</button>
         <button mat-button mat-raised-button fxFlex="30" (click)="saveAndMArkForReview()"
-            class="save-and-mark-button">SAVE & MARK FOR REVIEW</button>
+            class="save-and-mark-button" [disabled]="!form.valid" [ngClass]="{'disabledClass' : !form.valid}">SAVE & MARK FOR REVIEW</button>
         <button mat-button mat-raised-button fxFlex="20" (click)="clearResponse()">CLEAR RESPONSE</button>
         <button mat-button mat-raised-button color="primary" fxFlex="30" (click)="markForReviewAndNext()">MARK FOR
             REVIEW & NEXT</button>

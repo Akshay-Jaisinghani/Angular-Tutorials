@@ -68,7 +68,7 @@ export class StudentTestService {
     return this.currentQuestionObj;
   }
 
-  saveResponse(response) {
+  saveResponse(response, status) {
     let currentAnswerObj = {
       test: {
         id: 0
@@ -79,11 +79,13 @@ export class StudentTestService {
       question: {
         id: 0
       },
-      responseOptionsList: []
+      responseOptionsList: [],
+      status: Number
     }
     currentAnswerObj.test.id = this.currentTestId;
     currentAnswerObj.student.id = this.appService.currentUserValue.id;
     currentAnswerObj.question.id = this.currentQuestionObj.questionId;
+    currentAnswerObj.status = status;
     if (this.currentQuestionObj.questionType == 1) {
       currentAnswerObj.responseOptionsList = response.optionsArray;
     } else {

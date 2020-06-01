@@ -16,10 +16,10 @@
                             <p><span fxFlex="30">Classroom:</span><span fxFlex="3"></span><span
                                     fxFlex="65">{{testObj.classroomName }}</span></p>
                             <p><span fxFlex="30">Duration:</span><span fxFlex="3"></span><span
-                                    fxFlex="65">{{testObj.duration }}</span></p>
+                                    fxFlex="65">{{(testObj.duration)/60 }} min</span></p>
                         </mat-card-content>
                         <mat-card-actions>
-                            <button mat-button color="primary" fxFlex="40" *ngIf="testObj.startTest" (click)="redirectToTest(testObj.testId,testObj.duration,testObj.testResultId)">START TEST</button>
+                            <button mat-button color="primary" fxFlex="40" *ngIf="testObj.startTest" (click)="redirectToTest(testObj.testId,testObj.duration,testObj.testResultId, testObj.testStatus)">START TEST</button>
                             <button mat-button color="primary" fxFlex="50"*ngIf="!testObj.startTest" [disabled]="!testObj.showResultAfterTest">SEE RESULT</button>
                             <button mat-button color="primary" fxFlex="50" *ngIf="!testObj.startTest">SEE PAPER</button>
                         </mat-card-actions>
@@ -42,10 +42,10 @@
                             <p><span fxFlex="30">Classroom:</span><span fxFlex="3"></span><span
                                     fxFlex="65">{{testObj.classroomName }}</span></p>
                             <p><span fxFlex="30">Duration:</span><span fxFlex="3"></span><span
-                                    fxFlex="65">{{testObj.duration }}</span></p>
+                                    fxFlex="65">{{(testObj.duration)/60 }} min</span></p>
                         </mat-card-content>
                         <mat-card-actions>
-                            <button mat-button color="primary" fxFlex="40" *ngIf="testObj.startTest" (click)="redirectToTest(testObj.testId,testObj.duration,testObj.testResultId)">START TEST</button>
+                            <button mat-button color="primary" fxFlex="40" *ngIf="testObj.startTest" (click)="redirectToTest(testObj.testId,testObj.duration,testObj.testResultId, testObj.testStatus)">START TEST</button>
                             <button mat-button color="primary" fxFlex="50"*ngIf="!testObj.startTest" [disabled]="!testObj.showResultAfterTest">SEE RESULT</button>
                             <button mat-button color="primary" fxFlex="50" *ngIf="!testObj.startTest">SEE PAPER</button>
                         </mat-card-actions>
@@ -67,10 +67,10 @@
                         <p><span fxFlex="30">Classroom</span>:<span fxFlex="3"></span><span
                                 fxFlex="65">{{testObj.classroomName }}</span></p>
                         <p><span fxFlex="30">Duration</span>:<span fxFlex="3"></span><span
-                                fxFlex="65">{{testObj.duration }}</span></p>
+                                fxFlex="65">{{(testObj.duration)/60 }} min</span></p>
                     </mat-card-content>
                     <mat-card-actions>
-                        <button mat-button color="primary" fxFlex="40" *ngIf="testObj.startTest" (click)="redirectToTest(testObj.testId,testObj.duration,testObj.testResultId, testObj.testStatus)">START TEST</button>
+                        <button mat-button color="primary" fxFlex="40" *ngIf="testObj.startTest" (click)="redirectToTest(testObj.testId,testObj.duration,testObj.testResultId,testObj.testStatus)">START TEST</button>
                         <button mat-button color="primary" fxFlex="50"*ngIf="!testObj.startTest" [disabled]="!testObj.showResultAfterTest">SEE RESULT</button>
                         <button mat-button color="primary" fxFlex="50" *ngIf="!testObj.startTest">SEE PAPER</button>
                     </mat-card-actions>
