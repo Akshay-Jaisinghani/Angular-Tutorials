@@ -88,7 +88,7 @@ export class StudentTestService {
     if (this.currentQuestionObj.questionType == 1) {
       currentAnswerObj.responseOptionsList = response.optionsArray;
     } else {
-      if(response.selectedOption != ''){
+      if(response!= '' && response.selectedOption != ''){
         currentAnswerObj.responseOptionsList.push(response.selectedOption);
 
       }
@@ -97,14 +97,14 @@ export class StudentTestService {
     this.http.post<any>(url, currentAnswerObj, this.httpOptions).subscribe((res) => {
     })
 
+    if(response!= '' && response.selectedOption != '') {
     var duplicateAnswers = this.allTestAnswers.filter((answer) => answer.question.id === currentAnswerObj.question.id);
     if (duplicateAnswers.length > 0) {
       duplicateAnswers.forEach(item => {
         let index = this.allTestAnswers.findIndex(x => x.question.id === currentAnswerObj.question.id);
         this.allTestAnswers.splice(index, 1);
       })
-    }
-    if(response.selectedOption != ''){
+    }    
     this.allTestAnswers.push(currentAnswerObj);
     }
   }
