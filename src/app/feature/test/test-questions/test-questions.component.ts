@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { StudentTestService } from 'src/app/service/student-test.service';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import * as _ from "lodash";
 
 @Component({
   selector: 'app-test-questions',
@@ -15,7 +16,13 @@ export class TestQuestionsComponent implements OnInit {
   questionNo;
   isLoading = true;
   isDisabled: boolean = true;
-
+  answerStatusEnum = {
+    0: "question-number-button",
+    1: "not-answered-class",
+    2: "marked-for-review-class",
+    3: "answered-and-marked-for-review-class",
+    4: "answered-class"
+  }
 
   constructor(public studentTestService: StudentTestService, private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
@@ -37,10 +44,12 @@ export class TestQuestionsComponent implements OnInit {
     }, () => {
       this.studentTestService.currentQuestionObj = this.studentTestService.getQuestion(this.studentTestService.currentQuestionNumber);
       this.studentTestService.totalQuestionsCount = Array.from(new Array(this.studentTestService.allTestQuestions.length), (x, i) => i + 1);
-      this.studentTestService.notVisited = this.studentTestService.allTestQuestions.length - 1;
-      this.studentTestService.notAnswered = this.studentTestService.allTestQuestions.length;
-      this.getTestResultAnswerResponse();
-
+      if (this.studentTestService.currentTestStatus == "IN PROGRESS") {
+        this.getTestResultAnswerResponse();
+      } else {
+        this.studentTestService.notVisited = this.studentTestService.allTestQuestions.length - 1;
+        this.studentTestService.notAnswered = this.studentTestService.allTestQuestions.length;
+      }
       this.isLoading = false;
     });
   }
@@ -180,14 +189,22 @@ export class TestQuestionsComponent implements OnInit {
   }
 
   getTestResultAnswerResponse() {
+    let $this =this;
     this.studentTestService.getTestResultAnswerResponse().subscribe((data => {
       this.studentTestService.testResultAnswerResponseArr = data;
     }), (error) => {
 
     }, () => {
-      if (this.studentTestService.currentTestStatus == "IN PROGRESS") {
-        this.setDBAnswer();
-      }
+      this.setDBAnswer();
+      this.studentTestService.testResultAnswerResponseArr.forEach(function(item){
+        document.getElementsByClassName("question-number-class")[0].children[item.questionNumber - 1].className = $this.answerStatusEnum[item.status];
+      })
+      let setAnswerStatusCount = _.groupBy(_.map(this.studentTestService.testResultAnswerResponseArr, 'status'));      
+      this.studentTestService.notVisited = setAnswerStatusCount[0] ? setAnswerStatusCount[0].length : 0;
+      this.studentTestService.notAnswered = setAnswerStatusCount[1] ? setAnswerStatusCount[1].length : 0;
+      this.studentTestService.markedForReview = setAnswerStatusCount[2] ? setAnswerStatusCount[2].length : 0;
+      this.studentTestService.answeredAndMarkedForReview = setAnswerStatusCount[3] ? setAnswerStatusCount[3].length : 0;
+      this.studentTestService.answered = setAnswerStatusCount[4] ? setAnswerStatusCount[4].length : 0;
     });
   }
 

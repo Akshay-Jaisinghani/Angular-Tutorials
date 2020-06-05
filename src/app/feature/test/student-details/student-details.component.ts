@@ -52,7 +52,7 @@ export class StudentDetailsComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+    dialogRef.afterClosed().subscribe((confirmed) => {
       if (confirmed === "yes") {
         this.submit();
       }

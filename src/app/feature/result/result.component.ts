@@ -23,7 +23,7 @@ export class ResultComponent implements OnInit {
     });
     this.studentTestService.getTestResult(this.testResultId).subscribe(
       data => {
-        this.studentTestService.totalMarksForTest = data.totalMarks;
+        this.studentTestService.totalMarksForTest = data.totalMarks.toFixed(2);
       },
       error => {
         console.log(error);

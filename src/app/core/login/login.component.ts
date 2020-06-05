@@ -48,7 +48,6 @@ export class LogInComponent implements OnInit {
   login(): void {
     this.appService.login(this.loginForm.controls.contactNumber.value, this.loginForm.controls.password.value).subscribe(
         data => {
-          console.log(data);
           if (data.token) {
             const user = {
               token: data.token,
@@ -66,7 +65,6 @@ export class LogInComponent implements OnInit {
           }
         },
         error => {
-          console.log(error)
           this.errorMessage = "You are logged in to another device or another window. To login here, please try again";
           let body = {
             "userName": this.loginForm.controls.contactNumber.value,
@@ -74,10 +72,8 @@ export class LogInComponent implements OnInit {
           }
           this.appService.logout(body).subscribe(
              data => {
-               console.log(data);
              },
            error => {
-             console.log(error);
                if (error.text = "User Logged Out Successfully") {
                  this.appService.isSignedIn = false;
                  let currentUser = JSON.parse(localStorage.getItem('currentUser'));

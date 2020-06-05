@@ -8,8 +8,10 @@
             menu
             </span> -->
     <mat-menu #afterMenu="matMenu" xPosition="after">
-        <p mat-menu-item>student name</p>
+        <p mat-menu-item>{{appService.currentUserValue ? appService.currentUserValue.name : undefined}}</p>
         <button mat-menu-item (click)="logout()"> Logout</button>
     </mat-menu>
 </mat-toolbar>
 <router-outlet></router-outlet>
+<!-- <mat-progress-spinner mode="indeterminate" *ngIf="true">
+</mat-progress-spinner> -->
