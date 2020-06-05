@@ -10,8 +10,8 @@
             </div>
             <div fxFlex="100">
                 <p fxFlex="35">Remaining Time</p>:<span fxFlex="2"></span>
-                 <countdown fxFlex="20" [config]="{leftTime: testDuration}"></countdown>
-                <button mat-button color="warn" fxFlex="30" class="float-right"(click)="submit()" mat-raised-button>Submit</button>
+                 <countdown fxFlex="20" [config]="{leftTime: testDuration}" (event)="fireEvent($event)"></countdown>
+                <button mat-button color="warn" fxFlex="30" class="float-right"(click)="confirmSubmitTest()" mat-raised-button>Submit</button>
             </div>
         </div>
     </div>
@@ -20,3 +20,13 @@
         <button mat-button color="primary" class="float-right" mat-raised-button>DOWNLOAD</button> -->
     </div>
 </div>
+<ng-template #confirmationDialog>
+    <h2 mat-dialog-title class="primary">Submit Test</h2>
+    <mat-dialog-content>
+        Are you sure you want to end the test?
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button matDialogClose="no" fxFlex="25">No</button>
+        <button mat-button color="primary" matDialogClose="yes" mat-raised-button fxFlex="30">Yes</button>
+    </mat-dialog-actions>
+</ng-template>

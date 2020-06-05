@@ -19,7 +19,21 @@
         background-color: orange;
     }
 }
-
+::ng-deep mat-dialog-container {
+    padding: 0 !important;
+}
+::ng-deep .mat-dialog-title{
+    padding: 15px;
+    margin-bottom: 0;
+}
+::ng-deep mat-dialog-content {
+    padding: 15px !important;
+    margin: 0 !important;
+}
+::ng-deep mat-dialog-actions {
+    padding: 0 15px !important;
+    margin: 0 !important;
+}
 @media screen and (max-width: 767px) {
     .student-wrapper {
         padding: 0.5em !important;

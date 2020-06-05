@@ -10,6 +10,10 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ResultComponent implements OnInit {
   testResultId: number;
+  testData = [
+  {questionNumber: 1, yourResponse: 'B', correctAnswer: "C", marks: 0, status: "wrong"}]
+  displayedColumns: string[] = ['questionNumber', 'yourResponse', 'correctAnswer', 'marks', 'status'];
+  dataSource = this.testData;
 
   constructor(private platformService: PlatformService, public studentTestService: StudentTestService,private activatedRoute: ActivatedRoute) { }
 

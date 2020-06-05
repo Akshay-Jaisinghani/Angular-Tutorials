@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { StudentTestService } from 'src/app/service/student-test.service';
 import { AppService } from 'src/app/service/app.service';
+import { CountdownComponent } from 'ngx-countdown';
 
 @Component({
   selector: 'app-student',
@@ -14,12 +15,18 @@ export class StudentComponent implements OnInit {
   inProgressTests = [];
   completedTest = [];
   currentStudentDetails;
+  @ViewChild('cd', { static: false }) public countdown: CountdownComponent;
 
+  fireEvent(event,obj){
+    if (event.action === "done") {
+      obj.enableStartTestButton = true;
+    }
+  }
 
   constructor(private router: Router, private studentTestService: StudentTestService, private appService: AppService) { }
 
   ngOnInit(): void {
-    let currentdateTime = Math.round(Date.now() / 1000);
+    let currentdateTime = Date.now();
     this.studentTestService.getStudentDetails().subscribe((data) => {
       this.currentStudentDetails = data;    
       let user = this.appService.currentUserValue; 
@@ -33,9 +40,10 @@ export class StudentComponent implements OnInit {
         this.studentTestService.getStudentTest("NOT STARTED").subscribe((data) => {
           this.notStartedTests = data;
           for (var i = 0; i < this.notStartedTests.length; i++) {
-            this.notStartedTests[i].startTest = currentdateTime == this.notStartedTests[i].testStartTime && currentdateTime < this.notStartedTests[i].testEndTime;
-            this.notStartedTests[i].testStartTime = (new Date(this.notStartedTests[i].testStartTime)).toUTCString();
-            this.notStartedTests[i].testEndTime = (new Date(this.notStartedTests[i].testEndTime)).toUTCString();
+            this.notStartedTests[i].enableStartTestButton = (this.notStartedTests[i].testStartTime <= currentdateTime && currentdateTime <= this.notStartedTests[i].testEndTime);
+            this.notStartedTests[i].countDown = this.notStartedTests[i].enableStartTestButton ? undefined : (this.notStartedTests[i].testStartTime - currentdateTime)/1000;
+            this.notStartedTests[i].testStartTime = ((new Date(this.notStartedTests[i].testStartTime)).toString()).slice(0,24);
+            this.notStartedTests[i].testEndTime = ((new Date(this.notStartedTests[i].testEndTime)).toString()).slice(0,24);
           }
         }, (error) => {
           console.log("Error", error);
@@ -44,8 +52,8 @@ export class StudentComponent implements OnInit {
             this.inProgressTests = data;
             for (var i = 0; i < this.inProgressTests.length; i++) {
               this.inProgressTests[i].startTest = currentdateTime == this.inProgressTests[i].testStartTime && currentdateTime < this.inProgressTests[i].testEndTime;
-              this.inProgressTests[i].testStartTime = (new Date(this.inProgressTests[i].testStartTime)).toUTCString();
-              this.inProgressTests[i].testEndTime = (new Date(this.inProgressTests[i].testEndTime)).toUTCString();
+              this.inProgressTests[i].testStartTime = ((new Date(this.inProgressTests[i].testStartTime)).toString()).slice(0,24);
+              this.inProgressTests[i].testEndTime = ((new Date(this.inProgressTests[i].testEndTime)).toString()).slice(0,24);
             }
           }, (error) => {
             console.log("Error", error);
@@ -54,8 +62,8 @@ export class StudentComponent implements OnInit {
               this.completedTest = data;
               for (var i = 0; i < this.completedTest.length; i++) {
                 this.completedTest[i].startTest = currentdateTime == this.completedTest[i].testStartTime && currentdateTime < this.completedTest[i].testEndTime;
-                this.completedTest[i].testStartTime = (new Date(this.completedTest[i].testStartTime)).toUTCString();
-                this.completedTest[i].testEndTime = (new Date(this.completedTest[i].testEndTime)).toUTCString();
+                this.completedTest[i].testStartTime = ((new Date(this.completedTest[i].testStartTime)).toString()).slice(0,24);
+                this.completedTest[i].testEndTime = ((new Date(this.completedTest[i].testEndTime)).toString()).slice(0,24);
               }
             }, (error) => {
               console.log("Error", error);
@@ -71,5 +79,9 @@ export class StudentComponent implements OnInit {
     this.studentTestService.currentTestResultId = testResultId;
     this.studentTestService.currentTestStatus = testStatus;
     this.router.navigateByUrl("test/"+ testId);
+  }
+
+  showResult(testResultId) {
+    this.router.navigateByUrl("result/" + testResultId);
   }
 }

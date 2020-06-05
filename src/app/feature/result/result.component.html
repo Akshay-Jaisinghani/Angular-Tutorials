@@ -1,6 +1,47 @@
 <div class="page-layout" fxLayout="column">
     <div class="result-section">
-        <p style="font-size: 20px;">Your score is</p>
+        <p style="font-size: 20px;" class="text-header text-center">Your score is</p>
         <p style="text-align: center;">{{this.studentTestService.totalMarksForTest}}</p>
     </div>
 </div>
+
+<!-- <div class="page-layout" fxLayout="column">
+	<p class="text-header text-center">Your score</p>
+    <div class="result-section">
+	    <div class="total-score">
+	        <p fxFlex="50">16</p>
+	        <p fxFlex="50">16/30</p>
+	    </div>
+	    <div class="result-details">
+		    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+				<ng-container matColumnDef="questionNumber">
+					<th mat-header-cell *matHeaderCellDef> Q.No. </th>
+					<td mat-cell *matCellDef="let element"> {{element.questionNumber}} </td>
+				</ng-container>
+
+				<ng-container matColumnDef="yourResponse">
+					<th mat-header-cell *matHeaderCellDef> Your Response </th>
+				    <td mat-cell *matCellDef="let element"> {{element.yourResponse}} </td>
+				</ng-container>
+
+				<ng-container matColumnDef="correctAnswer">
+					<th mat-header-cell *matHeaderCellDef> Correct Answer </th>
+				    <td mat-cell *matCellDef="let element"> {{element.correctAnswer}} </td>
+				</ng-container>
+
+				<ng-container matColumnDef="marks">
+					<th mat-header-cell *matHeaderCellDef> Marks </th>
+					<td mat-cell *matCellDef="let element"> {{element.marks}} </td>
+				</ng-container>
+
+				<ng-container matColumnDef="status">
+					<th mat-header-cell *matHeaderCellDef> Status </th>
+					<td mat-cell *matCellDef="let element"> {{element.status}} </td>
+				</ng-container>
+
+				<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+				<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+			</table>
+	    </div>
+    </div>
+</div> -->
