@@ -49,7 +49,6 @@ export class StudentTestService {
   constructor(private http: HttpClient, private appService: AppService,private platformService: PlatformService){
     this.apiUrl = environment.apiUrl;
     this.token = JSON.parse(localStorage.getItem('currentUser')).token;
-    console.log(this.token);
     this.httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -96,7 +95,6 @@ export class StudentTestService {
     }
     let url = this.apiUrl + this.serviceURL.currentQuestionAnswer;
     this.http.post<any>(url, currentAnswerObj, this.httpOptions).subscribe((res) => {
-      console.log(res);
     })
 
     var duplicateAnswers = this.allTestAnswers.filter((answer) => answer.question.id === currentAnswerObj.question.id);
@@ -144,7 +142,6 @@ export class StudentTestService {
       testResultId: testResultId
     }
     this.platformService.httpPost(this.platformService.getSetTestStatusUrl(), obj, this.httpOptions).subscribe((res) => {
-      console.log(res);
     })
   }
 
