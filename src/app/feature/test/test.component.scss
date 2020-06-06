@@ -24,6 +24,7 @@
 @media screen and (max-width: 1024px) {
     app-test-questions {
         width: 100% !important;
+        height: 52vh;
      //   float: left;
     }
     app-response {
@@ -35,6 +36,7 @@
 @media screen and (max-width: 1024px) {
     app-response {
         margin-top: 1em;
+        height: 23vh;
        // float: right;
    }
 }
