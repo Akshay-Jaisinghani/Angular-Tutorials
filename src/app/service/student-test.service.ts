@@ -31,6 +31,7 @@ export class StudentTestService {
   currentTestDuration;
   currentTestId;
   currentTestResultId;
+  currentTestName;
   submitTestObj = {
     test: {
       id: 0

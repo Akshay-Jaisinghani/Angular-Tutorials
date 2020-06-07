@@ -1,5 +1,5 @@
 .student-details-layout {
- //   height: 30vh;
+    height: 25vh;
     .student-wrapper {
         padding: 0 130px;
         box-sizing: border-box;
@@ -37,5 +37,8 @@
 @media screen and (max-width: 767px) {
     .student-wrapper {
         padding: 0.5em !important;
+    }
+    .section-class {
+        height: 30px !important;
     }
 }

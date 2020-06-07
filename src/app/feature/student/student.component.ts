@@ -74,10 +74,11 @@ export class StudentComponent implements OnInit {
       })
   }
 
-  redirectToTest(testId,duration,testResultId,testStatus) {
+  redirectToTest(testId,duration,testResultId,testStatus,testName) {
     this.studentTestService.currentTestDuration = Number(duration);
     this.studentTestService.currentTestResultId = testResultId;
     this.studentTestService.currentTestStatus = testStatus;
+    this.studentTestService.currentTestName = testName;
     this.router.navigateByUrl("test/"+ testId);
   }
 
