@@ -23,6 +23,8 @@ export class TestQuestionsComponent implements OnInit {
     3: "answered-and-marked-for-review-class",
     4: "answered-class"
   }
+  imgReloadCount = 0;
+  isImgReloadErrorMsg = false;
 
   constructor(public studentTestService: StudentTestService, private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
@@ -49,8 +51,10 @@ export class TestQuestionsComponent implements OnInit {
       } else {
         this.studentTestService.notVisited = this.studentTestService.allTestQuestions.length - 1;
         this.studentTestService.notAnswered = this.studentTestService.allTestQuestions.length;
+        this.isLoading = false;
+        this.isImgReloadErrorMsg = false;
       }
-      this.isLoading = false;
+     
     });
   }
 
@@ -136,6 +140,7 @@ export class TestQuestionsComponent implements OnInit {
   }
 
   next() {
+    this.clearFormArray();
     if (this.form.value.selectedOption == '') {
       document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "not-answered-class";
     }
@@ -205,11 +210,27 @@ export class TestQuestionsComponent implements OnInit {
       this.studentTestService.markedForReview = setAnswerStatusCount[2] ? setAnswerStatusCount[2].length : 0;
       this.studentTestService.answeredAndMarkedForReview = setAnswerStatusCount[3] ? setAnswerStatusCount[3].length : 0;
       this.studentTestService.answered = setAnswerStatusCount[4] ? setAnswerStatusCount[4].length : 0;
+      this.isLoading = false;
+      this.isImgReloadErrorMsg = false;
     });
   }
 
   getDbAnswer() {
     return this.studentTestService.getCurrentTestResponse().responseList;
+  }
+  reloadImage(event, imgSrc) {
+    this.imgReloadCount = this.imgReloadCount +1;
+    if(this.imgReloadCount<=3) {
+      event.target.src='';
+      event.target.src=imgSrc;
+    } else {
+       this.isImgReloadErrorMsg = true;
+    }    
+  }
+
+  reloadPage() {
+    this.isLoading = true;
+    this.getTestQuestions();
   }
 
 }
