@@ -1,9 +1,9 @@
 <div class="test-question-page-layout" fxLayout="column" fxFlex="100">
 
     <div *ngIf="this.studentTestService.currentQuestionObj" class="question-section">
-        <div *ngIf="isLoading" style="display: flex;justify-content: center; align-items: center;">
-            <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
-        </div>
+        <mat-card *ngIf="isLoading" style="display: flex;justify-content: center; align-items: center;">
+            <mat-progress-spinner color="primary" mode="inderminate"></mat-progress-spinner>
+        </mat-card>
         <div>
             <p>({{this.studentTestService.currentQuestionNumber+1}})
                 {{this.studentTestService.currentQuestionObj.content}}?</p>
