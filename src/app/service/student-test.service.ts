@@ -96,7 +96,7 @@ export class StudentTestService {
     let url = this.apiUrl + this.serviceURL.currentQuestionAnswer;
     this.http.post<any>(url, currentAnswerObj, this.httpOptions).subscribe((res) => {
     })
-
+    
     if(response!= '' && response.selectedOption != '') {
     var duplicateAnswers = this.allTestAnswers.filter((answer) => answer.question.id === currentAnswerObj.question.id);
     if (duplicateAnswers.length > 0) {
@@ -154,7 +154,7 @@ export class StudentTestService {
   }
 
   getCurrentTestResponse() {
-    return this.testResultAnswerResponseArr.find(item => {return item.questionId==this.currentQuestionObj.questionId})
+    return this.testResultAnswerResponseArr.find(item => {return item.questionId==this.currentQuestionObj.questionId});
   }
 
 }

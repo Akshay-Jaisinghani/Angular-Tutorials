@@ -47,10 +47,9 @@ export class TestQuestionsComponent implements OnInit {
       if (this.studentTestService.currentTestStatus == "IN PROGRESS") {
         this.getTestResultAnswerResponse();
       } else {
-        this.studentTestService.notVisited = this.studentTestService.allTestQuestions.length - 1;
-        this.studentTestService.notAnswered = this.studentTestService.allTestQuestions.length;
-      }
-      this.isLoading = false;
+        this.studentTestService.notVisited = this.studentTestService.allTestQuestions.length;
+        this.isLoading = false;
+      }     
     });
   }
 
@@ -72,10 +71,10 @@ export class TestQuestionsComponent implements OnInit {
 
   saveAndNext() {
     let status = 4;
-    if (this.form.value.selectedOption == '') {
-      document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "not-answered-class";
-    } else {
-      document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-class";
+    document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-class";
+    if (this.studentTestService.getAnswer().length==0) {
+      this.studentTestService.notVisited = this.studentTestService.notVisited - 1;
+      this.studentTestService.answered = this.studentTestService.answered + 1;
     }
     this.studentTestService.saveResponse(this.form.value, status);
     this.changeTestResponseClass();
@@ -108,23 +107,28 @@ export class TestQuestionsComponent implements OnInit {
   }
 
   changeTestResponseClass() {
+    if (this.studentTestService.getAnswer().length==0) {
+      this.studentTestService.notVisited = this.studentTestService.notVisited - 1;
+      this.studentTestService.answered = this.studentTestService.answered + 1;
+    }
     this.studentTestService.currentQuestionNumber = this.studentTestService.currentQuestionNumber + 1;
     this.studentTestService.currentQuestionObj = this.studentTestService.getQuestion(this.studentTestService.currentQuestionNumber);
-    if (this.studentTestService.notVisited > 0) {
-        this.studentTestService.notVisited = this.studentTestService.notVisited - 1;
-    }    
+
+    // if (this.studentTestService.notVisited > 0) {
+    //     this.studentTestService.notVisited = this.studentTestService.notVisited - 1;
+    // }    
     // if (this.studentTestService.notAnswered > 0) {
     //   this.studentTestService.notAnswered = this.studentTestService.notAnswered - 1;
     // }
     // if (this.studentTestService.answered < this.studentTestService.allTestQuestions.length) {
     //   this.studentTestService.answered = this.studentTestService.answered + 1;
     // }
-    if (this.studentTestService.notAnswered > 0) {
-      this.studentTestService.notAnswered = this.studentTestService.allTestQuestions.length - this.studentTestService.allTestAnswers.length;
-    }
-    if (this.studentTestService.answered <= this.studentTestService.allTestQuestions.length) {
-      this.studentTestService.answered = this.studentTestService.allTestAnswers.length;
-    }
+    // if (this.studentTestService.notAnswered > 0) {
+    //   this.studentTestService.notAnswered = this.studentTestService.allTestQuestions.length - this.studentTestService.allTestAnswers.length;
+    // }
+    // if (this.studentTestService.answered <= this.studentTestService.allTestQuestions.length) {
+    //   this.studentTestService.answered = this.studentTestService.allTestAnswers.length;
+    // }
   }
 
   back() {
@@ -136,6 +140,7 @@ export class TestQuestionsComponent implements OnInit {
   }
 
   next() {
+    this.clearFormArray();
     if (this.form.value.selectedOption == '') {
       document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "not-answered-class";
     }
@@ -163,6 +168,7 @@ export class TestQuestionsComponent implements OnInit {
 
   isAnswerSet() {
     if (this.studentTestService.getAnswer() != undefined) {
+      //this.changeTestResponseClass
       this.setValue(this.studentTestService.getAnswer())
     } else if (this.studentTestService.currentTestStatus == "IN PROGRESS") {
       this.setDBAnswer();
@@ -181,7 +187,7 @@ export class TestQuestionsComponent implements OnInit {
 
   setDBAnswer() {
     {
-      let responseArr = this.getDbAnswer();
+      let responseArr = this.studentTestService.getCurrentTestResponse().responseList;
       if (responseArr[0] != null) {
         this.setValue(responseArr);
       }
@@ -205,11 +211,8 @@ export class TestQuestionsComponent implements OnInit {
       this.studentTestService.markedForReview = setAnswerStatusCount[2] ? setAnswerStatusCount[2].length : 0;
       this.studentTestService.answeredAndMarkedForReview = setAnswerStatusCount[3] ? setAnswerStatusCount[3].length : 0;
       this.studentTestService.answered = setAnswerStatusCount[4] ? setAnswerStatusCount[4].length : 0;
+      this.isLoading = false;
     });
-  }
-
-  getDbAnswer() {
-    return this.studentTestService.getCurrentTestResponse().responseList;
   }
 
 }
