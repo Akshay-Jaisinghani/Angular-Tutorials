@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { StudentTestService } from 'src/app/service/student-test.service';
+import { AppService } from 'src/app/service/app.service';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import * as _ from "lodash";
@@ -24,7 +25,7 @@ export class TestQuestionsComponent implements OnInit {
     4: "answered-class"
   }
 
-  constructor(public studentTestService: StudentTestService, private formBuilder: FormBuilder) {
+  constructor(public studentTestService: StudentTestService, private formBuilder: FormBuilder, private appService: AppService) {
     this.form = this.formBuilder.group({
       optionsArray: this.formBuilder.array([]),
       selectedOption: ['', Validators.compose([Validators.required])]
@@ -37,18 +38,38 @@ export class TestQuestionsComponent implements OnInit {
   }
 
   getTestQuestions() {
+    let $this = this;
+    this.studentTestService.allTestAnswers = [];
     this.studentTestService.getTestQuestions(this.studentTestService.currentTestId).subscribe((data) => {
       this.studentTestService.allTestQuestions = data;
+      this.studentTestService.allTestQuestions.forEach(function (item) {
+        let currentAnswerObj = {
+          test: {
+            id: 0
+          },
+          student: {
+            id: 0
+          },
+          question: {
+            id: 0
+          },
+          responseOptionsList: [],
+          status: 0
+        }
+        currentAnswerObj.test.id = $this.studentTestService.currentTestId;
+        currentAnswerObj.student.id = $this.appService.currentUserValue.id;
+        currentAnswerObj.question.id = item.questionId;
+        $this.studentTestService.allTestAnswers.push(currentAnswerObj);
+      })
     }, (error) => {
       console.log("Error", error);
     }, () => {
-      this.studentTestService.currentQuestionObj = this.studentTestService.getQuestion(this.studentTestService.currentQuestionNumber);
+      this.studentTestService.currentQuestionObj = this.studentTestService.getCurrentQuestion(this.studentTestService.currentQuestionNumber);
       this.studentTestService.totalQuestionsCount = Array.from(new Array(this.studentTestService.allTestQuestions.length), (x, i) => i + 1);
       if (this.studentTestService.currentTestStatus == "IN PROGRESS") {
         this.getTestResultAnswerResponse();
       } else {
-        this.studentTestService.notVisited = this.studentTestService.allTestQuestions.length - 1;
-        this.studentTestService.notAnswered = this.studentTestService.allTestQuestions.length;
+        this.updateStatusCount($this.studentTestService.allTestAnswers);
       }
       this.isLoading = false;
     });
@@ -72,32 +93,33 @@ export class TestQuestionsComponent implements OnInit {
 
   saveAndNext() {
     let status = 4;
-    if (this.form.value.selectedOption == '') {
-      document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "not-answered-class";
-    } else {
-      document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-class";
-    }
-    this.studentTestService.saveResponse(this.form.value, status);
-    this.changeTestResponseClass();
-    this.clearFormArray();
-    this.isAnswerSet();
+    document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-class";
+    this.studentTestService.saveResponse(this.form.value, status).subscribe(
+      data => { },
+      error => { },
+      () => {
+        this.gotoNextQuestion();
+        this.clearFormArray();
+      })
   }
 
   saveAndMArkForReview() {
     let status = 3;
     document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-and-marked-for-review-class";
-    this.studentTestService.saveResponse(this.form.value, status);
-    this.changeTestResponseClass();
-    this.clearFormArray();
-    this.isAnswerSet();
+    this.studentTestService.saveResponse(this.form.value, status).subscribe(
+      data => { },
+      error => { },
+      () => {
+        this.gotoNextQuestion();
+        this.clearFormArray();
+      })
   }
 
   markForReviewAndNext() {
-    let status = 2;
+    let currentAnswerObj = this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber];
+    currentAnswerObj.status = 2;
     document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "marked-for-review-class";
-    this.changeTestResponseClass();
-    this.studentTestService.markedForReview = this.studentTestService.markedForReview + 1;
-    this.isAnswerSet();
+    this.gotoNextQuestion();
   }
 
   clearResponse() {
@@ -107,41 +129,49 @@ export class TestQuestionsComponent implements OnInit {
     }
   }
 
-  changeTestResponseClass() {
+  gotoNextQuestion() {
     this.studentTestService.currentQuestionNumber = this.studentTestService.currentQuestionNumber + 1;
-    this.studentTestService.currentQuestionObj = this.studentTestService.getQuestion(this.studentTestService.currentQuestionNumber);
-    if (this.studentTestService.notVisited > 0) {
-        this.studentTestService.notVisited = this.studentTestService.notVisited - 1;
-    }    
-    // if (this.studentTestService.notAnswered > 0) {
-    //   this.studentTestService.notAnswered = this.studentTestService.notAnswered - 1;
-    // }
-    // if (this.studentTestService.answered < this.studentTestService.allTestQuestions.length) {
-    //   this.studentTestService.answered = this.studentTestService.answered + 1;
-    // }
-    if (this.studentTestService.notAnswered > 0) {
-      this.studentTestService.notAnswered = this.studentTestService.allTestQuestions.length - this.studentTestService.allTestAnswers.length;
-    }
-    if (this.studentTestService.answered <= this.studentTestService.allTestQuestions.length) {
-      this.studentTestService.answered = this.studentTestService.allTestAnswers.length;
-    }
+    this.studentTestService.currentQuestionObj = this.studentTestService.getCurrentQuestion(this.studentTestService.currentQuestionNumber);
+    this.updateStatusCount(this.studentTestService.allTestAnswers);
+    this.setNextQuestionAnswer();
   }
 
   back() {
-    this.studentTestService.currentQuestionNumber = this.studentTestService.currentQuestionNumber - 1;
-    //let answerArr = this.studentTestService.getAnswer();
-    //this.patchValue(answerArr);
-    this.studentTestService.currentQuestionObj = this.studentTestService.getQuestion(this.studentTestService.currentQuestionNumber);
-    this.isAnswerSet();
+    if ((this.form.value.selectedOption === '' || !this.form.value.selectedOption) && this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber].status === 0) {
+      document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "not-answered-class";
+      let currentAnswerObj = this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber];
+      currentAnswerObj.status = 1;
+      this.studentTestService.saveResponse(this.form.value, currentAnswerObj.status).subscribe(
+        data => { },
+        error => { },
+        () => {
+          this.studentTestService.currentQuestionNumber = this.studentTestService.currentQuestionNumber - 1;
+          this.studentTestService.currentQuestionObj = this.studentTestService.getCurrentQuestion(this.studentTestService.currentQuestionNumber);
+          this.updateStatusCount(this.studentTestService.allTestAnswers);
+          this.setNextQuestionAnswer();
+        })
+    } else {
+      this.studentTestService.currentQuestionNumber = this.studentTestService.currentQuestionNumber - 1;
+      this.studentTestService.currentQuestionObj = this.studentTestService.getCurrentQuestion(this.studentTestService.currentQuestionNumber);
+      this.setNextQuestionAnswer();
+    }
+
   }
 
   next() {
-    if (this.form.value.selectedOption == '') {
+    if ((this.form.value.selectedOption === '' || !this.form.value.selectedOption) && this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber].status === 0) {
       document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "not-answered-class";
+      let currentAnswerObj = this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber];
+      currentAnswerObj.status = 1;
+      this.studentTestService.saveResponse(this.form.value, currentAnswerObj.status).subscribe(
+        data => { },
+        error => { },
+        () => {
+          this.gotoNextQuestion();
+        })
+    } else {
+      this.gotoNextQuestion();
     }
-    this.studentTestService.currentQuestionNumber = this.studentTestService.currentQuestionNumber + 1;
-    this.studentTestService.currentQuestionObj = this.studentTestService.getQuestion(this.studentTestService.currentQuestionNumber);
-    this.isAnswerSet();
   }
 
   clearFormArray() {
@@ -161,11 +191,13 @@ export class TestQuestionsComponent implements OnInit {
     }
   }
 
-  isAnswerSet() {
-    if (this.studentTestService.getAnswer() != undefined) {
-      this.setValue(this.studentTestService.getAnswer())
-    } else if (this.studentTestService.currentTestStatus == "IN PROGRESS") {
-      this.setDBAnswer();
+  setNextQuestionAnswer() {
+    if (this.studentTestService.currentTestStatus == "IN PROGRESS") {
+      let answerArr = this.studentTestService.getCurrentQuestionResponse(this.studentTestService.testResultAnswerResponseArr);
+      answerArr = answerArr ? answerArr.responseList : answerArr;
+      this.setValue(answerArr);
+    } else {
+      this.setValue(this.studentTestService.getCurrentQuestionResponse(this.studentTestService.allTestAnswers));
     }
   }
 
@@ -174,42 +206,33 @@ export class TestQuestionsComponent implements OnInit {
       this.form.controls['optionsArray'].setValue(answerArr);
     }
     else {
-      let answer = answerArr[0];
+      let answer = answerArr ? answerArr[0] : answerArr;
       this.form.controls['selectedOption'].setValue(answer);
     }
   }
 
-  setDBAnswer() {
-    {
-      let responseArr = this.getDbAnswer();
-      if (responseArr[0] != null) {
-        this.setValue(responseArr);
-      }
-    }
-  }
-
   getTestResultAnswerResponse() {
-    let $this =this;
+    let $this = this;
     this.studentTestService.getTestResultAnswerResponse().subscribe((data => {
       this.studentTestService.testResultAnswerResponseArr = data;
     }), (error) => {
 
     }, () => {
-      this.setDBAnswer();
-      this.studentTestService.testResultAnswerResponseArr.forEach(function(item){
+      this.setNextQuestionAnswer();
+      this.studentTestService.testResultAnswerResponseArr.forEach(function (item) {
         document.getElementsByClassName("question-number-class")[0].children[item.questionNumber - 1].className = $this.answerStatusEnum[item.status];
+        $this.studentTestService.allTestAnswers[item.questionNumber - 1].status = item.status;
       })
-      let setAnswerStatusCount = _.groupBy(_.map(this.studentTestService.testResultAnswerResponseArr, 'status'));      
-      this.studentTestService.notVisited = setAnswerStatusCount[0] ? setAnswerStatusCount[0].length : 0;
-      this.studentTestService.notAnswered = setAnswerStatusCount[1] ? setAnswerStatusCount[1].length : 0;
-      this.studentTestService.markedForReview = setAnswerStatusCount[2] ? setAnswerStatusCount[2].length : 0;
-      this.studentTestService.answeredAndMarkedForReview = setAnswerStatusCount[3] ? setAnswerStatusCount[3].length : 0;
-      this.studentTestService.answered = setAnswerStatusCount[4] ? setAnswerStatusCount[4].length : 0;
+      this.updateStatusCount(this.studentTestService.allTestAnswers);
     });
   }
 
-  getDbAnswer() {
-    return this.studentTestService.getCurrentTestResponse().responseList;
+  updateStatusCount(obj) {
+    let setAnswerStatusCount = _.groupBy(_.map(obj, 'status'));
+    this.studentTestService.notVisited = setAnswerStatusCount[0] ? setAnswerStatusCount[0].length : 0;
+    this.studentTestService.notAnswered = setAnswerStatusCount[1] ? setAnswerStatusCount[1].length : 0;
+    this.studentTestService.markedForReview = setAnswerStatusCount[2] ? setAnswerStatusCount[2].length : 0;
+    this.studentTestService.answeredAndMarkedForReview = setAnswerStatusCount[3] ? setAnswerStatusCount[3].length : 0;
+    this.studentTestService.answered = setAnswerStatusCount[4] ? setAnswerStatusCount[4].length : 0;
   }
-
 }

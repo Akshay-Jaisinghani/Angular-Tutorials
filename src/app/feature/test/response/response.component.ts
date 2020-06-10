@@ -15,12 +15,24 @@ export class ResponseComponent implements OnInit {
   }
 
   goToQuestionNumber(questionNumber) {
-    this.studentTestService.currentQuestionObj = this.studentTestService.getQuestion(questionNumber - 1);
-    this.studentTestService.currentQuestionNumber = questionNumber - 1;
-    if (this.studentTestService.notVisited > 0) {
-      this.studentTestService.notVisited = this.studentTestService.notVisited - 1;
+    // Check if current question number status is not visited
+    if (this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber].status === 0) {
+      // send status as 1 - not answered class
+      this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber].status = 1;
+      this.studentTestService.saveResponse('', 1).subscribe(
+      data => { },
+      error => { },
+      () => {
+        document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "not-answered-class";
+        this.studentTestService.currentQuestionObj = this.studentTestService.getCurrentQuestion(questionNumber - 1);
+        this.studentTestService.currentQuestionNumber = questionNumber - 1;
+        this.questionClicked.emit();
+      });
+    } else {
+      this.studentTestService.currentQuestionObj = this.studentTestService.getCurrentQuestion(questionNumber - 1);
+      this.studentTestService.currentQuestionNumber = questionNumber - 1;
+      this.questionClicked.emit();
     }
-    this.questionClicked.emit();
   }
 
 

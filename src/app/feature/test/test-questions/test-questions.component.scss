@@ -1,5 +1,5 @@
 .test-question-page-layout {
-//  width: 70%;
+  //  width: 70%;
   padding-top: 5em;
   padding-left: 10em;
   float: left;
@@ -8,10 +8,9 @@
   //padding: 0 0 0 150px;
   .question-section {
     overflow: auto;
-    max-height: 43vh;
     height: auto;
-    min-height: 18vh;
   }
+
   .save-and-next-button {
     background-color: #5eb456;
     color: white;
@@ -30,13 +29,14 @@
   }
 
   .button-layout {
-  //    width: 100%;
-      float: left;
-      // top: 150px;
-      // position: relative;
+    //    width: 100%;
+    float: left;
+    // top: 150px;
+    // position: relative;
   }
+
   .button-layout:last-child {
-    margin-top:15px;
+    margin-top: 15px;
   }
 }
 
@@ -64,23 +64,28 @@
   height: 15px;
   width: 15px;
 }
+
 @media screen and (max-width: 1024px) {
   .test-question-page-layout {
-    //  width: 70%;
-      padding-top: 2em;
-      padding-left: 0;
+    padding-top: 2em;
+    padding-left: 0;
   }
+
   .question-section {
-      padding-left: 2em;
+    padding-left: 2em;
   }
 }
 
 @media screen and (max-width: 767px) {
   .button-layout:last-child {
-    margin-top:15px;
+    margin-top: 15px;
     background-color: #f5f5f5;
     padding: 0.7em;
-}
+  }
+  .mat-button {
+    white-space: normal;
+    margin-right: 0 !important;
+  }
 }
 
 .disabledClass {

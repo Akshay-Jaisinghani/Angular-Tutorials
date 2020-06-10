@@ -27,7 +27,7 @@ export class StudentDetailsComponent implements OnInit {
   }
 
   submit() {
-    this.studentTestService.submitTest(this.appService.currentUserValue.id, this.studentTestService.currentTestId).subscribe(
+    this.studentTestService.submitTest().subscribe(
       (res) => {
         console.log(res);
       },

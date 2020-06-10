@@ -30,13 +30,14 @@ export class PlatformService {
   private apiBaseUrl = environment.apiUrl; // ("http://95.216.174.93:8089/eddytech/");
   private loginUrl = environment.apiUrl + "user/login";
   private logoutUrl = environment.apiUrl + "user/logout";
-  private testQuestions = environment.apiUrl + 'v1/question/test/'; // /v1/question/test/{testId} ///getQuestionsForTest/
+  private testQuestions = environment.apiUrl + 'v1/question/test/'; // /v1/question/test/{testId} ///getCurrentQuestionsForTest/
   private currentQuestionAnswer = environment.apiUrl + 'v1/testResultAnswer/save '; // /v1/testResultAnswer/save  ///savetestResultAnswer
   private submitTest = environment.apiUrl + 'v1/testResult/save'; // /v1/testResult/save ///saveStudentTestResult
   private getTestForStudent = environment.apiUrl + 'v1/test/status/';
   private getStudentDetails = environment.apiUrl + 'v1/student/find';
   private setTestStatus = environment.apiUrl + 'v1/testResult/status';
   private getTestResult = environment.apiUrl + 'v1/testResult/testResultId/';
+  private getTestResultAnswerResponse = environment.apiUrl + 'v1/testResultAnswer/response/testId/';
 
   getApiBaseUrl() {
     return this.apiBaseUrl;
@@ -70,6 +71,9 @@ export class PlatformService {
   }
   getTestResultUrl() {
     return this.getTestResult;
+  }
+  getTestResultAnswerResponseUrl() {
+    return this.getTestResultAnswerResponse;
   }
   // Methods
   httpGet(url, params?): Observable<any> {
