@@ -1,64 +1,74 @@
 <div class="test-question-page-layout" fxLayout="column" fxFlex="100">
 
     <div *ngIf="this.studentTestService.currentQuestionObj" class="question-section">
-        <mat-card *ngIf="isLoading" style="display: flex;justify-content: center; align-items: center;">
-            <mat-progress-spinner color="primary" mode="inderminate"></mat-progress-spinner>
-        </mat-card>
-        <div>
-            <p>({{this.studentTestService.currentQuestionNumber+1}})
-                {{this.studentTestService.currentQuestionObj.content}}</p>
-                <div *ngIf="this.studentTestService.currentQuestionObj.questionImg!=null">
-                    <img [src] = this.studentTestService.currentQuestionObj.questionImg> 
-                </div>
+        <div *ngIf="isLoading" style="display: flex;justify-content: center; align-items: center;">
+            <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
         </div>
-
-        <form [formGroup]="form" >
-            <div *ngIf="this.studentTestService.currentQuestionObj.questionType==1; else radioGroup">
-                <div *ngFor="let data of this.studentTestService.currentQuestionObj.optionvalue; let i=index">
-                    <label>
-                        <!-- <div *ngIf=(data.optionImg!=== "" )>
-                        <img [src] = data.optionImg>
-                        </div> -->
-                        <div *ngIf="data.optionImg!=' '">
-                            <img [src] = data.optionImg> 
-                        </div>
-                        <input type="checkbox"  [value]="data.id" (change)="onCheckboxChange($event)" />
-                        {{data.optionvalue}}
-                    </label>
+        <div *ngIf="isImgReloadErrorMsg; else questionContent"
+            style="display: flex;justify-content: center; align-items: center;">
+            <span style="color:red"> Please Refresh </span>
+            <mat-icon (click)='reloadPage()'>refresh</mat-icon>
+        </div>
+        <ng-template #questionContent>
+            <div>
+                <p>({{this.studentTestService.currentQuestionNumber+1}})
+                    {{this.studentTestService.currentQuestionObj.content}}?</p>
+                <div *ngIf="this.studentTestService.currentQuestionObj.questionImg!=null">
+                    <img [src]=this.studentTestService.currentQuestionObj.questionImg (error)='reloadImage($event, this.studentTestService.currentQuestionObj.questionImg)'>
                 </div>
             </div>
 
+            <form [formGroup]="form">
+                <div *ngIf="this.studentTestService.currentQuestionObj.questionType==1; else radioGroup">
+                    <div *ngFor="let data of this.studentTestService.currentQuestionObj.optionvalue; let i=index">
+                        <label>
+                            <!-- <div *ngIf=(data.optionImg!=== "" )>
+                        <img [src] = data.optionImg>
+                        </div> -->
+                            <div *ngIf="data.optionImg!=' '">
+                                <img [src]=data.optionImg (error)='reloadImage($event, data.optionImg)'>
+                            </div>
+                            <input type="checkbox" [value]="data.id" (change)="onCheckboxChange($event)" />
+                            {{data.optionvalue}}
+                        </label>
+                    </div>
+                </div>
 
-            <ng-template #radioGroup>
-                <mat-radio-group formControlName="selectedOption" aria-labelledby="example-radio-group-label"
-                    class="example-radio-group" required>
-                    <mat-radio-button class="example-radio-button"
-                        *ngFor="let data of this.studentTestService.currentQuestionObj.optionvalue; let i=index"
-                        [value]="data.id">
-                        <div *ngIf="data.optionImg!=' '">
-                            <img [src] = data.optionImg> 
-                        </div>
-                        {{data.optionvalue}}
-                    </mat-radio-button>
-                </mat-radio-group>
-            </ng-template>
-        </form>
+
+                <ng-template #radioGroup>
+                    <mat-radio-group formControlName="selectedOption" aria-labelledby="example-radio-group-label"
+                        class="example-radio-group" required>
+                        <mat-radio-button class="example-radio-button"
+                            *ngFor="let data of this.studentTestService.currentQuestionObj.optionvalue; let i=index"
+                            [value]="data.id">
+                            <div *ngIf="data.optionImg!=' '">
+                                <img [src]=data.optionImg>
+                            </div>
+                            {{data.optionvalue}}
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </ng-template>
+            </form>
+        </ng-template>
     </div>
 
     <div class="button-layout" fxLayoutAlign="stretch">
         <button mat-button mat-raised-button fxFlex="20" type="submit" (click)="saveAndNext()"
             class="save-and-next-button" [disabled]="!form.valid" [ngClass]="{'disabledClass' : !form.valid}">SAVE &
             NEXT</button>
-        <button mat-button mat-raised-button fxFlex="30" (click)="saveAndMArkForReview()"
-            class="save-and-mark-button" [disabled]="!form.valid" [ngClass]="{'disabledClass' : !form.valid}">SAVE & MARK FOR REVIEW</button>
+        <button mat-button mat-raised-button fxFlex="30" (click)="saveAndMArkForReview()" class="save-and-mark-button"
+            [disabled]="!form.valid" [ngClass]="{'disabledClass' : !form.valid}">SAVE & MARK FOR REVIEW</button>
         <button mat-button mat-raised-button fxFlex="20" (click)="clearResponse()">CLEAR RESPONSE</button>
         <button mat-button mat-raised-button color="primary" fxFlex="30" (click)="markForReviewAndNext()">MARK FOR
             REVIEW & NEXT</button>
     </div>
 
-    <div class="button-layout"  *ngIf="this.studentTestService.currentQuestionObj" fxLayout="row" fxLayoutAlign="stretch">
-        <button mat-button mat-raised-button fxFlex="15" (click)="back()" [disabled]="this.studentTestService.currentQuestionNumber<=0">BACK</button>
-        <button mat-button mat-raised-button fxFlex="20" (click)="next()" [disabled]="this.studentTestService.currentQuestionNumber==this.studentTestService.allTestQuestions.length-1">NEXT</button>
+    <div class="button-layout" *ngIf="this.studentTestService.currentQuestionObj" fxLayout="row"
+        fxLayoutAlign="stretch">
+        <button mat-button mat-raised-button fxFlex="15" (click)="back()"
+            [disabled]="this.studentTestService.currentQuestionNumber<=0">BACK</button>
+        <button mat-button mat-raised-button fxFlex="20" (click)="next()"
+            [disabled]="this.studentTestService.currentQuestionNumber==this.studentTestService.allTestQuestions.length-1">NEXT</button>
     </div>
 
 </div>

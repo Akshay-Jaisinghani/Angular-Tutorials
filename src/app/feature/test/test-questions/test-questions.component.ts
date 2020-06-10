@@ -24,6 +24,8 @@ export class TestQuestionsComponent implements OnInit {
     3: "answered-and-marked-for-review-class",
     4: "answered-class"
   }
+  imgReloadCount = 0;
+  isImgReloadErrorMsg = false;
 
   constructor(public studentTestService: StudentTestService, private formBuilder: FormBuilder, private appService: AppService) {
     this.form = this.formBuilder.group({
@@ -70,8 +72,9 @@ export class TestQuestionsComponent implements OnInit {
         this.getTestResultAnswerResponse();
       } else {
         this.updateStatusCount($this.studentTestService.allTestAnswers);
-      }
+      }     
       this.isLoading = false;
+      this.isImgReloadErrorMsg = false;
     });
   }
 
@@ -224,6 +227,8 @@ export class TestQuestionsComponent implements OnInit {
         $this.studentTestService.allTestAnswers[item.questionNumber - 1].status = item.status;
       })
       this.updateStatusCount(this.studentTestService.allTestAnswers);
+      this.isLoading = false;
+      this.isImgReloadErrorMsg = false;
     });
   }
 
@@ -235,4 +240,19 @@ export class TestQuestionsComponent implements OnInit {
     this.studentTestService.answeredAndMarkedForReview = setAnswerStatusCount[3] ? setAnswerStatusCount[3].length : 0;
     this.studentTestService.answered = setAnswerStatusCount[4] ? setAnswerStatusCount[4].length : 0;
   }
+  reloadImage(event, imgSrc) {
+    this.imgReloadCount = this.imgReloadCount +1;
+    if(this.imgReloadCount<=3) {
+      event.target.src='';
+      event.target.src=imgSrc;
+    } else {
+       this.isImgReloadErrorMsg = true;
+    }    
+  }
+
+  reloadPage() {
+    this.isLoading = true;
+    this.getTestQuestions();
+  }
+
 }
