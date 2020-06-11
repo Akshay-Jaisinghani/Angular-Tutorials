@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 import { AppService } from './app.service';
 import { PlatformService } from './platform.service';
 
@@ -65,9 +64,9 @@ export class StudentTestService {
   saveResponse(response, status) {
     let currentAnswerObj = this.allTestAnswers[this.currentQuestionNumber];
     if (this.currentQuestionObj.questionType === 1) {
-      currentAnswerObj.responseOptionsList = response.optionsArray;
+      currentAnswerObj.responseList = response.optionsArray;
     } else if (response !== '' && response.selectedOption !== '') {
-      currentAnswerObj.responseOptionsList[0] = response.selectedOption;
+      currentAnswerObj.responseList[0] = response.selectedOption;
     }
     currentAnswerObj.status = status;
     return this.platformService.httpPost(this.platformService.getCurrentQuestionAnswerUrl(), currentAnswerObj, this.getHttpOption());

@@ -55,7 +55,7 @@ export class TestQuestionsComponent implements OnInit {
           question: {
             id: 0
           },
-          responseOptionsList: [],
+          responseList: [],
           status: 0
         }
         currentAnswerObj.test.id = $this.studentTestService.currentTestId;
@@ -72,7 +72,7 @@ export class TestQuestionsComponent implements OnInit {
         this.getTestResultAnswerResponse();
       } else {
         this.updateStatusCount($this.studentTestService.allTestAnswers);
-      }     
+      }
       this.isLoading = false;
       this.isImgReloadErrorMsg = false;
     });
@@ -101,8 +101,8 @@ export class TestQuestionsComponent implements OnInit {
       data => { },
       error => { },
       () => {
-        this.gotoNextQuestion();
         this.clearFormArray();
+        this.gotoNextQuestion();
       })
   }
 
@@ -113,8 +113,8 @@ export class TestQuestionsComponent implements OnInit {
       data => { },
       error => { },
       () => {
-        this.gotoNextQuestion();
         this.clearFormArray();
+        this.gotoNextQuestion();
       })
   }
 
@@ -195,13 +195,9 @@ export class TestQuestionsComponent implements OnInit {
   }
 
   setNextQuestionAnswer() {
-    if (this.studentTestService.currentTestStatus == "IN PROGRESS") {
-      let answerArr = this.studentTestService.getCurrentQuestionResponse(this.studentTestService.testResultAnswerResponseArr);
-      answerArr = answerArr ? answerArr.responseList : answerArr;
-      this.setValue(answerArr);
-    } else {
-      this.setValue(this.studentTestService.getCurrentQuestionResponse(this.studentTestService.allTestAnswers));
-    }
+    let answerArr = this.studentTestService.getCurrentQuestionResponse(this.studentTestService.allTestAnswers);
+    answerArr = answerArr ? answerArr.responseList : answerArr;
+    this.setValue(answerArr);
   }
 
   setValue(answerArr) {
@@ -225,6 +221,7 @@ export class TestQuestionsComponent implements OnInit {
       this.studentTestService.testResultAnswerResponseArr.forEach(function (item) {
         document.getElementsByClassName("question-number-class")[0].children[item.questionNumber - 1].className = $this.answerStatusEnum[item.status];
         $this.studentTestService.allTestAnswers[item.questionNumber - 1].status = item.status;
+        $this.studentTestService.allTestAnswers[item.questionNumber - 1].responseList = item.responseList;
       })
       this.updateStatusCount(this.studentTestService.allTestAnswers);
       this.isLoading = false;
@@ -240,19 +237,19 @@ export class TestQuestionsComponent implements OnInit {
     this.studentTestService.answeredAndMarkedForReview = setAnswerStatusCount[3] ? setAnswerStatusCount[3].length : 0;
     this.studentTestService.answered = setAnswerStatusCount[4] ? setAnswerStatusCount[4].length : 0;
   }
+
   reloadImage(event, imgSrc) {
-    this.imgReloadCount = this.imgReloadCount +1;
-    if(this.imgReloadCount<=3) {
-      event.target.src='';
-      event.target.src=imgSrc;
+    this.imgReloadCount = this.imgReloadCount + 1;
+    if (this.imgReloadCount <= 3) {
+      event.target.src = '';
+      event.target.src = imgSrc;
     } else {
-       this.isImgReloadErrorMsg = true;
-    }    
+      this.isImgReloadErrorMsg = true;
+    }
   }
 
   reloadPage() {
     this.isLoading = true;
     this.getTestQuestions();
   }
-
 }
