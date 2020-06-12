@@ -35,6 +35,7 @@ export class StudentTestService {
   testResultAnswerResponseArr;
   totalMarksForTest;
   currentTestStatus;
+  currentTime: number;
 
 
 
@@ -62,6 +63,7 @@ export class StudentTestService {
   }
 
   saveResponse(response, status) {
+    console.log('currentTime', this.currentTime);
     let currentAnswerObj = this.allTestAnswers[this.currentQuestionNumber];
     if (this.currentQuestionObj.questionType === 1) {
       currentAnswerObj.responseOptionsList = response.optionsArray;

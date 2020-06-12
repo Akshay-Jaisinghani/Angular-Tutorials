@@ -10,8 +10,8 @@
             </div>
             <div fxFlex="100">
                 <p fxFlex="35">Remaining Time</p>:<span fxFlex="2"></span>
-                 <countdown fxFlex="20" [config]="{leftTime: testDuration}" (event)="fireEvent($event)"></countdown>
-                <button mat-button color="warn" fxFlex="30" class="float-right"(click)="confirmSubmitTest()" mat-raised-button>Submit</button>
+                 <countdown #countdown fxFlex="20" [config]="{leftTime: testDuration}" (event)="fireEvent($event)"></countdown>
+                 <button mat-button color="warn" fxFlex="30" class="float-right"(click)="confirmSubmitTest()" mat-raised-button>Submit</button>
             </div>
         </div>
     </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { StudentTestService } from 'src/app/service/student-test.service';
 import { AppService } from 'src/app/service/app.service';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
@@ -33,6 +33,8 @@ export class TestQuestionsComponent implements OnInit {
       selectedOption: ['', Validators.compose([Validators.required])]
     });
   }
+  @Output() answerMarked = new EventEmitter<any>();
+
 
   ngOnInit() {
     this.isLoading = true;
@@ -93,6 +95,7 @@ export class TestQuestionsComponent implements OnInit {
   }
 
   saveAndNext() {
+    this.answerMarked.emit();
     let status = 4;
     document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-class";
     this.studentTestService.saveResponse(this.form.value, status).subscribe(

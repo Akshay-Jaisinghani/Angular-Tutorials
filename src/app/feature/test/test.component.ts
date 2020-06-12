@@ -3,6 +3,7 @@ import { TestQuestionsComponent } from './test-questions/test-questions.componen
 import { StudentTestService } from 'src/app/service/student-test.service';
 import { ActivatedRoute } from '@angular/router';
 import * as _ from "lodash";
+import { StudentDetailsComponent } from './student-details/student-details.component';
 
 @Component({
   selector: 'app-test',
@@ -13,6 +14,10 @@ export class TestComponent implements OnInit {
 
   @ViewChild(TestQuestionsComponent)
   private testQuestion: TestQuestionsComponent;
+  
+  @ViewChild(StudentDetailsComponent)
+  private studentDetails: StudentDetailsComponent;
+
   hasInstructionsRead = false;
   currentTest;
 
@@ -45,5 +50,12 @@ export class TestComponent implements OnInit {
   questionClicked() {
     this.testQuestion.updateStatusCount(this.studentTestService.allTestAnswers);
     this.testQuestion.setNextQuestionAnswer();
+  }
+
+  answerMarked() {
+    let event = {
+      action: 'pause'
+    };
+    this.studentDetails.fireEvent(event);
   }
 }
