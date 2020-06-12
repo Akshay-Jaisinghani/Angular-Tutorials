@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { TestQuestionsComponent } from './test-questions/test-questions.component';
 import { StudentTestService } from 'src/app/service/student-test.service';
 import { ActivatedRoute } from '@angular/router';
+import * as _ from "lodash";
 
 @Component({
   selector: 'app-test',
@@ -13,6 +14,8 @@ export class TestComponent implements OnInit {
   @ViewChild(TestQuestionsComponent)
   private testQuestion: TestQuestionsComponent;
   hasInstructionsRead = false;
+  currentTest;
+
   constructor(private studentTestService: StudentTestService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {

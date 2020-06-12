@@ -6,7 +6,7 @@
         </div>
         <div *ngIf="isImgReloadErrorMsg; else questionContent"
             style="display: flex;justify-content: center; align-items: center;">
-            <span style="color:red"> Please Refresh </span>
+            <span style="color:red"> Please click here to refresh </span>
             <mat-icon (click)='reloadPage()'>refresh</mat-icon>
         </div>
         <ng-template #questionContent>

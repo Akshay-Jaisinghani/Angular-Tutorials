@@ -26,7 +26,6 @@ export class TestQuestionsComponent implements OnInit {
   }
   imgReloadCount = 0;
   isImgReloadErrorMsg = false;
-  currentTest;
 
   constructor(public studentTestService: StudentTestService, private formBuilder: FormBuilder, private appService: AppService, private activatedRoute: ActivatedRoute) {
     this.form = this.formBuilder.group({
