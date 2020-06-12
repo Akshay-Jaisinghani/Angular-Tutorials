@@ -19,6 +19,19 @@ export class TestComponent implements OnInit {
     this.activatedRoute.paramMap.subscribe(params => {
       this.studentTestService.currentTestId = Number(params.get('id'));
     });
+    if (!this.studentTestService.currentTestResultId) {
+      this.studentTestService.getStudentTest("IN PROGRESS").subscribe((data) => {
+        let indexOfCurrentTest = _.indexOf(_.map(data,"testId"), this.studentTestService.currentTestId);
+        this.currentTest = data[indexOfCurrentTest];
+      }, (error) => {
+        console.log("Error", error);
+      }, () => {
+        this.studentTestService.currentTestDuration = Number(this.currentTest.duration);
+        this.studentTestService.currentTestResultId = this.currentTest.testResultId;
+        this.studentTestService.currentTestStatus = this.currentTest.testStatus;
+        this.studentTestService.currentTestName = this.currentTest.testName;
+      })
+    }
   }
   
   startTest() {

@@ -64,9 +64,11 @@ export class StudentTestService {
   saveResponse(response, status) {
     let currentAnswerObj = this.allTestAnswers[this.currentQuestionNumber];
     if (this.currentQuestionObj.questionType === 1) {
-      currentAnswerObj.responseList = response.optionsArray;
+      currentAnswerObj.responseOptionsList = response.optionsArray;
     } else if (response !== '' && response.selectedOption !== '') {
-      currentAnswerObj.responseList[0] = response.selectedOption;
+      currentAnswerObj.responseOptionsList[0] = response.selectedOption;
+    } else if (response !== '' && response.selectedOption === '') {
+      currentAnswerObj.responseOptionsList[0] = null;
     }
     currentAnswerObj.status = status;
     return this.platformService.httpPost(this.platformService.getCurrentQuestionAnswerUrl(), currentAnswerObj, this.getHttpOption());
@@ -81,7 +83,7 @@ export class StudentTestService {
 
   getCurrentQuestionResponse(answerObj) {
     let obj = answerObj.find(item => {
-      return item.questionId == this.currentQuestionObj.questionId;
+      return item.question.id == this.currentQuestionObj.questionId;
     })
     return obj;
   }
