@@ -1,6 +1,6 @@
 <div class="test-page-layout" fxLayout.sm="column" fxLayout.md="column" *ngIf="hasInstructionsRead">
     <app-student-details></app-student-details>
-    <app-test-questions></app-test-questions>
+    <app-test-questions  (answerMarked)="answerMarked()"></app-test-questions>
     <app-response (questionClicked)="questionClicked()"></app-response>
 </div>
 <div *ngIf="!hasInstructionsRead" fxLayout="column" class="instruction-class">

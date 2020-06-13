@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { StudentTestService } from 'src/app/service/student-test.service';
 import { AppService } from 'src/app/service/app.service';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
@@ -33,6 +33,8 @@ export class TestQuestionsComponent implements OnInit {
       selectedOption: ['', Validators.compose([Validators.required])]
     });
   }
+  @Output() answerMarked = new EventEmitter<any>();
+
 
   ngOnInit() {
     this.isLoading = true;
@@ -40,11 +42,11 @@ export class TestQuestionsComponent implements OnInit {
   }
 
   getTestQuestions() {
-    this.currentQuestionStartTime = 0;
-    this.currentQuestionEndTime = 0;
+    this.studentTestService.currentQuestionStartTime = 0;
+    this.studentTestService.currentQuestionEndTime = 0;
     let $this = this;
     this.studentTestService.allTestAnswers = [];
-    let studentId = this.appService.currentUserValue.id;
+    let studentId = JSON.parse(localStorage.getItem('currentUser')).studentId;
     this.studentTestService.getTestQuestions(this.studentTestService.currentTestId).subscribe((data) => {
       this.studentTestService.allTestQuestions = data;
       this.studentTestService.allTestQuestions.forEach(function (item) {
@@ -76,7 +78,7 @@ export class TestQuestionsComponent implements OnInit {
       this.isLoading = false;
       this.isImgReloadErrorMsg = false;
       this.studentTestService.changeMessage("currentTime");
-      console.log(this.studentTestService.currentQuestionStartTime);
+      console.log("start time",this.studentTestService.currentQuestionStartTime);
     });
   }
 
@@ -100,7 +102,7 @@ export class TestQuestionsComponent implements OnInit {
     let status = 4;
     document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-class";
     this.studentTestService.changeMessage("currentTime");
-    console.log(this.studentTestService.currentQuestionEndTime);
+    console.log("End Time", this.studentTestService.currentQuestionEndTime);
     this.studentTestService.saveResponse(this.form.value, status).subscribe(
       data => { },
       error => { },
@@ -108,7 +110,7 @@ export class TestQuestionsComponent implements OnInit {
         this.clearFormArray();
         this.gotoNextQuestion();
         this.studentTestService.changeMessage("currentTime");
-        console.log(this.studentTestService.currentQuestionStartTime);
+        console.log("start time",this.studentTestService.currentQuestionStartTime);
       })
   }
 
@@ -116,7 +118,7 @@ export class TestQuestionsComponent implements OnInit {
     let status = 3;
     document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-and-marked-for-review-class";
     this.studentTestService.changeMessage("currentTime");
-    console.log(this.studentTestService.currentQuestionEndTime);
+    console.log("End Time", this.studentTestService.currentQuestionEndTime);
     this.studentTestService.saveResponse(this.form.value, status).subscribe(
       data => { },
       error => { },
@@ -124,19 +126,23 @@ export class TestQuestionsComponent implements OnInit {
         this.clearFormArray();
         this.gotoNextQuestion();
         this.studentTestService.changeMessage("currentTime");
-        console.log(this.studentTestService.currentQuestionStartTime);
+        console.log("start time",this.studentTestService.currentQuestionStartTime);
       })
   }
 
   markForReviewAndNext() {
     let currentAnswerObj = this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber];
     currentAnswerObj.status = 2;
+    this.studentTestService.changeMessage("currentTime");
+    console.log("End Time", this.studentTestService.currentQuestionEndTime);
     this.studentTestService.saveResponse(this.form.value, currentAnswerObj.status).subscribe(
         data => { },
         error => { },
         () => {
           document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "marked-for-review-class";
           this.gotoNextQuestion();
+          this.studentTestService.changeMessage("currentTime");
+          console.log("start time",this.studentTestService.currentQuestionStartTime);
         })
   }
 
@@ -164,41 +170,42 @@ export class TestQuestionsComponent implements OnInit {
   }
 
   back() {
+    let currentAnswerObj = this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber];
     if ((this.form.value.selectedOption === '' || !this.form.value.selectedOption) && this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber].status === 0) {
       document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "not-answered-class";
-      let currentAnswerObj = this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber];
       currentAnswerObj.status = 1;
-      this.studentTestService.saveResponse(this.form.value, currentAnswerObj.status).subscribe(
-        data => { },
-        error => { },
-        () => {
-          this.studentTestService.currentQuestionNumber = this.studentTestService.currentQuestionNumber - 1;
-          this.studentTestService.currentQuestionObj = this.studentTestService.getCurrentQuestion(this.studentTestService.currentQuestionNumber);
-          this.updateStatusCount(this.studentTestService.allTestAnswers);
-          this.setNextQuestionAnswer();
-        })
-    } else {
-      this.studentTestService.currentQuestionNumber = this.studentTestService.currentQuestionNumber - 1;
-      this.studentTestService.currentQuestionObj = this.studentTestService.getCurrentQuestion(this.studentTestService.currentQuestionNumber);
-      this.setNextQuestionAnswer();
     }
-
+    this.studentTestService.changeMessage("currentTime");
+    console.log("End Time", this.studentTestService.currentQuestionEndTime);
+    this.studentTestService.saveResponse(this.form.value, currentAnswerObj.status).subscribe(
+      data => { },
+      error => { },
+      () => {
+        this.studentTestService.currentQuestionNumber = this.studentTestService.currentQuestionNumber - 1;
+        this.studentTestService.currentQuestionObj = this.studentTestService.getCurrentQuestion(this.studentTestService.currentQuestionNumber);
+        this.updateStatusCount(this.studentTestService.allTestAnswers);
+        this.setNextQuestionAnswer();
+        this.studentTestService.changeMessage("currentTime");
+        console.log("start time",this.studentTestService.currentQuestionStartTime);
+      })
   }
 
   next() {
+    let currentAnswerObj = this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber];
     if ((this.form.value.selectedOption === '' || !this.form.value.selectedOption) && this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber].status === 0) {
       document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "not-answered-class";
-      let currentAnswerObj = this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber];
       currentAnswerObj.status = 1;
-      this.studentTestService.saveResponse(this.form.value, currentAnswerObj.status).subscribe(
-        data => { },
-        error => { },
-        () => {
-          this.gotoNextQuestion();
-        })
-    } else {
-      this.gotoNextQuestion();
     }
+    this.studentTestService.changeMessage("currentTime");
+    console.log("End Time", this.studentTestService.currentQuestionEndTime);
+    this.studentTestService.saveResponse(this.form.value, currentAnswerObj.status).subscribe(
+      data => { },
+      error => { },
+      () => {
+        this.gotoNextQuestion();
+        this.studentTestService.changeMessage("currentTime");
+        console.log("start time",this.studentTestService.currentQuestionStartTime);
+      })
   }
 
   clearFormArray() {

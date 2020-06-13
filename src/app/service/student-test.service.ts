@@ -40,6 +40,7 @@ export class StudentTestService {
   currentTestStatus;
   currentQuestionStartTime = 0;
   currentQuestionEndTime = 0;
+  currentTime: number;
 
   private messageSource = new BehaviorSubject('default message');
   currentMessage = this.messageSource.asObservable();
@@ -76,9 +77,7 @@ export class StudentTestService {
     let duration = this.currentQuestionStartTime - this.currentQuestionEndTime;
     if (this.currentQuestionObj.questionType === 1) {
       currentAnswerObj.responseOptionsList = response.optionsArray;
-    } else if (response !== '' && response.selectedOption !== '') {
-      currentAnswerObj.responseOptionsList[0] = response.selectedOption;
-    } else if (response !== '' && response.selectedOption === '') {
+    } else if (response !== '' && response.selectedOption !== '' && response.selectedOption && response.selectedOption !== null) {
       currentAnswerObj.responseOptionsList[0] = response.selectedOption;
     }
     currentAnswerObj.status = status;
