@@ -30,6 +30,6 @@
     </p> -->
     <div>
         <p>All The Best!!</p>
-        <button mat-button mat-raised-button color="primary" (click)="startTest()">START TEST</button>
+        <button mat-button mat-raised-button color="primary" (click)="startTest()" [disabled]="studentTestService.currentTestStatus === 'COMPLETED'">START TEST</button>
     </div>    
 </div>

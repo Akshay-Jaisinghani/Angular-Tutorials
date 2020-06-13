@@ -21,7 +21,7 @@ export class TestComponent implements OnInit {
   hasInstructionsRead = false;
   currentTest;
 
-  constructor(private studentTestService: StudentTestService, private activatedRoute: ActivatedRoute) { }
+  constructor(public studentTestService: StudentTestService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
