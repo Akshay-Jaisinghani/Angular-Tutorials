@@ -32,6 +32,9 @@ export class StudentComponent implements OnInit {
       let user = this.appService.currentUserValue; 
       user = { ...user, ...this.currentStudentDetails };
       this.appService.currentUserSubject.next(user);
+      let localUser = JSON.parse(localStorage.getItem('currentUser'));
+      localUser.studentId = data.id;
+      localStorage.setItem('currentUser', JSON.stringify(localUser));
     },
       error => {
         console.log(error);

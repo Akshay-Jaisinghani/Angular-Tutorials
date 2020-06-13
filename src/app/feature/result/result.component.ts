@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PlatformService } from 'src/app/service/platform.service';
 import { StudentTestService } from 'src/app/service/student-test.service';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-result',
@@ -15,7 +16,7 @@ export class ResultComponent implements OnInit {
   displayedColumns: string[] = ['questionNumber', 'yourResponse', 'correctAnswer', 'marks', 'status'];
   dataSource = this.testData;
 
-  constructor(private platformService: PlatformService, public studentTestService: StudentTestService,private activatedRoute: ActivatedRoute) { }
+  constructor(private platformService: PlatformService, public studentTestService: StudentTestService,private activatedRoute: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
@@ -29,6 +30,10 @@ export class ResultComponent implements OnInit {
         console.log(error);
       }
     )
+  }
+
+  navigateToHome() {
+    this.router.navigateByUrl("student");
   }
 
 }
