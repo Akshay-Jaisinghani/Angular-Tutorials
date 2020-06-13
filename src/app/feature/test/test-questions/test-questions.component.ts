@@ -40,6 +40,8 @@ export class TestQuestionsComponent implements OnInit {
   }
 
   getTestQuestions() {
+    this.currentQuestionStartTime = 0;
+    this.currentQuestionEndTime = 0;
     let $this = this;
     this.studentTestService.allTestAnswers = [];
     let studentId = this.appService.currentUserValue.id;
@@ -73,6 +75,8 @@ export class TestQuestionsComponent implements OnInit {
       }
       this.isLoading = false;
       this.isImgReloadErrorMsg = false;
+      this.studentTestService.changeMessage("currentTime");
+      console.log(this.studentTestService.currentQuestionStartTime);
     });
   }
 
@@ -95,24 +99,32 @@ export class TestQuestionsComponent implements OnInit {
   saveAndNext() {
     let status = 4;
     document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-class";
+    this.studentTestService.changeMessage("currentTime");
+    console.log(this.studentTestService.currentQuestionEndTime);
     this.studentTestService.saveResponse(this.form.value, status).subscribe(
       data => { },
       error => { },
       () => {
         this.clearFormArray();
         this.gotoNextQuestion();
+        this.studentTestService.changeMessage("currentTime");
+        console.log(this.studentTestService.currentQuestionStartTime);
       })
   }
 
   saveAndMArkForReview() {
     let status = 3;
     document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-and-marked-for-review-class";
+    this.studentTestService.changeMessage("currentTime");
+    console.log(this.studentTestService.currentQuestionEndTime);
     this.studentTestService.saveResponse(this.form.value, status).subscribe(
       data => { },
       error => { },
       () => {
         this.clearFormArray();
         this.gotoNextQuestion();
+        this.studentTestService.changeMessage("currentTime");
+        console.log(this.studentTestService.currentQuestionStartTime);
       })
   }
 

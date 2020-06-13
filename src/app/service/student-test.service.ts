@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppService } from './app.service';
 import { PlatformService } from './platform.service';
+import { BehaviorSubject } from 'rxjs';
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -35,8 +38,15 @@ export class StudentTestService {
   testResultAnswerResponseArr;
   totalMarksForTest;
   currentTestStatus;
+  currentQuestionStartTime = 0;
+  currentQuestionEndTime = 0;
 
+  private messageSource = new BehaviorSubject('default message');
+  currentMessage = this.messageSource.asObservable();
 
+  changeMessage(message: string) {
+    this.messageSource.next(message)
+  }
 
   constructor(private http: HttpClient, private appService: AppService, private platformService: PlatformService) { }
 
@@ -62,15 +72,19 @@ export class StudentTestService {
   }
 
   saveResponse(response, status) {
-    let currentAnswerObj = this.allTestAnswers[this.currentQuestionNumber];
+    let currentAnswerObj = this.allTestAnswers[this.currentQuestionNumber]; 
+    let duration = this.currentQuestionStartTime - this.currentQuestionEndTime;
     if (this.currentQuestionObj.questionType === 1) {
       currentAnswerObj.responseOptionsList = response.optionsArray;
     } else if (response !== '' && response.selectedOption !== '') {
       currentAnswerObj.responseOptionsList[0] = response.selectedOption;
     } else if (response !== '' && response.selectedOption === '') {
-      currentAnswerObj.responseOptionsList[0] = null;
+      currentAnswerObj.responseOptionsList[0] = response.selectedOption;
     }
     currentAnswerObj.status = status;
+    currentAnswerObj.duration = duration / 1000;
+    this.currentQuestionStartTime = 0;
+    this.currentQuestionEndTime = 0;
     return this.platformService.httpPost(this.platformService.getCurrentQuestionAnswerUrl(), currentAnswerObj, this.getHttpOption());
   }
 

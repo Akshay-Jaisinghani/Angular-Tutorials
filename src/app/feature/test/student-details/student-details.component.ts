@@ -3,6 +3,7 @@ import { StudentTestService } from 'src/app/service/student-test.service';
 import { AppService } from 'src/app/service/app.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { CountdownComponent } from 'ngx-countdown';
 
 @Component({
   selector: 'app-student-details',
@@ -17,16 +18,35 @@ export class StudentDetailsComponent implements OnInit {
     this.currentUser = this.appService.currentUserValue;
   }
   testDuration;
+  @ViewChild('countdown') counter: CountdownComponent;
+  message;
+
   ngOnInit(): void {
+    this.studentTestService.currentMessage.subscribe(
+      message => {
+        this.fireEvent(message);
+      }
+    );
   }
   
-  fireEvent(event){
-    if (event.action === "done") {
+  fireEvent(action){
+    if (action === "done") {
       this.submit();
+    } else if (action === "pause") {
+      this.counter.pause();
+    } else if (action === "resume") {
+      this.counter.resume();
+    } else if (action === "currentTime") {
+      if (this.studentTestService.currentQuestionStartTime === 0) {
+          this.studentTestService.currentQuestionStartTime = this.counter.left
+        } else {
+          this.studentTestService.currentQuestionEndTime = this.counter.left
+        }
     }
-  }
 
+  }
   submit() {
+
     this.studentTestService.submitTest().subscribe(
       (res) => {
         console.log(res);

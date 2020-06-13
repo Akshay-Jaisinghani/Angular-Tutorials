@@ -23,6 +23,9 @@ export class TestComponent implements OnInit {
       this.studentTestService.currentTestId = Number(params.get('id'));
     });
     if (!this.studentTestService.currentTestResultId) {
+      this.currentQuestionStartTime = 0;
+      this.currentQuestionEndTime = 0;
+      this.hasInstructionsRead = true;
       this.studentTestService.getStudentTest("IN PROGRESS").subscribe((data) => {
         let indexOfCurrentTest = _.indexOf(_.map(data,"testId"), this.studentTestService.currentTestId);
         this.currentTest = data[indexOfCurrentTest];
@@ -39,6 +42,8 @@ export class TestComponent implements OnInit {
   
   startTest() {
     this.hasInstructionsRead = true;
+    this.currentQuestionStartTime = 0;
+    this.currentQuestionEndTime = 0;
     this.studentTestService.setTestStatus(this.studentTestService.currentTestResultId);
   }
 
