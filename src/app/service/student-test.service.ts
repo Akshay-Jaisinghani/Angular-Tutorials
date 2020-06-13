@@ -73,15 +73,18 @@ export class StudentTestService {
   }
 
   saveResponse(response, status) {
-    let currentAnswerObj = this.allTestAnswers[this.currentQuestionNumber]; 
-    let duration = this.currentQuestionStartTime - this.currentQuestionEndTime;
+    let duration = 0;
+    let currentAnswerObj = this.allTestAnswers[this.currentQuestionNumber];
+    if (this.currentQuestionEndTime !== 0 && this.currentQuestionEndTime !== 0) {
+      duration = (this.currentQuestionStartTime - this.currentQuestionEndTime) / 1000;
+    }
     if (this.currentQuestionObj.questionType === 1) {
       currentAnswerObj.responseOptionsList = response.optionsArray;
     } else if (response !== '' && response.selectedOption !== '' && response.selectedOption && response.selectedOption !== null) {
       currentAnswerObj.responseOptionsList[0] = response.selectedOption;
     }
     currentAnswerObj.status = status;
-    currentAnswerObj.duration = duration / 1000;
+    currentAnswerObj.duration = duration;
     this.currentQuestionStartTime = 0;
     this.currentQuestionEndTime = 0;
     return this.platformService.httpPost(this.platformService.getCurrentQuestionAnswerUrl(), currentAnswerObj, this.getHttpOption());

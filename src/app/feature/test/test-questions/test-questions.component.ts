@@ -99,11 +99,12 @@ export class TestQuestionsComponent implements OnInit {
   }
 
   saveAndNext() {
-    let status = 4;
+    let currentAnswerObj = this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber];
+    currentAnswerObj.status = 4;
     document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-class";
     this.studentTestService.changeMessage("currentTime");
     console.log("End Time", this.studentTestService.currentQuestionEndTime);
-    this.studentTestService.saveResponse(this.form.value, status).subscribe(
+    this.studentTestService.saveResponse(this.form.value, currentAnswerObj.status).subscribe(
       data => { },
       error => { },
       () => {
@@ -115,11 +116,12 @@ export class TestQuestionsComponent implements OnInit {
   }
 
   saveAndMArkForReview() {
-    let status = 3;
+    let currentAnswerObj = this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber];
+    currentAnswerObj.status = 3;
     document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "answered-and-marked-for-review-class";
     this.studentTestService.changeMessage("currentTime");
     console.log("End Time", this.studentTestService.currentQuestionEndTime);
-    this.studentTestService.saveResponse(this.form.value, status).subscribe(
+    this.studentTestService.saveResponse(this.form.value, currentAnswerObj.status).subscribe(
       data => { },
       error => { },
       () => {
@@ -150,6 +152,7 @@ export class TestQuestionsComponent implements OnInit {
     if (this.form.value.selectedOption != '') {
       let currentAnswerObj = this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber];
       currentAnswerObj.status = 1;
+      currentAnswerObj.responseOptionsList = [];
       this.clearFormArray();
       this.studentTestService.saveResponse(this.form.value, currentAnswerObj.status).subscribe(
         data => { },
@@ -164,17 +167,18 @@ export class TestQuestionsComponent implements OnInit {
     if (this.studentTestService.currentQuestionNumber < (this.studentTestService.allTestQuestions.length - 1)) {
       this.studentTestService.currentQuestionNumber = this.studentTestService.currentQuestionNumber + 1;
       this.studentTestService.currentQuestionObj = this.studentTestService.getCurrentQuestion(this.studentTestService.currentQuestionNumber);
-      this.updateStatusCount(this.studentTestService.allTestAnswers);
       this.setNextQuestionAnswer();
     }
+    this.updateStatusCount(this.studentTestService.allTestAnswers);
   }
 
   back() {
     let currentAnswerObj = this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber];
-    if ((this.form.value.selectedOption === '' || !this.form.value.selectedOption) && this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber].status === 0) {
+    if (this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber].status === 0) {
       document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "not-answered-class";
       currentAnswerObj.status = 1;
     }
+    this.clearFormArray();
     this.studentTestService.changeMessage("currentTime");
     console.log("End Time", this.studentTestService.currentQuestionEndTime);
     this.studentTestService.saveResponse(this.form.value, currentAnswerObj.status).subscribe(
@@ -192,10 +196,11 @@ export class TestQuestionsComponent implements OnInit {
 
   next() {
     let currentAnswerObj = this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber];
-    if ((this.form.value.selectedOption === '' || !this.form.value.selectedOption) && this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber].status === 0) {
+    if (this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber].status === 0) {
       document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "not-answered-class";
       currentAnswerObj.status = 1;
     }
+    this.clearFormArray();
     this.studentTestService.changeMessage("currentTime");
     console.log("End Time", this.studentTestService.currentQuestionEndTime);
     this.studentTestService.saveResponse(this.form.value, currentAnswerObj.status).subscribe(
