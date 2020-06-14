@@ -12,9 +12,9 @@ import { CountdownComponent } from 'ngx-countdown';
 })
 export class StudentDetailsComponent implements OnInit {
   @ViewChild('confirmationDialog') confirmationDialog: TemplateRef<any>;
-  
+
   currentUser;
-  constructor(private dialog: MatDialog,public studentTestService: StudentTestService, private appService: AppService,private router: Router) {
+  constructor(private dialog: MatDialog, public studentTestService: StudentTestService, private appService: AppService, private router: Router) {
     this.testDuration = this.studentTestService.currentTestDuration;
     this.currentUser = this.appService.currentUserValue;
   }
@@ -29,16 +29,16 @@ export class StudentDetailsComponent implements OnInit {
       }
     );
   }
-  
-  fireEvent(action){
+
+  fireEvent(action) {
     if (action === "done") {
       this.submit();
     } else if (action === "currentTime") {
       if (this.studentTestService.currentQuestionStartTime === 0) {
-          this.studentTestService.currentQuestionStartTime = this.counter.left
-        } else {
-          this.studentTestService.currentQuestionEndTime = this.counter.left
-        }
+        this.studentTestService.currentQuestionStartTime = this.counter.left
+      } else {
+        this.studentTestService.currentQuestionEndTime = this.counter.left
+      }
     }
   }
 
@@ -46,6 +46,7 @@ export class StudentDetailsComponent implements OnInit {
     this.studentTestService.submitTest().subscribe(
       (res) => {
         console.log(res);
+          this.studentTestService.currentTestStatus = "COMPLETED";
       },
       error => {
         console.log(error);

@@ -23,16 +23,15 @@ export class ResponseComponent implements OnInit {
       document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "not-answered-class";
     }
     this.studentTestService.changeMessage("currentTime");
-    console.log("End Time",this.studentTestService.currentQuestionEndTime);
-    this.studentTestService.saveResponse('',currentAnswerObj.status).subscribe(
-    data => { },
-    error => { },
-    () => {
-      this.studentTestService.currentQuestionObj = this.studentTestService.getCurrentQuestion(questionNumber - 1);
-      this.studentTestService.currentQuestionNumber = questionNumber - 1;
-      this.questionClicked.emit();
-    });
+    console.log("End Time", this.studentTestService.currentQuestionEndTime);
+    this.studentTestService.saveResponse('', currentAnswerObj.status).subscribe(
+      data => { },
+      error => { },
+      () => {
+        this.studentTestService.currentQuestionObj = this.studentTestService.getCurrentQuestion(questionNumber - 1);
+        this.studentTestService.currentQuestionNumber = questionNumber - 1;
+        this.questionClicked.emit();
+      });
   }
-
 
 }

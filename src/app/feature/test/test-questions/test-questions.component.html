@@ -12,9 +12,10 @@
         <ng-template #questionContent>
             <div>
                 <p>({{this.studentTestService.currentQuestionNumber+1}})
-                    {{this.studentTestService.currentQuestionObj.content}}?</p>
+                    {{this.studentTestService.currentQuestionObj.content}}</p>
                 <div *ngIf="this.studentTestService.currentQuestionObj.questionImg!=null">
-                    <img [src]=this.studentTestService.currentQuestionObj.questionImg (error)='reloadImage($event, this.studentTestService.currentQuestionObj.questionImg)'>
+                    <img [src]=this.studentTestService.currentQuestionObj.questionImg
+                        (error)='reloadImage($event, this.studentTestService.currentQuestionObj.questionImg)'>
                 </div>
             </div>
 

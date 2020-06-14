@@ -78,7 +78,7 @@ export class TestQuestionsComponent implements OnInit {
       this.isLoading = false;
       this.isImgReloadErrorMsg = false;
       this.studentTestService.changeMessage("currentTime");
-      console.log("start time",this.studentTestService.currentQuestionStartTime);
+      console.log("start time", this.studentTestService.currentQuestionStartTime);
     });
   }
 
@@ -111,7 +111,7 @@ export class TestQuestionsComponent implements OnInit {
         this.clearFormArray();
         this.gotoNextQuestion();
         this.studentTestService.changeMessage("currentTime");
-        console.log("start time",this.studentTestService.currentQuestionStartTime);
+        console.log("start time", this.studentTestService.currentQuestionStartTime);
       })
   }
 
@@ -128,24 +128,26 @@ export class TestQuestionsComponent implements OnInit {
         this.clearFormArray();
         this.gotoNextQuestion();
         this.studentTestService.changeMessage("currentTime");
-        console.log("start time",this.studentTestService.currentQuestionStartTime);
+        console.log("start time", this.studentTestService.currentQuestionStartTime);
       })
   }
 
   markForReviewAndNext() {
     let currentAnswerObj = this.studentTestService.allTestAnswers[this.studentTestService.currentQuestionNumber];
     currentAnswerObj.status = 2;
+    currentAnswerObj.responseOptionsList = [];
+    this.clearFormArray();
     this.studentTestService.changeMessage("currentTime");
     console.log("End Time", this.studentTestService.currentQuestionEndTime);
     this.studentTestService.saveResponse(this.form.value, currentAnswerObj.status).subscribe(
-        data => { },
-        error => { },
-        () => {
-          document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "marked-for-review-class";
-          this.gotoNextQuestion();
-          this.studentTestService.changeMessage("currentTime");
-          console.log("start time",this.studentTestService.currentQuestionStartTime);
-        })
+      data => { },
+      error => { },
+      () => {
+        document.getElementsByClassName("question-number-class")[0].children[this.studentTestService.currentQuestionNumber].className = "marked-for-review-class";
+        this.gotoNextQuestion();
+        this.studentTestService.changeMessage("currentTime");
+        console.log("start time", this.studentTestService.currentQuestionStartTime);
+      })
   }
 
   clearResponse() {
@@ -190,7 +192,7 @@ export class TestQuestionsComponent implements OnInit {
         this.updateStatusCount(this.studentTestService.allTestAnswers);
         this.setNextQuestionAnswer();
         this.studentTestService.changeMessage("currentTime");
-        console.log("start time",this.studentTestService.currentQuestionStartTime);
+        console.log("start time", this.studentTestService.currentQuestionStartTime);
       })
   }
 
@@ -209,7 +211,7 @@ export class TestQuestionsComponent implements OnInit {
       () => {
         this.gotoNextQuestion();
         this.studentTestService.changeMessage("currentTime");
-        console.log("start time",this.studentTestService.currentQuestionStartTime);
+        console.log("start time", this.studentTestService.currentQuestionStartTime);
       })
   }
 
