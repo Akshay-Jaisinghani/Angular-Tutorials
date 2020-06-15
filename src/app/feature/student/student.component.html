@@ -22,8 +22,8 @@
                             <button mat-button color="primary" fxFlex="40" [disabled]="!testObj.enableStartTestButton"
                                 (click)="redirectToTest(testObj.testId,testObj.duration,testObj.testResultId, testObj.testStatus,testObj.testName)">START
                                 TEST</button>
-                            <countdown fxFlex="20" style="padding-top:7px" [config]="{leftTime: testObj.countDown}"
-                                *ngIf="testObj.countDown" (event)="fireEvent($event,testObj)"></countdown>
+                            <!-- <countdown fxFlex="20" style="padding-top:7px" [config]="{leftTime: testObj.countDown}"
+                                *ngIf="testObj.countDown" (event)="fireEvent($event,testObj)"></countdown> -->
                         </mat-card-actions>
                     </mat-card>
                 </div>

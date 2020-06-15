@@ -91,7 +91,7 @@ export class StudentTestService {
   }
 
   submitTest() {
-    this.submitTestObj.student.id = this.appService.currentUserValue.id;
+    this.submitTestObj.student.id = JSON.parse(localStorage.getItem('currentUser')).studentId;
     this.submitTestObj.test.id = this.currentTestId;
     this.submitTestObj.id = this.currentTestResultId;
     return this.platformService.httpPost(this.platformService.getSubmitTestUrl(), this.submitTestObj, this.getHttpOption());
